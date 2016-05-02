@@ -1,0 +1,1846 @@
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 1   
+
+
+C51 COMPILER V9.51, COMPILATION OF MODULE USBUART_HID
+OBJECT MODULE PLACED IN .\DP8051_Keil_951\Debug\USBUART_hid.obj
+COMPILER INVOKED BY: C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\import\keil\pk51\9.51\C51\BIN\c51.exe 
+                    -.\Generated_Source\PSoC3\USBUART_hid.c NOIV LARGE MODDP2 OMF2 VB(1) NOIP INCDIR(.,Generated_Source\PSoC3) FF(3) DB WL(2)
+                    - PR(.\DP8051_Keil_951\Debug/USBUART_hid.lst) CD OT(2,SIZE) OJ(.\DP8051_Keil_951\Debug\USBUART_hid.obj)
+
+line level    source
+
+   1          /***************************************************************************//**
+   2          * \file USBUART_hid.c
+   3          * \version 3.0
+   4          *
+   5          * \brief
+   6          *  This file contains the USB HID Class request handler. 
+   7          *
+   8          * Related Document:
+   9          *  Device Class Definition for Human Interface Devices (HID) Version 1.11
+  10          *
+  11          ********************************************************************************
+  12          * \copyright
+  13          * Copyright 2008-2015, Cypress Semiconductor Corporation.  All rights reserved.
+  14          * You may use this file only in accordance with the license, terms, conditions,
+  15          * disclaimers, and limitations in the end user license agreement accompanying
+  16          * the software package with which this file was provided.
+  17          *******************************************************************************/
+  18          
+  19          #include "USBUART_hid.h"
+  20          #include "USBUART_pvt.h"
+  21          #include "cyapicallbacks.h"
+  22          
+  23          
+  24          #if defined(USBUART_ENABLE_HID_CLASS)
+  25          
+  26          /***************************************
+  27          *    HID Variables
+  28          ***************************************/
+  29          /** This variable is initialized in the USBFS_InitComponent() API to the 
+  30           * PROTOCOL_REPORT value. It is controlled by the host using the 
+  31           * HID_SET_PROTOCOL request. The value is returned to the user code by the 
+  32           * USBFS_GetProtocol() API.*/
+  33          volatile uint8 USBUART_hidProtocol[USBUART_MAX_INTERFACES_NUMBER];
+  34          
+  35          /** This variable controls the HID report rate. It is controlled by the host 
+  36           * using the HID_SET_IDLE request and used by the USBFS_UpdateHIDTimer() API to 
+  37           * reload timer.*/
+  38          volatile uint8 USBUART_hidIdleRate[USBUART_MAX_INTERFACES_NUMBER];
+  39          
+  40          /** This variable contains the timer counter, which is decremented and reloaded 
+  41           * by the USBFS_UpdateHIDTimer() API.*/
+  42          volatile uint8 USBUART_hidIdleTimer[USBUART_MAX_INTERFACES_NUMBER]; /* HID device idle rate value */
+  43          
+  44          
+  45          /***************************************
+  46          * Custom Declarations
+  47          ***************************************/
+  48          
+  49          /* `#START HID_CUSTOM_DECLARATIONS` Place your declaration here */
+  50          
+  51          /* `#END` */
+  52          
+  53          
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 2   
+
+  54          /*******************************************************************************
+  55          * Function Name: USBUART_UpdateHIDTimer
+  56          ****************************************************************************//**
+  57          *
+  58          *  This function updates the HID Report idle timer and returns the status and 
+  59          *  reloads the timer if it expires.
+  60          *
+  61          *  \param interface Contains the interface number.
+  62          *
+  63          * \return
+  64          *  Returns the state of the HID timer. Symbolic names and their associated values are given here:
+  65          *  Return Value               |Notes
+  66          *  ---------------------------|------------------------------------------------
+  67          *  USBFS_IDLE_TIMER_EXPIRED   | The timer expired.
+  68          *  USBFS_IDLE_TIMER_RUNNING   | The timer is running.
+  69          *  USBFS_IDLE_TIMER_IDEFINITE | The report is sent when data or state changes.
+  70          *
+  71          *
+  72          * \reentrant
+  73          *  No.
+  74          *
+  75          *******************************************************************************/
+  76          uint8 USBUART_UpdateHIDTimer(uint8 interface) 
+  77          {
+  78   1          uint8 stat = USBUART_IDLE_TIMER_INDEFINITE;
+  79   1      
+  80   1          if(USBUART_hidIdleRate[interface] != 0u)
+  81   1          {
+  82   2              if(USBUART_hidIdleTimer[interface] > 0u)
+  83   2              {
+  84   3                  USBUART_hidIdleTimer[interface]--;
+  85   3                  stat = USBUART_IDLE_TIMER_RUNNING;
+  86   3              }
+  87   2              else
+  88   2              {
+  89   3                  USBUART_hidIdleTimer[interface] = USBUART_hidIdleRate[interface];
+  90   3                  stat = USBUART_IDLE_TIMER_EXPIRED;
+  91   3              }
+  92   2          }
+  93   1      
+  94   1          return((uint8)stat);
+  95   1      }
+  96          
+  97          
+  98          /*******************************************************************************
+  99          * Function Name: USBUART_GetProtocol
+ 100          ****************************************************************************//**
+ 101          *
+ 102          *  This function returns the HID protocol value for the selected interface.
+ 103          *
+ 104          *  \param interface:  Contains the interface number.
+ 105          *
+ 106          *  \return
+ 107          *  Returns the protocol value. 
+ 108          *
+ 109          *******************************************************************************/
+ 110          uint8 USBUART_GetProtocol(uint8 interface) 
+ 111          {
+ 112   1          return(USBUART_hidProtocol[interface]);
+ 113   1      }
+ 114          
+ 115          
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 3   
+
+ 116          /*******************************************************************************
+ 117          * Function Name: USBUART_DispatchHIDClassRqst
+ 118          ****************************************************************************//**
+ 119          *
+ 120          *  This routine dispatches class requests
+ 121          *
+ 122          * \return
+ 123          *  Results of HID Class request handling: 
+ 124          *  - USBUART_TRUE  - request was handled without errors
+ 125          *  - USBUART_FALSE - error occurs during handling of request  
+ 126          *
+ 127          * \reentrant
+ 128          *  No.
+ 129          *
+ 130          *******************************************************************************/
+ 131          uint8 USBUART_DispatchHIDClassRqst(void) 
+ 132          {
+ 133   1          uint8 requestHandled = USBUART_FALSE;
+ 134   1      
+ 135   1          uint8 interfaceNumber = (uint8) USBUART_wIndexLoReg;
+ 136   1          
+ 137   1          /* Check request direction: D2H or H2D. */
+ 138   1          if (0u != (USBUART_bmRequestTypeReg & USBUART_RQST_DIR_D2H))
+ 139   1          {
+ 140   2              /* Handle direction from device to host. */
+ 141   2              
+ 142   2              switch (USBUART_bRequestReg)
+ 143   2              {
+ 144   3                  case USBUART_GET_DESCRIPTOR:
+ 145   3                      if (USBUART_wValueHiReg == USBUART_DESCR_HID_CLASS)
+ 146   3                      {
+ 147   4                          USBUART_FindHidClassDecriptor();
+ 148   4                          if (USBUART_currentTD.count != 0u)
+ 149   4                          {
+ 150   5                              requestHandled = USBUART_InitControlRead();
+ 151   5                          }
+ 152   4                      }
+ 153   3                      else if (USBUART_wValueHiReg == USBUART_DESCR_HID_REPORT)
+ 154   3                      {
+ 155   4                          USBUART_FindReportDescriptor();
+ 156   4                          if (USBUART_currentTD.count != 0u)
+ 157   4                          {
+ 158   5                              requestHandled = USBUART_InitControlRead();
+ 159   5                          }
+ 160   4                      }
+ 161   3                      else
+ 162   3                      {   
+ 163   4                          /* Do not handle this request. */
+ 164   4                      }
+ 165   3                      break;
+ 166   3                      
+ 167   3                  case USBUART_HID_GET_REPORT:
+ 168   3                      USBUART_FindReport();
+ 169   3                      if (USBUART_currentTD.count != 0u)
+ 170   3                      {
+ 171   4                          requestHandled = USBUART_InitControlRead();
+ 172   4                      }
+ 173   3                      break;
+ 174   3      
+ 175   3                  case USBUART_HID_GET_IDLE:
+ 176   3                      /* This function does not support multiple reports per interface*/
+ 177   3                      /* Validate interfaceNumber and Report ID (should be 0): Do not support Idle per Report ID
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 4   
+
+             - */
+ 178   3                      if ((interfaceNumber < USBUART_MAX_INTERFACES_NUMBER) && (USBUART_wValueLoReg == 0u)) 
+ 179   3                      {
+ 180   4                          USBUART_currentTD.count = 1u;
+ 181   4                          USBUART_currentTD.pData = &USBUART_hidIdleRate[interfaceNumber];
+ 182   4                          requestHandled  = USBUART_InitControlRead();
+ 183   4                      }
+ 184   3                      break;
+ 185   3                      
+ 186   3                  case USBUART_HID_GET_PROTOCOL:
+ 187   3                      /* Validate interfaceNumber */
+ 188   3                      if( interfaceNumber < USBUART_MAX_INTERFACES_NUMBER)
+ 189   3                      {
+ 190   4                          USBUART_currentTD.count = 1u;
+ 191   4                          USBUART_currentTD.pData = &USBUART_hidProtocol[interfaceNumber];
+ 192   4                          requestHandled  = USBUART_InitControlRead();
+ 193   4                      }
+ 194   3                      break;
+ 195   3                      
+ 196   3                  default:    /* requestHandled is initialized as FALSE by default */
+ 197   3                      break;
+ 198   3              }
+ 199   2          }
+ 200   1          else
+ 201   1          {   
+ 202   2              /* Handle direction from host to device. */
+ 203   2              
+ 204   2              switch (USBUART_bRequestReg)
+ 205   2              {
+ 206   3                  case USBUART_HID_SET_REPORT:
+ 207   3                      USBUART_FindReport();
+ 208   3                      if (USBUART_currentTD.count != 0u)
+ 209   3                      {
+ 210   4                          requestHandled = USBUART_InitControlWrite();
+ 211   4                      }
+ 212   3                      break;
+ 213   3                      
+ 214   3                  case USBUART_HID_SET_IDLE:
+ 215   3                      /* This function does not support multiple reports per interface */
+ 216   3                      /* Validate interfaceNumber and Report ID (should be 0): Do not support Idle per Report ID
+             - */
+ 217   3                      if ((interfaceNumber < USBUART_MAX_INTERFACES_NUMBER) && (USBUART_wValueLoReg == 0u))
+ 218   3                      {
+ 219   4                          USBUART_hidIdleRate[interfaceNumber] = (uint8)USBUART_wValueHiReg;
+ 220   4                          /* With regards to HID spec: "7.2.4 Set_Idle Request"
+ 221   4                          *  Latency. If the current period has gone past the
+ 222   4                          *  newly proscribed time duration, then a report
+ 223   4                          *  will be generated immediately.
+ 224   4                          */
+ 225   4                          if(USBUART_hidIdleRate[interfaceNumber] <
+ 226   4                             USBUART_hidIdleTimer[interfaceNumber])
+ 227   4                          {
+ 228   5                              /* Set the timer to zero and let the UpdateHIDTimer() API return IDLE_TIMER_EXPIRE
+             -D status*/
+ 229   5                              USBUART_hidIdleTimer[interfaceNumber] = 0u;
+ 230   5                          }
+ 231   4                          /* If the new request is received within 4 milliseconds
+ 232   4                          *  (1 count) of the end of the current period, then the
+ 233   4                          *  new request will have no effect until after the report.
+ 234   4                          */
+ 235   4                          else if(USBUART_hidIdleTimer[interfaceNumber] <= 1u)
+ 236   4                          {
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 5   
+
+ 237   5                              /* Do nothing.
+ 238   5                              *  Let the UpdateHIDTimer() API continue to work and
+ 239   5                              *  return IDLE_TIMER_EXPIRED status
+ 240   5                              */
+ 241   5                          }
+ 242   4                          else
+ 243   4                          {   /* Reload the timer*/
+ 244   5                              USBUART_hidIdleTimer[interfaceNumber] =
+ 245   5                              USBUART_hidIdleRate[interfaceNumber];
+ 246   5                          }
+ 247   4                          requestHandled = USBUART_InitNoDataControlTransfer();
+ 248   4                      }
+ 249   3                      break;
+ 250   3      
+ 251   3                  case USBUART_HID_SET_PROTOCOL:
+ 252   3                      /* Validate interfaceNumber and protocol (must be 0 or 1) */
+ 253   3                      if ((interfaceNumber < USBUART_MAX_INTERFACES_NUMBER) && (USBUART_wValueLoReg <= 1u))
+ 254   3                      {
+ 255   4                          USBUART_hidProtocol[interfaceNumber] = (uint8)USBUART_wValueLoReg;
+ 256   4                          requestHandled = USBUART_InitNoDataControlTransfer();
+ 257   4                      }
+ 258   3                      break;
+ 259   3                  
+ 260   3                  default:    
+ 261   3                      /* Unknown class request is not handled. */
+ 262   3                      break;
+ 263   3              }
+ 264   2          }
+ 265   1      
+ 266   1          return (requestHandled);
+ 267   1      }
+ 268          
+ 269          
+ 270          /*******************************************************************************
+ 271          * Function Name: USB_FindHidClassDescriptor
+ 272          ****************************************************************************//**
+ 273          *
+ 274          *  This routine find Hid Class Descriptor pointer based on the Interface number
+ 275          *  and Alternate setting then loads the currentTD structure with the address of
+ 276          *  the buffer and the size.
+ 277          *  The HID Class Descriptor resides inside the config descriptor.
+ 278          *
+ 279          * \return
+ 280          *  currentTD
+ 281          *
+ 282          * \reentrant
+ 283          *  No.
+ 284          *
+ 285          *******************************************************************************/
+ 286          void USBUART_FindHidClassDecriptor(void) 
+ 287          {
+ 288   1          const T_USBUART_LUT CYCODE *pTmp;
+ 289   1          volatile uint8 *pDescr;
+ 290   1          uint8 interfaceN;
+ 291   1      
+ 292   1          pTmp = USBUART_GetConfigTablePtr(USBUART_configuration - 1u);
+ 293   1          
+ 294   1          interfaceN = (uint8) USBUART_wIndexLoReg;
+ 295   1          /* Third entry in the LUT starts the Interface Table pointers */
+ 296   1          /* Now use the request interface number*/
+ 297   1          pTmp = &pTmp[interfaceN + 2u];
+ 298   1          
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 6   
+
+ 299   1          /* USB_DEVICEx_CONFIGURATIONy_INTERFACEz_TABLE */
+ 300   1          pTmp = (const T_USBUART_LUT CYCODE *) pTmp->p_list;
+ 301   1          
+ 302   1          /* Now use Alternate setting number */
+ 303   1          pTmp = &pTmp[USBUART_interfaceSetting[interfaceN]];
+ 304   1          
+ 305   1          /* USB_DEVICEx_CONFIGURATIONy_INTERFACEz_ALTERNATEi_HID_TABLE */
+ 306   1          pTmp = (const T_USBUART_LUT CYCODE *) pTmp->p_list;
+ 307   1          
+ 308   1          /* Fifth entry in the LUT points to Hid Class Descriptor in Configuration Descriptor */
+ 309   1          pTmp = &pTmp[4u];
+ 310   1          pDescr = (volatile uint8 *)pTmp->p_list;
+ 311   1          
+ 312   1          /* The first byte contains the descriptor length */
+ 313   1          USBUART_currentTD.count = *pDescr;
+ 314   1          USBUART_currentTD.pData = pDescr;
+ 315   1      }
+ 316          
+ 317          
+ 318          /*******************************************************************************
+ 319          * Function Name: USB_FindReportDescriptor
+ 320          ****************************************************************************//**
+ 321          *
+ 322          *  This routine find Hid Report Descriptor pointer based on the Interface
+ 323          *  number, then loads the currentTD structure with the address of the buffer
+ 324          *  and the size.
+ 325          *  Hid Report Descriptor is located after IN/OUT/FEATURE reports.
+ 326          *
+ 327          * \return
+ 328          *  currentTD
+ 329          *
+ 330          * \reentrant
+ 331          *  No.
+ 332          *
+ 333          *******************************************************************************/
+ 334          void USBUART_FindReportDescriptor(void) 
+ 335          {
+ 336   1          const T_USBUART_LUT CYCODE *pTmp;
+ 337   1          volatile uint8 *pDescr;
+ 338   1          uint8 interfaceN;
+ 339   1      
+ 340   1          pTmp = USBUART_GetConfigTablePtr(USBUART_configuration - 1u);
+ 341   1          interfaceN = (uint8) USBUART_wIndexLoReg;
+ 342   1          
+ 343   1          /* Third entry in the LUT starts the Interface Table pointers */
+ 344   1          /* Now use the request interface number */
+ 345   1          pTmp = &pTmp[interfaceN + 2u];
+ 346   1          
+ 347   1          /* USB_DEVICEx_CONFIGURATIONy_INTERFACEz_TABLE */
+ 348   1          pTmp = (const T_USBUART_LUT CYCODE *) pTmp->p_list;
+ 349   1          
+ 350   1          /* Now use Alternate setting number */
+ 351   1          pTmp = &pTmp[USBUART_interfaceSetting[interfaceN]];
+ 352   1          
+ 353   1          /* USB_DEVICEx_CONFIGURATIONy_INTERFACEz_ALTERNATEi_HID_TABLE */
+ 354   1          pTmp = (const T_USBUART_LUT CYCODE *) pTmp->p_list;
+ 355   1          
+ 356   1          /* Fourth entry in the LUT starts the Hid Report Descriptor */
+ 357   1          pTmp = &pTmp[3u];
+ 358   1          pDescr = (volatile uint8 *)pTmp->p_list;
+ 359   1          
+ 360   1          /* The 1st and 2nd bytes of descriptor contain its length. LSB is 1st. */
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 7   
+
+ 361   1          USBUART_currentTD.count =  ((uint16)((uint16) pDescr[1u] << 8u) | pDescr[0u]);
+ 362   1          USBUART_currentTD.pData = &pDescr[2u];
+ 363   1      }
+ 364          
+ 365          
+ 366          /*******************************************************************************
+ 367          * Function Name: USBUART_FindReport
+ 368          ****************************************************************************//**
+ 369          *
+ 370          *  This routine sets up a transfer based on the Interface number, Report Type
+ 371          *  and Report ID, then loads the currentTD structure with the address of the
+ 372          *  buffer and the size.  The caller has to decide if it is a control read or
+ 373          *  control write.
+ 374          *
+ 375          * \return
+ 376          *  currentTD
+ 377          *
+ 378          * \reentrant
+ 379          *  No.
+ 380          *
+ 381          *******************************************************************************/
+ 382          void USBUART_FindReport(void) 
+ 383          {
+ 384   1          const T_USBUART_LUT CYCODE *pTmp;
+ 385   1          T_USBUART_TD *pTD;
+ 386   1          uint8 reportType;
+ 387   1          uint8 interfaceN;
+ 388   1       
+ 389   1          /* `#START HID_FINDREPORT` Place custom handling here */
+ 390   1      
+ 391   1          /* `#END` */
+ 392   1          
+ 393   1      #ifdef USBUART_FIND_REPORT_CALLBACK
+                  USBUART_FindReport_Callback();
+              #endif /* (USBUART_FIND_REPORT_CALLBACK) */
+ 396   1          
+ 397   1          USBUART_currentTD.count = 0u;   /* Init not supported condition */
+ 398   1          pTmp = USBUART_GetConfigTablePtr(USBUART_configuration - 1u);
+ 399   1          reportType = (uint8) USBUART_wValueHiReg;
+ 400   1          interfaceN = (uint8) USBUART_wIndexLoReg;
+ 401   1          
+ 402   1          /* Third entry in the LUT Configuration Table starts the Interface Table pointers */
+ 403   1          /* Now use the request interface number */
+ 404   1          pTmp = &pTmp[interfaceN + 2u];
+ 405   1          
+ 406   1          /* USB_DEVICEx_CONFIGURATIONy_INTERFACEz_TABLE */
+ 407   1          pTmp = (const T_USBUART_LUT CYCODE *) pTmp->p_list;
+ 408   1          if (interfaceN < USBUART_MAX_INTERFACES_NUMBER)
+ 409   1          {
+ 410   2              /* Now use Alternate setting number */
+ 411   2              pTmp = &pTmp[USBUART_interfaceSetting[interfaceN]];
+ 412   2              
+ 413   2              /* USB_DEVICEx_CONFIGURATIONy_INTERFACEz_ALTERNATEi_HID_TABLE */
+ 414   2              pTmp = (const T_USBUART_LUT CYCODE *) pTmp->p_list;
+ 415   2              
+ 416   2              /* Validate reportType to comply with "7.2.1 Get_Report Request" */
+ 417   2              if ((reportType >= USBUART_HID_GET_REPORT_INPUT) &&
+ 418   2                  (reportType <= USBUART_HID_GET_REPORT_FEATURE))
+ 419   2              {
+ 420   3                  /* Get the entry proper TD (IN, OUT or Feature Report Table)*/
+ 421   3                  pTmp = &pTmp[reportType - 1u];
+ 422   3                  
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 8   
+
+ 423   3                  /* Get reportID */
+ 424   3                  reportType = (uint8) USBUART_wValueLoReg;
+ 425   3                  
+ 426   3                  /* Validate table support by the HID descriptor, compare table count with reportID */
+ 427   3                  if (pTmp->c >= reportType)
+ 428   3                  {
+ 429   4                      pTD = (T_USBUART_TD *) pTmp->p_list;
+ 430   4                      pTD = &pTD[reportType];                          /* select entry depend on report ID*/
+ 431   4                      USBUART_currentTD.pData = pTD->pData;   /* Buffer pointer */
+ 432   4                      USBUART_currentTD.count = pTD->count;   /* Buffer Size */
+ 433   4                      USBUART_currentTD.pStatusBlock = pTD->pStatusBlock;
+ 434   4                  }
+ 435   3              }
+ 436   2          }
+ 437   1      }
+ 438          
+ 439          
+ 440          /*******************************************************************************
+ 441          * Additional user functions supporting HID Requests
+ 442          ********************************************************************************/
+ 443          
+ 444          /* `#START HID_FUNCTIONS` Place any additional functions here */
+ 445          
+ 446          /* `#END` */
+ 447          
+ 448          #endif  /*  USBUART_ENABLE_HID_CLASS */
+ 449          
+ 450          
+ 451          /* [] END OF FILE */
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 9   
+
+ASSEMBLY LISTING OF GENERATED OBJECT CODE
+
+
+             ; FUNCTION _USBUART_UpdateHIDTimer (BEGIN)
+                                           ; SOURCE LINE # 76
+0000 900000      R     MOV     DPTR,#interface
+0003 EF                MOV     A,R7
+0004 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 77
+                                           ; SOURCE LINE # 78
+0005 900000      R     MOV     DPTR,#stat
+0008 E4                CLR     A
+0009 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 80
+000A 900000      R     MOV     DPTR,#interface
+000D E0                MOVX    A,@DPTR
+000E FF                MOV     R7,A
+000F 7400        R     MOV     A,#LOW USBUART_hidIdleRate
+0011 2F                ADD     A,R7
+0012 F582              MOV     DPL,A
+0014 E4                CLR     A
+0015 3400        R     ADDC    A,#HIGH USBUART_hidIdleRate
+0017 F583              MOV     DPH,A
+0019 E0                MOVX    A,@DPTR
+001A FF                MOV     R7,A
+001B EF                MOV     A,R7
+001C 6059              JZ      ?C0001
+                                           ; SOURCE LINE # 81
+                                           ; SOURCE LINE # 82
+001E 900000      R     MOV     DPTR,#interface
+0021 E0                MOVX    A,@DPTR
+0022 FF                MOV     R7,A
+0023 7400        R     MOV     A,#LOW USBUART_hidIdleTimer
+0025 2F                ADD     A,R7
+0026 F582              MOV     DPL,A
+0028 E4                CLR     A
+0029 3400        R     ADDC    A,#HIGH USBUART_hidIdleTimer
+002B F583              MOV     DPH,A
+002D E0                MOVX    A,@DPTR
+002E FF                MOV     R7,A
+002F EF                MOV     A,R7
+0030 D3                SETB    C
+0031 9400              SUBB    A,#00H
+0033 401A              JC      ?C0002
+                                           ; SOURCE LINE # 83
+                                           ; SOURCE LINE # 84
+0035 900000      R     MOV     DPTR,#interface
+0038 E0                MOVX    A,@DPTR
+0039 FF                MOV     R7,A
+003A 7400        R     MOV     A,#LOW USBUART_hidIdleTimer
+003C 2F                ADD     A,R7
+003D F582              MOV     DPL,A
+003F E4                CLR     A
+0040 3400        R     ADDC    A,#HIGH USBUART_hidIdleTimer
+0042 F583              MOV     DPH,A
+0044 E0                MOVX    A,@DPTR
+0045 14                DEC     A
+0046 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 85
+0047 900000      R     MOV     DPTR,#stat
+004A 7402              MOV     A,#02H
+004C F0                MOVX    @DPTR,A
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 10  
+
+                                           ; SOURCE LINE # 86
+004D 8028              SJMP    ?C0001
+004F         ?C0002:
+                                           ; SOURCE LINE # 88
+                                           ; SOURCE LINE # 89
+004F 900000      R     MOV     DPTR,#interface
+0052 E0                MOVX    A,@DPTR
+0053 FF                MOV     R7,A
+0054 7400        R     MOV     A,#LOW USBUART_hidIdleRate
+0056 2F                ADD     A,R7
+0057 F582              MOV     DPL,A
+0059 E4                CLR     A
+005A 3400        R     ADDC    A,#HIGH USBUART_hidIdleRate
+005C F583              MOV     DPH,A
+005E E0                MOVX    A,@DPTR
+005F FF                MOV     R7,A
+0060 900000      R     MOV     DPTR,#interface
+0063 E0                MOVX    A,@DPTR
+0064 FE                MOV     R6,A
+0065 7400        R     MOV     A,#LOW USBUART_hidIdleTimer
+0067 2E                ADD     A,R6
+0068 F582              MOV     DPL,A
+006A E4                CLR     A
+006B 3400        R     ADDC    A,#HIGH USBUART_hidIdleTimer
+006D F583              MOV     DPH,A
+006F EF                MOV     A,R7
+0070 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 90
+0071 900000      R     MOV     DPTR,#stat
+0074 7401              MOV     A,#01H
+0076 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 91
+                                           ; SOURCE LINE # 92
+0077         ?C0001:
+                                           ; SOURCE LINE # 94
+0077 900000      R     MOV     DPTR,#stat
+007A E0                MOVX    A,@DPTR
+007B FF                MOV     R7,A
+                                           ; SOURCE LINE # 95
+007C         ?C0004:
+007C 22                RET     
+             ; FUNCTION _USBUART_UpdateHIDTimer (END)
+
+             ; FUNCTION _USBUART_GetProtocol (BEGIN)
+                                           ; SOURCE LINE # 110
+0000 900000      R     MOV     DPTR,#interface
+0003 EF                MOV     A,R7
+0004 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 111
+                                           ; SOURCE LINE # 112
+0005 900000      R     MOV     DPTR,#interface
+0008 E0                MOVX    A,@DPTR
+0009 FF                MOV     R7,A
+000A 7400        R     MOV     A,#LOW USBUART_hidProtocol
+000C 2F                ADD     A,R7
+000D F582              MOV     DPL,A
+000F E4                CLR     A
+0010 3400        R     ADDC    A,#HIGH USBUART_hidProtocol
+0012 F583              MOV     DPH,A
+0014 E0                MOVX    A,@DPTR
+0015 FF                MOV     R7,A
+                                           ; SOURCE LINE # 113
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 11  
+
+0016         ?C0005:
+0016 22                RET     
+             ; FUNCTION _USBUART_GetProtocol (END)
+
+             ; FUNCTION USBUART_DispatchHIDClassRqst (BEGIN)
+                                           ; SOURCE LINE # 131
+                                           ; SOURCE LINE # 132
+                                           ; SOURCE LINE # 133
+0000 900000      R     MOV     DPTR,#requestHandled
+0003 E4                CLR     A
+0004 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 135
+0005 906004            MOV     DPTR,#06004H
+0008 E0                MOVX    A,@DPTR
+0009 FF                MOV     R7,A
+000A 900000      R     MOV     DPTR,#interfaceNumber
+000D EF                MOV     A,R7
+000E F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 138
+000F 906000            MOV     DPTR,#06000H
+0012 E0                MOVX    A,@DPTR
+0013 FF                MOV     R7,A
+0014 EF                MOV     A,R7
+0015 5480              ANL     A,#080H
+0017 FF                MOV     R7,A
+0018 7E00              MOV     R6,#00H
+001A EF                MOV     A,R7
+001B 4E                ORL     A,R6
+001C 7003              JNZ     $ + 5H
+001E 020000      R     LJMP    ?C0006
+                                           ; SOURCE LINE # 139
+                                           ; SOURCE LINE # 142
+0021 906001            MOV     DPTR,#06001H
+0024 E0                MOVX    A,@DPTR
+0025 FF                MOV     R7,A
+0026 EF                MOV     A,R7
+0027 120000      E     LCALL   ?C?CCASE
+002A 0000        R     DW      ?C0015
+002C 01                DB      01H
+002D 0000        R     DW      ?C0017
+002F 02                DB      02H
+0030 0000        R     DW      ?C0019
+0032 03                DB      03H
+0033 0000        R     DW      ?C0008
+0035 06                DB      06H
+0036 0000              DW      00H
+0038 0000        R     DW      ?C0022
+                                           ; SOURCE LINE # 143
+                                           ; SOURCE LINE # 144
+003A         ?C0008:
+                                           ; SOURCE LINE # 145
+003A 906003            MOV     DPTR,#06003H
+003D E0                MOVX    A,@DPTR
+003E FF                MOV     R7,A
+003F EF                MOV     A,R7
+0040 B4211D            CJNE    A,#021H,?C0009
+                                           ; SOURCE LINE # 146
+                                           ; SOURCE LINE # 147
+0043 120000      R     LCALL   USBUART_FindHidClassDecriptor
+                                           ; SOURCE LINE # 148
+0046 900000      E     MOV     DPTR,#USBUART_currentTD
+0049 E0                MOVX    A,@DPTR
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 12  
+
+004A FE                MOV     R6,A
+004B A3                INC     DPTR
+004C E0                MOVX    A,@DPTR
+004D FF                MOV     R7,A
+004E EF                MOV     A,R7
+004F 4E                ORL     A,R6
+0050 7003              JNZ     $ + 5H
+0052 020000      R     LJMP    ?C0022
+                                           ; SOURCE LINE # 149
+                                           ; SOURCE LINE # 150
+0055 120000      E     LCALL   USBUART_InitControlRead
+0058 900000      R     MOV     DPTR,#requestHandled
+005B EF                MOV     A,R7
+005C F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 151
+                                           ; SOURCE LINE # 152
+005D 020000      R     LJMP    ?C0022
+0060         ?C0009:
+                                           ; SOURCE LINE # 153
+0060 906003            MOV     DPTR,#06003H
+0063 E0                MOVX    A,@DPTR
+0064 FF                MOV     R7,A
+0065 EF                MOV     A,R7
+0066 6422              XRL     A,#022H
+0068 6003              JZ      $ + 5H
+006A 020000      R     LJMP    ?C0022
+                                           ; SOURCE LINE # 154
+                                           ; SOURCE LINE # 155
+006D 120000      R     LCALL   USBUART_FindReportDescriptor
+                                           ; SOURCE LINE # 156
+0070 900000      E     MOV     DPTR,#USBUART_currentTD
+0073 E0                MOVX    A,@DPTR
+0074 FE                MOV     R6,A
+0075 A3                INC     DPTR
+0076 E0                MOVX    A,@DPTR
+0077 FF                MOV     R7,A
+0078 EF                MOV     A,R7
+0079 4E                ORL     A,R6
+007A 7003              JNZ     $ + 5H
+007C 020000      R     LJMP    ?C0022
+                                           ; SOURCE LINE # 157
+                                           ; SOURCE LINE # 158
+007F 120000      E     LCALL   USBUART_InitControlRead
+0082 900000      R     MOV     DPTR,#requestHandled
+0085 EF                MOV     A,R7
+0086 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 159
+                                           ; SOURCE LINE # 160
+0087 020000      R     LJMP    ?C0022
+                                           ; SOURCE LINE # 162
+                                           ; SOURCE LINE # 164
+                                           ; SOURCE LINE # 165
+                                           ; SOURCE LINE # 167
+008A         ?C0015:
+                                           ; SOURCE LINE # 168
+008A 120000      R     LCALL   USBUART_FindReport
+                                           ; SOURCE LINE # 169
+008D 900000      E     MOV     DPTR,#USBUART_currentTD
+0090 E0                MOVX    A,@DPTR
+0091 FE                MOV     R6,A
+0092 A3                INC     DPTR
+0093 E0                MOVX    A,@DPTR
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 13  
+
+0094 FF                MOV     R7,A
+0095 EF                MOV     A,R7
+0096 4E                ORL     A,R6
+0097 7003              JNZ     $ + 5H
+0099 020000      R     LJMP    ?C0022
+                                           ; SOURCE LINE # 170
+                                           ; SOURCE LINE # 171
+009C 120000      E     LCALL   USBUART_InitControlRead
+009F 900000      R     MOV     DPTR,#requestHandled
+00A2 EF                MOV     A,R7
+00A3 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 172
+                                           ; SOURCE LINE # 173
+00A4 020000      R     LJMP    ?C0022
+                                           ; SOURCE LINE # 175
+00A7         ?C0017:
+                                           ; SOURCE LINE # 178
+00A7 900000      R     MOV     DPTR,#interfaceNumber
+00AA E0                MOVX    A,@DPTR
+00AB FF                MOV     R7,A
+00AC EF                MOV     A,R7
+00AD C3                CLR     C
+00AE 9402              SUBB    A,#02H
+00B0 4003              JC      $ + 5H
+00B2 020000      R     LJMP    ?C0022
+00B5 906002            MOV     DPTR,#06002H
+00B8 E0                MOVX    A,@DPTR
+00B9 FF                MOV     R7,A
+00BA EF                MOV     A,R7
+00BB 6003              JZ      $ + 5H
+00BD 020000      R     LJMP    ?C0022
+                                           ; SOURCE LINE # 179
+                                           ; SOURCE LINE # 180
+00C0 900000      E     MOV     DPTR,#USBUART_currentTD
+00C3 E4                CLR     A
+00C4 F0                MOVX    @DPTR,A
+00C5 A3                INC     DPTR
+00C6 7401              MOV     A,#01H
+00C8 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 181
+00C9 900000      R     MOV     DPTR,#interfaceNumber
+00CC E0                MOVX    A,@DPTR
+00CD FF                MOV     R7,A
+00CE 7400        R     MOV     A,#LOW USBUART_hidIdleRate
+00D0 2F                ADD     A,R7
+00D1 F9                MOV     R1,A
+00D2 E4                CLR     A
+00D3 3400        R     ADDC    A,#HIGH USBUART_hidIdleRate
+00D5 FA                MOV     R2,A
+00D6 7B01              MOV     R3,#01H
+00D8 900000      E     MOV     DPTR,#USBUART_currentTD+02H
+00DB 120000      E     LCALL   ?C?PSTXDATA
+                                           ; SOURCE LINE # 182
+00DE 120000      E     LCALL   USBUART_InitControlRead
+00E1 900000      R     MOV     DPTR,#requestHandled
+00E4 EF                MOV     A,R7
+00E5 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 183
+                                           ; SOURCE LINE # 184
+00E6 020000      R     LJMP    ?C0022
+                                           ; SOURCE LINE # 186
+00E9         ?C0019:
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 14  
+
+                                           ; SOURCE LINE # 188
+00E9 900000      R     MOV     DPTR,#interfaceNumber
+00EC E0                MOVX    A,@DPTR
+00ED FF                MOV     R7,A
+00EE EF                MOV     A,R7
+00EF C3                CLR     C
+00F0 9402              SUBB    A,#02H
+00F2 4003              JC      $ + 5H
+00F4 020000      R     LJMP    ?C0022
+                                           ; SOURCE LINE # 189
+                                           ; SOURCE LINE # 190
+00F7 900000      E     MOV     DPTR,#USBUART_currentTD
+00FA E4                CLR     A
+00FB F0                MOVX    @DPTR,A
+00FC A3                INC     DPTR
+00FD 7401              MOV     A,#01H
+00FF F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 191
+0100 900000      R     MOV     DPTR,#interfaceNumber
+0103 E0                MOVX    A,@DPTR
+0104 FF                MOV     R7,A
+0105 7400        R     MOV     A,#LOW USBUART_hidProtocol
+0107 2F                ADD     A,R7
+0108 F9                MOV     R1,A
+0109 E4                CLR     A
+010A 3400        R     ADDC    A,#HIGH USBUART_hidProtocol
+010C FA                MOV     R2,A
+010D 7B01              MOV     R3,#01H
+010F 900000      E     MOV     DPTR,#USBUART_currentTD+02H
+0112 120000      E     LCALL   ?C?PSTXDATA
+                                           ; SOURCE LINE # 192
+0115 120000      E     LCALL   USBUART_InitControlRead
+0118 900000      R     MOV     DPTR,#requestHandled
+011B EF                MOV     A,R7
+011C F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 193
+                                           ; SOURCE LINE # 194
+011D 020000      R     LJMP    ?C0022
+                                           ; SOURCE LINE # 196
+                                           ; SOURCE LINE # 197
+                                           ; SOURCE LINE # 198
+                                           ; SOURCE LINE # 199
+0120 020000      R     LJMP    ?C0022
+0123         ?C0006:
+                                           ; SOURCE LINE # 201
+                                           ; SOURCE LINE # 204
+0123 906001            MOV     DPTR,#06001H
+0126 E0                MOVX    A,@DPTR
+0127 FF                MOV     R7,A
+0128 EF                MOV     A,R7
+0129 120000      E     LCALL   ?C?CCASE
+012C 0000        R     DW      ?C0024
+012E 09                DB      09H
+012F 0000        R     DW      ?C0026
+0131 0A                DB      0AH
+0132 0000        R     DW      ?C0032
+0134 0B                DB      0BH
+0135 0000              DW      00H
+0137 0000        R     DW      ?C0022
+                                           ; SOURCE LINE # 205
+                                           ; SOURCE LINE # 206
+0139         ?C0024:
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 15  
+
+                                           ; SOURCE LINE # 207
+0139 120000      R     LCALL   USBUART_FindReport
+                                           ; SOURCE LINE # 208
+013C 900000      E     MOV     DPTR,#USBUART_currentTD
+013F E0                MOVX    A,@DPTR
+0140 FE                MOV     R6,A
+0141 A3                INC     DPTR
+0142 E0                MOVX    A,@DPTR
+0143 FF                MOV     R7,A
+0144 EF                MOV     A,R7
+0145 4E                ORL     A,R6
+0146 7003              JNZ     $ + 5H
+0148 020000      R     LJMP    ?C0022
+                                           ; SOURCE LINE # 209
+                                           ; SOURCE LINE # 210
+014B 120000      E     LCALL   USBUART_InitControlWrite
+014E 900000      R     MOV     DPTR,#requestHandled
+0151 EF                MOV     A,R7
+0152 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 211
+                                           ; SOURCE LINE # 212
+0153 020000      R     LJMP    ?C0022
+                                           ; SOURCE LINE # 214
+0156         ?C0026:
+                                           ; SOURCE LINE # 217
+0156 900000      R     MOV     DPTR,#interfaceNumber
+0159 E0                MOVX    A,@DPTR
+015A FF                MOV     R7,A
+015B EF                MOV     A,R7
+015C C3                CLR     C
+015D 9402              SUBB    A,#02H
+015F 4003              JC      $ + 5H
+0161 020000      R     LJMP    ?C0022
+0164 906002            MOV     DPTR,#06002H
+0167 E0                MOVX    A,@DPTR
+0168 FF                MOV     R7,A
+0169 EF                MOV     A,R7
+016A 6003              JZ      $ + 5H
+016C 020000      R     LJMP    ?C0022
+                                           ; SOURCE LINE # 218
+                                           ; SOURCE LINE # 219
+016F 906003            MOV     DPTR,#06003H
+0172 E0                MOVX    A,@DPTR
+0173 FF                MOV     R7,A
+0174 900000      R     MOV     DPTR,#interfaceNumber
+0177 E0                MOVX    A,@DPTR
+0178 FE                MOV     R6,A
+0179 7400        R     MOV     A,#LOW USBUART_hidIdleRate
+017B 2E                ADD     A,R6
+017C F582              MOV     DPL,A
+017E E4                CLR     A
+017F 3400        R     ADDC    A,#HIGH USBUART_hidIdleRate
+0181 F583              MOV     DPH,A
+0183 EF                MOV     A,R7
+0184 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 225
+0185 900000      R     MOV     DPTR,#interfaceNumber
+0188 E0                MOVX    A,@DPTR
+0189 FF                MOV     R7,A
+018A 7400        R     MOV     A,#LOW USBUART_hidIdleTimer
+018C 2F                ADD     A,R7
+018D F582              MOV     DPL,A
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 16  
+
+018F E4                CLR     A
+0190 3400        R     ADDC    A,#HIGH USBUART_hidIdleTimer
+0192 F583              MOV     DPH,A
+0194 E0                MOVX    A,@DPTR
+0195 FF                MOV     R7,A
+0196 900000      R     MOV     DPTR,#interfaceNumber
+0199 E0                MOVX    A,@DPTR
+019A FE                MOV     R6,A
+019B 7400        R     MOV     A,#LOW USBUART_hidIdleRate
+019D 2E                ADD     A,R6
+019E F582              MOV     DPL,A
+01A0 E4                CLR     A
+01A1 3400        R     ADDC    A,#HIGH USBUART_hidIdleRate
+01A3 F583              MOV     DPH,A
+01A5 E0                MOVX    A,@DPTR
+01A6 FE                MOV     R6,A
+01A7 EE                MOV     A,R6
+01A8 C3                CLR     C
+01A9 9F                SUBB    A,R7
+01AA 5013              JNC     ?C0028
+                                           ; SOURCE LINE # 227
+                                           ; SOURCE LINE # 229
+01AC 900000      R     MOV     DPTR,#interfaceNumber
+01AF E0                MOVX    A,@DPTR
+01B0 FF                MOV     R7,A
+01B1 7400        R     MOV     A,#LOW USBUART_hidIdleTimer
+01B3 2F                ADD     A,R7
+01B4 F582              MOV     DPL,A
+01B6 E4                CLR     A
+01B7 3400        R     ADDC    A,#HIGH USBUART_hidIdleTimer
+01B9 F583              MOV     DPH,A
+01BB E4                CLR     A
+01BC F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 230
+01BD 8039              SJMP    ?C0029
+01BF         ?C0028:
+                                           ; SOURCE LINE # 235
+01BF 900000      R     MOV     DPTR,#interfaceNumber
+01C2 E0                MOVX    A,@DPTR
+01C3 FF                MOV     R7,A
+01C4 7400        R     MOV     A,#LOW USBUART_hidIdleTimer
+01C6 2F                ADD     A,R7
+01C7 F582              MOV     DPL,A
+01C9 E4                CLR     A
+01CA 3400        R     ADDC    A,#HIGH USBUART_hidIdleTimer
+01CC F583              MOV     DPH,A
+01CE E0                MOVX    A,@DPTR
+01CF FF                MOV     R7,A
+01D0 EF                MOV     A,R7
+01D1 D3                SETB    C
+01D2 9401              SUBB    A,#01H
+01D4 4022              JC      ?C0029
+                                           ; SOURCE LINE # 236
+                                           ; SOURCE LINE # 241
+01D6         ?C0030:
+                                           ; SOURCE LINE # 243
+                                           ; SOURCE LINE # 244
+01D6 900000      R     MOV     DPTR,#interfaceNumber
+01D9 E0                MOVX    A,@DPTR
+01DA FF                MOV     R7,A
+01DB 7400        R     MOV     A,#LOW USBUART_hidIdleRate
+01DD 2F                ADD     A,R7
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 17  
+
+01DE F582              MOV     DPL,A
+01E0 E4                CLR     A
+01E1 3400        R     ADDC    A,#HIGH USBUART_hidIdleRate
+01E3 F583              MOV     DPH,A
+01E5 E0                MOVX    A,@DPTR
+01E6 FF                MOV     R7,A
+01E7 900000      R     MOV     DPTR,#interfaceNumber
+01EA E0                MOVX    A,@DPTR
+01EB FE                MOV     R6,A
+01EC 7400        R     MOV     A,#LOW USBUART_hidIdleTimer
+01EE 2E                ADD     A,R6
+01EF F582              MOV     DPL,A
+01F1 E4                CLR     A
+01F2 3400        R     ADDC    A,#HIGH USBUART_hidIdleTimer
+01F4 F583              MOV     DPH,A
+01F6 EF                MOV     A,R7
+01F7 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 246
+01F8         ?C0029:
+                                           ; SOURCE LINE # 247
+01F8 120000      E     LCALL   USBUART_InitNoDataControlTransfer
+01FB 900000      R     MOV     DPTR,#requestHandled
+01FE EF                MOV     A,R7
+01FF F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 248
+                                           ; SOURCE LINE # 249
+0200 8034              SJMP    ?C0022
+                                           ; SOURCE LINE # 251
+0202         ?C0032:
+                                           ; SOURCE LINE # 253
+0202 900000      R     MOV     DPTR,#interfaceNumber
+0205 E0                MOVX    A,@DPTR
+0206 FF                MOV     R7,A
+0207 EF                MOV     A,R7
+0208 C3                CLR     C
+0209 9402              SUBB    A,#02H
+020B 5029              JNC     ?C0022
+020D 906002            MOV     DPTR,#06002H
+0210 E0                MOVX    A,@DPTR
+0211 FF                MOV     R7,A
+0212 EF                MOV     A,R7
+0213 D3                SETB    C
+0214 9401              SUBB    A,#01H
+0216 501E              JNC     ?C0022
+                                           ; SOURCE LINE # 254
+                                           ; SOURCE LINE # 255
+0218 906002            MOV     DPTR,#06002H
+021B E0                MOVX    A,@DPTR
+021C FF                MOV     R7,A
+021D 900000      R     MOV     DPTR,#interfaceNumber
+0220 E0                MOVX    A,@DPTR
+0221 FE                MOV     R6,A
+0222 7400        R     MOV     A,#LOW USBUART_hidProtocol
+0224 2E                ADD     A,R6
+0225 F582              MOV     DPL,A
+0227 E4                CLR     A
+0228 3400        R     ADDC    A,#HIGH USBUART_hidProtocol
+022A F583              MOV     DPH,A
+022C EF                MOV     A,R7
+022D F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 256
+022E 120000      E     LCALL   USBUART_InitNoDataControlTransfer
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 18  
+
+0231 900000      R     MOV     DPTR,#requestHandled
+0234 EF                MOV     A,R7
+0235 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 257
+                                           ; SOURCE LINE # 258
+                                           ; SOURCE LINE # 260
+                                           ; SOURCE LINE # 262
+                                           ; SOURCE LINE # 263
+                                           ; SOURCE LINE # 264
+0236         ?C0022:
+                                           ; SOURCE LINE # 266
+0236 900000      R     MOV     DPTR,#requestHandled
+0239 E0                MOVX    A,@DPTR
+023A FF                MOV     R7,A
+                                           ; SOURCE LINE # 267
+023B         ?C0035:
+023B 22                RET     
+             ; FUNCTION USBUART_DispatchHIDClassRqst (END)
+
+             ; FUNCTION USBUART_FindHidClassDecriptor (BEGIN)
+                                           ; SOURCE LINE # 286
+                                           ; SOURCE LINE # 287
+                                           ; SOURCE LINE # 292
+0000 900000      E     MOV     DPTR,#USBUART_configuration
+0003 E0                MOVX    A,@DPTR
+0004 FF                MOV     R7,A
+0005 EF                MOV     A,R7
+0006 14                DEC     A
+0007 FF                MOV     R7,A
+0008 120000      E     LCALL   _USBUART_GetConfigTablePtr
+000B 900000      R     MOV     DPTR,#pTmp
+000E EE                MOV     A,R6
+000F F0                MOVX    @DPTR,A
+0010 A3                INC     DPTR
+0011 EF                MOV     A,R7
+0012 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 294
+0013 906004            MOV     DPTR,#06004H
+0016 E0                MOVX    A,@DPTR
+0017 FF                MOV     R7,A
+0018 900000      R     MOV     DPTR,#interfaceN
+001B EF                MOV     A,R7
+001C F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 297
+001D 900000      R     MOV     DPTR,#interfaceN
+0020 E0                MOVX    A,@DPTR
+0021 FF                MOV     R7,A
+0022 7E00              MOV     R6,#00H
+0024 EF                MOV     A,R7
+0025 2402              ADD     A,#02H
+0027 FF                MOV     R7,A
+0028 EE                MOV     A,R6
+0029 3400              ADDC    A,#00H
+002B FE                MOV     R6,A
+002C EF                MOV     A,R7
+002D 7802              MOV     R0,#02H
+002F         ?C0042:
+002F C3                CLR     C
+0030 33                RLC     A
+0031 CE                XCH     A,R6
+0032 33                RLC     A
+0033 CE                XCH     A,R6
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 19  
+
+0034 D8F9              DJNZ    R0,?C0042
+0036 FF                MOV     R7,A
+0037 900000      R     MOV     DPTR,#pTmp
+003A E0                MOVX    A,@DPTR
+003B FC                MOV     R4,A
+003C A3                INC     DPTR
+003D E0                MOVX    A,@DPTR
+003E FD                MOV     R5,A
+003F EF                MOV     A,R7
+0040 2D                ADD     A,R5
+0041 FF                MOV     R7,A
+0042 EE                MOV     A,R6
+0043 3C                ADDC    A,R4
+0044 FE                MOV     R6,A
+0045 900000      R     MOV     DPTR,#pTmp
+0048 EE                MOV     A,R6
+0049 F0                MOVX    @DPTR,A
+004A A3                INC     DPTR
+004B EF                MOV     A,R7
+004C F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 300
+004D 900000      R     MOV     DPTR,#pTmp
+0050 E0                MOVX    A,@DPTR
+0051 FE                MOV     R6,A
+0052 A3                INC     DPTR
+0053 E0                MOVX    A,@DPTR
+0054 FF                MOV     R7,A
+0055 8F82              MOV     DPL,R7
+0057 8E83              MOV     DPH,R6
+0059 A3                INC     DPTR
+005A 120000      E     LCALL   ?C?PLDCODE
+005D AE02              MOV     R6,AR2
+005F AF01              MOV     R7,AR1
+0061 900000      R     MOV     DPTR,#pTmp
+0064 EE                MOV     A,R6
+0065 F0                MOVX    @DPTR,A
+0066 A3                INC     DPTR
+0067 EF                MOV     A,R7
+0068 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 303
+0069 900000      R     MOV     DPTR,#interfaceN
+006C E0                MOVX    A,@DPTR
+006D FF                MOV     R7,A
+006E 7400        E     MOV     A,#LOW USBUART_interfaceSetting
+0070 2F                ADD     A,R7
+0071 F582              MOV     DPL,A
+0073 E4                CLR     A
+0074 3400        E     ADDC    A,#HIGH USBUART_interfaceSetting
+0076 F583              MOV     DPH,A
+0078 E0                MOVX    A,@DPTR
+0079 FF                MOV     R7,A
+007A 7E04              MOV     R6,#04H
+007C EF                MOV     A,R7
+007D 8EF0              MOV     B,R6
+007F A4                MUL     AB
+0080 FF                MOV     R7,A
+0081 AEF0              MOV     R6,B
+0083 900000      R     MOV     DPTR,#pTmp
+0086 E0                MOVX    A,@DPTR
+0087 FC                MOV     R4,A
+0088 A3                INC     DPTR
+0089 E0                MOVX    A,@DPTR
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 20  
+
+008A FD                MOV     R5,A
+008B EF                MOV     A,R7
+008C 2D                ADD     A,R5
+008D FF                MOV     R7,A
+008E EE                MOV     A,R6
+008F 3C                ADDC    A,R4
+0090 FE                MOV     R6,A
+0091 900000      R     MOV     DPTR,#pTmp
+0094 EE                MOV     A,R6
+0095 F0                MOVX    @DPTR,A
+0096 A3                INC     DPTR
+0097 EF                MOV     A,R7
+0098 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 306
+0099 900000      R     MOV     DPTR,#pTmp
+009C E0                MOVX    A,@DPTR
+009D FE                MOV     R6,A
+009E A3                INC     DPTR
+009F E0                MOVX    A,@DPTR
+00A0 FF                MOV     R7,A
+00A1 8F82              MOV     DPL,R7
+00A3 8E83              MOV     DPH,R6
+00A5 A3                INC     DPTR
+00A6 120000      E     LCALL   ?C?PLDCODE
+00A9 AE02              MOV     R6,AR2
+00AB AF01              MOV     R7,AR1
+00AD 900000      R     MOV     DPTR,#pTmp
+00B0 EE                MOV     A,R6
+00B1 F0                MOVX    @DPTR,A
+00B2 A3                INC     DPTR
+00B3 EF                MOV     A,R7
+00B4 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 309
+00B5 900000      R     MOV     DPTR,#pTmp
+00B8 E0                MOVX    A,@DPTR
+00B9 FE                MOV     R6,A
+00BA A3                INC     DPTR
+00BB E0                MOVX    A,@DPTR
+00BC FF                MOV     R7,A
+00BD EF                MOV     A,R7
+00BE 2410              ADD     A,#010H
+00C0 FF                MOV     R7,A
+00C1 EE                MOV     A,R6
+00C2 3400              ADDC    A,#00H
+00C4 FE                MOV     R6,A
+00C5 900000      R     MOV     DPTR,#pTmp
+00C8 EE                MOV     A,R6
+00C9 F0                MOVX    @DPTR,A
+00CA A3                INC     DPTR
+00CB EF                MOV     A,R7
+00CC F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 310
+00CD 900000      R     MOV     DPTR,#pTmp
+00D0 E0                MOVX    A,@DPTR
+00D1 FE                MOV     R6,A
+00D2 A3                INC     DPTR
+00D3 E0                MOVX    A,@DPTR
+00D4 FF                MOV     R7,A
+00D5 8F82              MOV     DPL,R7
+00D7 8E83              MOV     DPH,R6
+00D9 A3                INC     DPTR
+00DA 120000      E     LCALL   ?C?PLDCODE
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 21  
+
+00DD 900000      R     MOV     DPTR,#pDescr
+00E0 120000      E     LCALL   ?C?PSTXDATA
+                                           ; SOURCE LINE # 313
+00E3 900000      R     MOV     DPTR,#pDescr
+00E6 120000      E     LCALL   ?C?PLDXDATA
+00E9 120000      E     LCALL   ?C?CLDPTR
+00EC FF                MOV     R7,A
+00ED 7E00              MOV     R6,#00H
+00EF 900000      E     MOV     DPTR,#USBUART_currentTD
+00F2 EE                MOV     A,R6
+00F3 F0                MOVX    @DPTR,A
+00F4 A3                INC     DPTR
+00F5 EF                MOV     A,R7
+00F6 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 314
+00F7 900000      R     MOV     DPTR,#pDescr
+00FA 120000      E     LCALL   ?C?PLDXDATA
+00FD 900000      E     MOV     DPTR,#USBUART_currentTD+02H
+0100 120000      E     LCALL   ?C?PSTXDATA
+                                           ; SOURCE LINE # 315
+0103 22                RET     
+             ; FUNCTION USBUART_FindHidClassDecriptor (END)
+
+             ; FUNCTION USBUART_FindReportDescriptor (BEGIN)
+                                           ; SOURCE LINE # 334
+                                           ; SOURCE LINE # 335
+                                           ; SOURCE LINE # 340
+0000 900000      E     MOV     DPTR,#USBUART_configuration
+0003 E0                MOVX    A,@DPTR
+0004 FF                MOV     R7,A
+0005 EF                MOV     A,R7
+0006 14                DEC     A
+0007 FF                MOV     R7,A
+0008 120000      E     LCALL   _USBUART_GetConfigTablePtr
+000B 900000      R     MOV     DPTR,#pTmp
+000E EE                MOV     A,R6
+000F F0                MOVX    @DPTR,A
+0010 A3                INC     DPTR
+0011 EF                MOV     A,R7
+0012 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 341
+0013 906004            MOV     DPTR,#06004H
+0016 E0                MOVX    A,@DPTR
+0017 FF                MOV     R7,A
+0018 900000      R     MOV     DPTR,#interfaceN
+001B EF                MOV     A,R7
+001C F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 345
+001D 900000      R     MOV     DPTR,#interfaceN
+0020 E0                MOVX    A,@DPTR
+0021 FF                MOV     R7,A
+0022 7E00              MOV     R6,#00H
+0024 EF                MOV     A,R7
+0025 2402              ADD     A,#02H
+0027 FF                MOV     R7,A
+0028 EE                MOV     A,R6
+0029 3400              ADDC    A,#00H
+002B FE                MOV     R6,A
+002C EF                MOV     A,R7
+002D 7802              MOV     R0,#02H
+002F         ?C0043:
+002F C3                CLR     C
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 22  
+
+0030 33                RLC     A
+0031 CE                XCH     A,R6
+0032 33                RLC     A
+0033 CE                XCH     A,R6
+0034 D8F9              DJNZ    R0,?C0043
+0036 FF                MOV     R7,A
+0037 900000      R     MOV     DPTR,#pTmp
+003A E0                MOVX    A,@DPTR
+003B FC                MOV     R4,A
+003C A3                INC     DPTR
+003D E0                MOVX    A,@DPTR
+003E FD                MOV     R5,A
+003F EF                MOV     A,R7
+0040 2D                ADD     A,R5
+0041 FF                MOV     R7,A
+0042 EE                MOV     A,R6
+0043 3C                ADDC    A,R4
+0044 FE                MOV     R6,A
+0045 900000      R     MOV     DPTR,#pTmp
+0048 EE                MOV     A,R6
+0049 F0                MOVX    @DPTR,A
+004A A3                INC     DPTR
+004B EF                MOV     A,R7
+004C F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 348
+004D 900000      R     MOV     DPTR,#pTmp
+0050 E0                MOVX    A,@DPTR
+0051 FE                MOV     R6,A
+0052 A3                INC     DPTR
+0053 E0                MOVX    A,@DPTR
+0054 FF                MOV     R7,A
+0055 8F82              MOV     DPL,R7
+0057 8E83              MOV     DPH,R6
+0059 A3                INC     DPTR
+005A 120000      E     LCALL   ?C?PLDCODE
+005D AE02              MOV     R6,AR2
+005F AF01              MOV     R7,AR1
+0061 900000      R     MOV     DPTR,#pTmp
+0064 EE                MOV     A,R6
+0065 F0                MOVX    @DPTR,A
+0066 A3                INC     DPTR
+0067 EF                MOV     A,R7
+0068 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 351
+0069 900000      R     MOV     DPTR,#interfaceN
+006C E0                MOVX    A,@DPTR
+006D FF                MOV     R7,A
+006E 7400        E     MOV     A,#LOW USBUART_interfaceSetting
+0070 2F                ADD     A,R7
+0071 F582              MOV     DPL,A
+0073 E4                CLR     A
+0074 3400        E     ADDC    A,#HIGH USBUART_interfaceSetting
+0076 F583              MOV     DPH,A
+0078 E0                MOVX    A,@DPTR
+0079 FF                MOV     R7,A
+007A 7E04              MOV     R6,#04H
+007C EF                MOV     A,R7
+007D 8EF0              MOV     B,R6
+007F A4                MUL     AB
+0080 FF                MOV     R7,A
+0081 AEF0              MOV     R6,B
+0083 900000      R     MOV     DPTR,#pTmp
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 23  
+
+0086 E0                MOVX    A,@DPTR
+0087 FC                MOV     R4,A
+0088 A3                INC     DPTR
+0089 E0                MOVX    A,@DPTR
+008A FD                MOV     R5,A
+008B EF                MOV     A,R7
+008C 2D                ADD     A,R5
+008D FF                MOV     R7,A
+008E EE                MOV     A,R6
+008F 3C                ADDC    A,R4
+0090 FE                MOV     R6,A
+0091 900000      R     MOV     DPTR,#pTmp
+0094 EE                MOV     A,R6
+0095 F0                MOVX    @DPTR,A
+0096 A3                INC     DPTR
+0097 EF                MOV     A,R7
+0098 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 354
+0099 900000      R     MOV     DPTR,#pTmp
+009C E0                MOVX    A,@DPTR
+009D FE                MOV     R6,A
+009E A3                INC     DPTR
+009F E0                MOVX    A,@DPTR
+00A0 FF                MOV     R7,A
+00A1 8F82              MOV     DPL,R7
+00A3 8E83              MOV     DPH,R6
+00A5 A3                INC     DPTR
+00A6 120000      E     LCALL   ?C?PLDCODE
+00A9 AE02              MOV     R6,AR2
+00AB AF01              MOV     R7,AR1
+00AD 900000      R     MOV     DPTR,#pTmp
+00B0 EE                MOV     A,R6
+00B1 F0                MOVX    @DPTR,A
+00B2 A3                INC     DPTR
+00B3 EF                MOV     A,R7
+00B4 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 357
+00B5 900000      R     MOV     DPTR,#pTmp
+00B8 E0                MOVX    A,@DPTR
+00B9 FE                MOV     R6,A
+00BA A3                INC     DPTR
+00BB E0                MOVX    A,@DPTR
+00BC FF                MOV     R7,A
+00BD EF                MOV     A,R7
+00BE 240C              ADD     A,#0CH
+00C0 FF                MOV     R7,A
+00C1 EE                MOV     A,R6
+00C2 3400              ADDC    A,#00H
+00C4 FE                MOV     R6,A
+00C5 900000      R     MOV     DPTR,#pTmp
+00C8 EE                MOV     A,R6
+00C9 F0                MOVX    @DPTR,A
+00CA A3                INC     DPTR
+00CB EF                MOV     A,R7
+00CC F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 358
+00CD 900000      R     MOV     DPTR,#pTmp
+00D0 E0                MOVX    A,@DPTR
+00D1 FE                MOV     R6,A
+00D2 A3                INC     DPTR
+00D3 E0                MOVX    A,@DPTR
+00D4 FF                MOV     R7,A
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 24  
+
+00D5 8F82              MOV     DPL,R7
+00D7 8E83              MOV     DPH,R6
+00D9 A3                INC     DPTR
+00DA 120000      E     LCALL   ?C?PLDCODE
+00DD 900000      R     MOV     DPTR,#pDescr
+00E0 120000      E     LCALL   ?C?PSTXDATA
+                                           ; SOURCE LINE # 361
+00E3 900000      R     MOV     DPTR,#pDescr
+00E6 120000      E     LCALL   ?C?PLDXDATA
+00E9 E9                MOV     A,R1
+00EA 2401              ADD     A,#01H
+00EC F9                MOV     R1,A
+00ED EA                MOV     A,R2
+00EE 3400              ADDC    A,#00H
+00F0 FA                MOV     R2,A
+00F1 120000      E     LCALL   ?C?CLDPTR
+00F4 FF                MOV     R7,A
+00F5 7E00              MOV     R6,#00H
+00F7 EF                MOV     A,R7
+00F8 7F00              MOV     R7,#00H
+00FA FE                MOV     R6,A
+00FB 900000      R     MOV     DPTR,#pDescr
+00FE 120000      E     LCALL   ?C?PLDXDATA
+0101 120000      E     LCALL   ?C?CLDPTR
+0104 FD                MOV     R5,A
+0105 7C00              MOV     R4,#00H
+0107 EE                MOV     A,R6
+0108 4C                ORL     A,R4
+0109 FE                MOV     R6,A
+010A EF                MOV     A,R7
+010B 4D                ORL     A,R5
+010C FF                MOV     R7,A
+010D 900000      E     MOV     DPTR,#USBUART_currentTD
+0110 EE                MOV     A,R6
+0111 F0                MOVX    @DPTR,A
+0112 A3                INC     DPTR
+0113 EF                MOV     A,R7
+0114 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 362
+0115 900000      R     MOV     DPTR,#pDescr
+0118 120000      E     LCALL   ?C?PLDXDATA
+011B E9                MOV     A,R1
+011C 2402              ADD     A,#02H
+011E F9                MOV     R1,A
+011F EA                MOV     A,R2
+0120 3400              ADDC    A,#00H
+0122 FA                MOV     R2,A
+0123 900000      E     MOV     DPTR,#USBUART_currentTD+02H
+0126 120000      E     LCALL   ?C?PSTXDATA
+                                           ; SOURCE LINE # 363
+0129 22                RET     
+             ; FUNCTION USBUART_FindReportDescriptor (END)
+
+             ; FUNCTION USBUART_FindReport (BEGIN)
+                                           ; SOURCE LINE # 382
+                                           ; SOURCE LINE # 383
+                                           ; SOURCE LINE # 397
+0000 900000      E     MOV     DPTR,#USBUART_currentTD
+0003 E4                CLR     A
+0004 F0                MOVX    @DPTR,A
+0005 A3                INC     DPTR
+0006 E4                CLR     A
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 25  
+
+0007 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 398
+0008 900000      E     MOV     DPTR,#USBUART_configuration
+000B E0                MOVX    A,@DPTR
+000C FF                MOV     R7,A
+000D EF                MOV     A,R7
+000E 14                DEC     A
+000F FF                MOV     R7,A
+0010 120000      E     LCALL   _USBUART_GetConfigTablePtr
+0013 900000      R     MOV     DPTR,#pTmp
+0016 EE                MOV     A,R6
+0017 F0                MOVX    @DPTR,A
+0018 A3                INC     DPTR
+0019 EF                MOV     A,R7
+001A F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 399
+001B 906003            MOV     DPTR,#06003H
+001E E0                MOVX    A,@DPTR
+001F FF                MOV     R7,A
+0020 900000      R     MOV     DPTR,#reportType
+0023 EF                MOV     A,R7
+0024 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 400
+0025 906004            MOV     DPTR,#06004H
+0028 E0                MOVX    A,@DPTR
+0029 FF                MOV     R7,A
+002A 900000      R     MOV     DPTR,#interfaceN
+002D EF                MOV     A,R7
+002E F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 404
+002F 900000      R     MOV     DPTR,#interfaceN
+0032 E0                MOVX    A,@DPTR
+0033 FF                MOV     R7,A
+0034 7E00              MOV     R6,#00H
+0036 EF                MOV     A,R7
+0037 2402              ADD     A,#02H
+0039 FF                MOV     R7,A
+003A EE                MOV     A,R6
+003B 3400              ADDC    A,#00H
+003D FE                MOV     R6,A
+003E EF                MOV     A,R7
+003F 7802              MOV     R0,#02H
+0041         ?C0044:
+0041 C3                CLR     C
+0042 33                RLC     A
+0043 CE                XCH     A,R6
+0044 33                RLC     A
+0045 CE                XCH     A,R6
+0046 D8F9              DJNZ    R0,?C0044
+0048 FF                MOV     R7,A
+0049 900000      R     MOV     DPTR,#pTmp
+004C E0                MOVX    A,@DPTR
+004D FC                MOV     R4,A
+004E A3                INC     DPTR
+004F E0                MOVX    A,@DPTR
+0050 FD                MOV     R5,A
+0051 EF                MOV     A,R7
+0052 2D                ADD     A,R5
+0053 FF                MOV     R7,A
+0054 EE                MOV     A,R6
+0055 3C                ADDC    A,R4
+0056 FE                MOV     R6,A
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 26  
+
+0057 900000      R     MOV     DPTR,#pTmp
+005A EE                MOV     A,R6
+005B F0                MOVX    @DPTR,A
+005C A3                INC     DPTR
+005D EF                MOV     A,R7
+005E F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 407
+005F 900000      R     MOV     DPTR,#pTmp
+0062 E0                MOVX    A,@DPTR
+0063 FE                MOV     R6,A
+0064 A3                INC     DPTR
+0065 E0                MOVX    A,@DPTR
+0066 FF                MOV     R7,A
+0067 8F82              MOV     DPL,R7
+0069 8E83              MOV     DPH,R6
+006B A3                INC     DPTR
+006C 120000      E     LCALL   ?C?PLDCODE
+006F AE02              MOV     R6,AR2
+0071 AF01              MOV     R7,AR1
+0073 900000      R     MOV     DPTR,#pTmp
+0076 EE                MOV     A,R6
+0077 F0                MOVX    @DPTR,A
+0078 A3                INC     DPTR
+0079 EF                MOV     A,R7
+007A F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 408
+007B 900000      R     MOV     DPTR,#interfaceN
+007E E0                MOVX    A,@DPTR
+007F FF                MOV     R7,A
+0080 EF                MOV     A,R7
+0081 C3                CLR     C
+0082 9402              SUBB    A,#02H
+0084 4003              JC      $ + 5H
+0086 020000      R     LJMP    ?C0041
+                                           ; SOURCE LINE # 409
+                                           ; SOURCE LINE # 411
+0089 900000      R     MOV     DPTR,#interfaceN
+008C E0                MOVX    A,@DPTR
+008D FF                MOV     R7,A
+008E 7400        E     MOV     A,#LOW USBUART_interfaceSetting
+0090 2F                ADD     A,R7
+0091 F582              MOV     DPL,A
+0093 E4                CLR     A
+0094 3400        E     ADDC    A,#HIGH USBUART_interfaceSetting
+0096 F583              MOV     DPH,A
+0098 E0                MOVX    A,@DPTR
+0099 FF                MOV     R7,A
+009A 7E04              MOV     R6,#04H
+009C EF                MOV     A,R7
+009D 8EF0              MOV     B,R6
+009F A4                MUL     AB
+00A0 FF                MOV     R7,A
+00A1 AEF0              MOV     R6,B
+00A3 900000      R     MOV     DPTR,#pTmp
+00A6 E0                MOVX    A,@DPTR
+00A7 FC                MOV     R4,A
+00A8 A3                INC     DPTR
+00A9 E0                MOVX    A,@DPTR
+00AA FD                MOV     R5,A
+00AB EF                MOV     A,R7
+00AC 2D                ADD     A,R5
+00AD FF                MOV     R7,A
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 27  
+
+00AE EE                MOV     A,R6
+00AF 3C                ADDC    A,R4
+00B0 FE                MOV     R6,A
+00B1 900000      R     MOV     DPTR,#pTmp
+00B4 EE                MOV     A,R6
+00B5 F0                MOVX    @DPTR,A
+00B6 A3                INC     DPTR
+00B7 EF                MOV     A,R7
+00B8 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 414
+00B9 900000      R     MOV     DPTR,#pTmp
+00BC E0                MOVX    A,@DPTR
+00BD FE                MOV     R6,A
+00BE A3                INC     DPTR
+00BF E0                MOVX    A,@DPTR
+00C0 FF                MOV     R7,A
+00C1 8F82              MOV     DPL,R7
+00C3 8E83              MOV     DPH,R6
+00C5 A3                INC     DPTR
+00C6 120000      E     LCALL   ?C?PLDCODE
+00C9 AE02              MOV     R6,AR2
+00CB AF01              MOV     R7,AR1
+00CD 900000      R     MOV     DPTR,#pTmp
+00D0 EE                MOV     A,R6
+00D1 F0                MOVX    @DPTR,A
+00D2 A3                INC     DPTR
+00D3 EF                MOV     A,R7
+00D4 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 417
+00D5 900000      R     MOV     DPTR,#reportType
+00D8 E0                MOVX    A,@DPTR
+00D9 FF                MOV     R7,A
+00DA EF                MOV     A,R7
+00DB C3                CLR     C
+00DC 9401              SUBB    A,#01H
+00DE 5003              JNC     $ + 5H
+00E0 020000      R     LJMP    ?C0041
+00E3 900000      R     MOV     DPTR,#reportType
+00E6 E0                MOVX    A,@DPTR
+00E7 FF                MOV     R7,A
+00E8 EF                MOV     A,R7
+00E9 D3                SETB    C
+00EA 9403              SUBB    A,#03H
+00EC 4003              JC      $ + 5H
+00EE 020000      R     LJMP    ?C0041
+                                           ; SOURCE LINE # 419
+                                           ; SOURCE LINE # 421
+00F1 900000      R     MOV     DPTR,#reportType
+00F4 E0                MOVX    A,@DPTR
+00F5 FF                MOV     R7,A
+00F6 7E00              MOV     R6,#00H
+00F8 EF                MOV     A,R7
+00F9 24FF              ADD     A,#0FFH
+00FB FF                MOV     R7,A
+00FC EE                MOV     A,R6
+00FD 34FF              ADDC    A,#0FFH
+00FF FE                MOV     R6,A
+0100 EF                MOV     A,R7
+0101 7802              MOV     R0,#02H
+0103         ?C0045:
+0103 C3                CLR     C
+0104 33                RLC     A
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 28  
+
+0105 CE                XCH     A,R6
+0106 33                RLC     A
+0107 CE                XCH     A,R6
+0108 D8F9              DJNZ    R0,?C0045
+010A FF                MOV     R7,A
+010B 900000      R     MOV     DPTR,#pTmp
+010E E0                MOVX    A,@DPTR
+010F FC                MOV     R4,A
+0110 A3                INC     DPTR
+0111 E0                MOVX    A,@DPTR
+0112 FD                MOV     R5,A
+0113 EF                MOV     A,R7
+0114 2D                ADD     A,R5
+0115 FF                MOV     R7,A
+0116 EE                MOV     A,R6
+0117 3C                ADDC    A,R4
+0118 FE                MOV     R6,A
+0119 900000      R     MOV     DPTR,#pTmp
+011C EE                MOV     A,R6
+011D F0                MOVX    @DPTR,A
+011E A3                INC     DPTR
+011F EF                MOV     A,R7
+0120 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 424
+0121 906002            MOV     DPTR,#06002H
+0124 E0                MOVX    A,@DPTR
+0125 FF                MOV     R7,A
+0126 900000      R     MOV     DPTR,#reportType
+0129 EF                MOV     A,R7
+012A F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 427
+012B 900000      R     MOV     DPTR,#pTmp
+012E E0                MOVX    A,@DPTR
+012F FE                MOV     R6,A
+0130 A3                INC     DPTR
+0131 E0                MOVX    A,@DPTR
+0132 FF                MOV     R7,A
+0133 8F82              MOV     DPL,R7
+0135 8E83              MOV     DPH,R6
+0137 E4                CLR     A
+0138 93                MOVC    A,@A+DPTR
+0139 FF                MOV     R7,A
+013A 900000      R     MOV     DPTR,#reportType
+013D E0                MOVX    A,@DPTR
+013E FE                MOV     R6,A
+013F EF                MOV     A,R7
+0140 C3                CLR     C
+0141 9E                SUBB    A,R6
+0142 4078              JC      ?C0041
+                                           ; SOURCE LINE # 428
+                                           ; SOURCE LINE # 429
+0144 900000      R     MOV     DPTR,#pTmp
+0147 E0                MOVX    A,@DPTR
+0148 FE                MOV     R6,A
+0149 A3                INC     DPTR
+014A E0                MOVX    A,@DPTR
+014B FF                MOV     R7,A
+014C 8F82              MOV     DPL,R7
+014E 8E83              MOV     DPH,R6
+0150 A3                INC     DPTR
+0151 120000      E     LCALL   ?C?PLDCODE
+0154 900000      R     MOV     DPTR,#pTD
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 29  
+
+0157 120000      E     LCALL   ?C?PSTXDATA
+                                           ; SOURCE LINE # 430
+015A 900000      R     MOV     DPTR,#reportType
+015D E0                MOVX    A,@DPTR
+015E FF                MOV     R7,A
+015F 7E08              MOV     R6,#08H
+0161 EF                MOV     A,R7
+0162 8EF0              MOV     B,R6
+0164 A4                MUL     AB
+0165 FF                MOV     R7,A
+0166 AEF0              MOV     R6,B
+0168 900000      R     MOV     DPTR,#pTD
+016B 120000      E     LCALL   ?C?PLDXDATA
+016E E9                MOV     A,R1
+016F 2F                ADD     A,R7
+0170 F9                MOV     R1,A
+0171 EA                MOV     A,R2
+0172 3E                ADDC    A,R6
+0173 FA                MOV     R2,A
+0174 900000      R     MOV     DPTR,#pTD
+0177 120000      E     LCALL   ?C?PSTXDATA
+                                           ; SOURCE LINE # 431
+017A 900000      R     MOV     DPTR,#pTD
+017D 120000      E     LCALL   ?C?PLDXDATA
+0180 E9                MOV     A,R1
+0181 2402              ADD     A,#02H
+0183 F9                MOV     R1,A
+0184 EA                MOV     A,R2
+0185 3400              ADDC    A,#00H
+0187 FA                MOV     R2,A
+0188 120000      E     LCALL   ?C?PLDPTR
+018B 900000      E     MOV     DPTR,#USBUART_currentTD+02H
+018E 120000      E     LCALL   ?C?PSTXDATA
+                                           ; SOURCE LINE # 432
+0191 900000      R     MOV     DPTR,#pTD
+0194 120000      E     LCALL   ?C?PLDXDATA
+0197 120000      E     LCALL   ?C?ILDPTR
+019A FF                MOV     R7,A
+019B AEF0              MOV     R6,B
+019D 900000      E     MOV     DPTR,#USBUART_currentTD
+01A0 EE                MOV     A,R6
+01A1 F0                MOVX    @DPTR,A
+01A2 A3                INC     DPTR
+01A3 EF                MOV     A,R7
+01A4 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 433
+01A5 900000      R     MOV     DPTR,#pTD
+01A8 120000      E     LCALL   ?C?PLDXDATA
+01AB E9                MOV     A,R1
+01AC 2405              ADD     A,#05H
+01AE F9                MOV     R1,A
+01AF EA                MOV     A,R2
+01B0 3400              ADDC    A,#00H
+01B2 FA                MOV     R2,A
+01B3 120000      E     LCALL   ?C?PLDPTR
+01B6 900000      E     MOV     DPTR,#USBUART_currentTD+05H
+01B9 120000      E     LCALL   ?C?PSTXDATA
+                                           ; SOURCE LINE # 434
+                                           ; SOURCE LINE # 435
+                                           ; SOURCE LINE # 436
+                                           ; SOURCE LINE # 437
+01BC         ?C0041:
+C51 COMPILER V9.51   USBUART_HID                                                           04/28/2016 18:59:27 PAGE 30  
+
+01BC 22                RET     
+             ; FUNCTION USBUART_FindReport (END)
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1723    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =      6      24
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+   EDATA SIZE       =   ----    ----
+   HDATA SIZE       =   ----    ----
+   XDATA CONST SIZE =   ----    ----
+   FAR CONST SIZE   =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

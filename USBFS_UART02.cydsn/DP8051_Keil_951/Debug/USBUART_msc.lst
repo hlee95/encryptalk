@@ -1,0 +1,403 @@
+C51 COMPILER V9.51   USBUART_MSC                                                           04/28/2016 18:59:30 PAGE 1   
+
+
+C51 COMPILER V9.51, COMPILATION OF MODULE USBUART_MSC
+OBJECT MODULE PLACED IN .\DP8051_Keil_951\Debug\USBUART_msc.obj
+COMPILER INVOKED BY: C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\import\keil\pk51\9.51\C51\BIN\c51.exe 
+                    -.\Generated_Source\PSoC3\USBUART_msc.c NOIV LARGE MODDP2 OMF2 VB(1) NOIP INCDIR(.,Generated_Source\PSoC3) FF(3) DB WL(2)
+                    - PR(.\DP8051_Keil_951\Debug/USBUART_msc.lst) CD OT(2,SIZE) OJ(.\DP8051_Keil_951\Debug\USBUART_msc.obj)
+
+line level    source
+
+   1          /***************************************************************************//**
+   2          * \file USBUART_cdc.c
+   3          * \version 3.0
+   4          *
+   5          * \brief
+   6          *  This file contains the USB MSC Class request handler and global API for MSC 
+   7          *  class.
+   8          *
+   9          * Related Document:
+  10          *  Universal Serial Bus Class Definitions for Communication Devices Version 1.1
+  11          *
+  12          ********************************************************************************
+  13          * \copyright
+  14          * Copyright 2012-2015, Cypress Semiconductor Corporation.  All rights reserved.
+  15          * You may use this file only in accordance with the license, terms, conditions,
+  16          * disclaimers, and limitations in the end user license agreement accompanying
+  17          * the software package with which this file was provided.
+  18          *******************************************************************************/
+  19          
+  20          #include "USBUART_msc.h"
+  21          #include "USBUART_pvt.h"
+  22          #include "cyapicallbacks.h"
+  23          
+  24          #if (USBUART_HANDLE_MSC_REQUESTS)
+  25          
+  26          /***************************************
+  27          *          Internal variables
+  28          ***************************************/
+  29          
+  30          static uint8 USBUART_lunCount = USBUART_MSC_LUN_NUMBER;
+  31          
+  32          
+  33          /*******************************************************************************
+  34          * Function Name: USBUART_DispatchMSCClassRqst
+  35          ****************************************************************************//**
+  36          *   
+  37          *  \internal 
+  38          *  This routine dispatches MSC class requests.
+  39          *
+  40          * \return
+  41          *  Status of request processing: handled or not handled.
+  42          *
+  43          * \globalvars
+  44          *  USBUART_lunCount - stores number of LUN (logical units).
+  45          *
+  46          * \reentrant
+  47          *  No.
+  48          *
+  49          *******************************************************************************/
+  50          uint8 USBUART_DispatchMSCClassRqst(void) 
+  51          {
+  52   1          uint8 requestHandled = USBUART_FALSE;
+  53   1          
+C51 COMPILER V9.51   USBUART_MSC                                                           04/28/2016 18:59:30 PAGE 2   
+
+  54   1          /* Get request data. */
+  55   1          uint16 value  = USBUART_GET_UINT16(USBUART_wValueHiReg,  USBUART_wValueLoReg);
+  56   1          uint16 dataLength = USBUART_GET_UINT16(USBUART_wLengthHiReg, USBUART_wLengthLoReg);
+  57   1             
+  58   1          /* Check request direction: D2H or H2D. */
+  59   1          if (0u != (USBUART_bmRequestTypeReg & USBUART_RQST_DIR_D2H))
+  60   1          {
+  61   2              /* Handle direction from device to host. */
+  62   2              
+  63   2              if (USBUART_MSC_GET_MAX_LUN == USBUART_bRequestReg)
+  64   2              {
+  65   3                  /* Check request fields. */
+  66   3                  if ((value  == USBUART_MSC_GET_MAX_LUN_WVALUE) &&
+  67   3                      (dataLength == USBUART_MSC_GET_MAX_LUN_WLENGTH))
+  68   3                  {
+  69   4                      /* Reply to Get Max LUN request: setup control read. */
+  70   4                      USBUART_currentTD.pData = &USBUART_lunCount;
+  71   4                      USBUART_currentTD.count =  USBUART_MSC_GET_MAX_LUN_WLENGTH;
+  72   4                      
+  73   4                      requestHandled  = USBUART_InitControlRead();
+  74   4                  }
+  75   3              }
+  76   2          }
+  77   1          else
+  78   1          {
+  79   2              /* Handle direction from host to device. */
+  80   2              
+  81   2              if (USBUART_MSC_RESET == USBUART_bRequestReg)
+  82   2              {
+  83   3                  /* Check request fields. */
+  84   3                  if ((value  == USBUART_MSC_RESET_WVALUE) &&
+  85   3                      (dataLength == USBUART_MSC_RESET_WLENGTH))
+  86   3                  {
+  87   4                      /* Handle to Bulk-Only Reset request: no data control transfer. */
+  88   4                      USBUART_currentTD.count = USBUART_MSC_RESET_WLENGTH;
+  89   4                      
+  90   4                  #ifdef USBUART_DISPATCH_MSC_CLASS_MSC_RESET_RQST_CALLBACK
+                              USBUART_DispatchMSCClass_MSC_RESET_RQST_Callback();
+                          #endif /* (USBUART_DISPATCH_MSC_CLASS_MSC_RESET_RQST_CALLBACK) */
+  93   4                      
+  94   4                      requestHandled = USBUART_InitNoDataControlTransfer();
+  95   4                  }
+  96   3              }
+  97   2          }
+  98   1          
+  99   1          return (requestHandled);
+ 100   1      }
+ 101          
+ 102          
+ 103          /*******************************************************************************
+ 104          * Function Name: USBUART_MSC_SetLunCount
+ 105          ****************************************************************************//**
+ 106          *
+ 107          *  This function sets the number of logical units supported in the application. 
+ 108          *  The default number of logical units is set in the component customizer.
+ 109          *
+ 110          *  \param lunCount: Count of the logical units. Valid range is between 1 and 16.
+ 111          *
+ 112          *
+ 113          * \globalvars
+ 114          *  USBUART_lunCount - stores number of LUN (logical units).
+ 115          *
+C51 COMPILER V9.51   USBUART_MSC                                                           04/28/2016 18:59:30 PAGE 3   
+
+ 116          * \reentrant
+ 117          *  No.
+ 118          *
+ 119          *******************************************************************************/
+ 120          void USBUART_MSC_SetLunCount(uint8 lunCount) 
+ 121          {
+ 122   1          USBUART_lunCount = (lunCount - 1u);
+ 123   1      }
+ 124          
+ 125          
+ 126          /*******************************************************************************
+ 127          * Function Name: USBUART_MSC_GetLunCount
+ 128          ****************************************************************************//**
+ 129          *
+ 130          *  This function returns the number of logical units.
+ 131          *
+ 132          * \return
+ 133          *   Number of the logical units.
+ 134          *
+ 135          * \globalvars
+ 136          *  USBUART_lunCount - stores number of LUN (logical units).
+ 137          *
+ 138          * \reentrant
+ 139          *  No.
+ 140          *
+ 141          *******************************************************************************/
+ 142          uint8 USBUART_MSC_GetLunCount(void) 
+ 143          {
+ 144   1          return (USBUART_lunCount + 1u);
+ 145   1      }   
+ 146          
+ 147          #endif /* (USBUART_HANDLE_MSC_REQUESTS) */
+ 148          
+ 149          
+ 150          /* [] END OF FILE */
+C51 COMPILER V9.51   USBUART_MSC                                                           04/28/2016 18:59:30 PAGE 4   
+
+ASSEMBLY LISTING OF GENERATED OBJECT CODE
+
+
+             ; FUNCTION USBUART_DispatchMSCClassRqst (BEGIN)
+                                           ; SOURCE LINE # 50
+                                           ; SOURCE LINE # 51
+                                           ; SOURCE LINE # 52
+0000 900000      R     MOV     DPTR,#requestHandled
+0003 E4                CLR     A
+0004 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 55
+0005 906003            MOV     DPTR,#06003H
+0008 E0                MOVX    A,@DPTR
+0009 FF                MOV     R7,A
+000A 7E00              MOV     R6,#00H
+000C EF                MOV     A,R7
+000D 7F00              MOV     R7,#00H
+000F FE                MOV     R6,A
+0010 906002            MOV     DPTR,#06002H
+0013 E0                MOVX    A,@DPTR
+0014 FD                MOV     R5,A
+0015 7C00              MOV     R4,#00H
+0017 7C00              MOV     R4,#00H
+0019 EE                MOV     A,R6
+001A 4C                ORL     A,R4
+001B FE                MOV     R6,A
+001C EF                MOV     A,R7
+001D 4D                ORL     A,R5
+001E FF                MOV     R7,A
+001F 900000      R     MOV     DPTR,#value
+0022 EE                MOV     A,R6
+0023 F0                MOVX    @DPTR,A
+0024 A3                INC     DPTR
+0025 EF                MOV     A,R7
+0026 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 56
+0027 906007            MOV     DPTR,#06007H
+002A E0                MOVX    A,@DPTR
+002B FF                MOV     R7,A
+002C 7E00              MOV     R6,#00H
+002E EF                MOV     A,R7
+002F 7F00              MOV     R7,#00H
+0031 FE                MOV     R6,A
+0032 906006            MOV     DPTR,#06006H
+0035 E0                MOVX    A,@DPTR
+0036 FD                MOV     R5,A
+0037 7C00              MOV     R4,#00H
+0039 7C00              MOV     R4,#00H
+003B EE                MOV     A,R6
+003C 4C                ORL     A,R4
+003D FE                MOV     R6,A
+003E EF                MOV     A,R7
+003F 4D                ORL     A,R5
+0040 FF                MOV     R7,A
+0041 900000      R     MOV     DPTR,#dataLength
+0044 EE                MOV     A,R6
+0045 F0                MOVX    @DPTR,A
+0046 A3                INC     DPTR
+0047 EF                MOV     A,R7
+0048 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 59
+0049 906000            MOV     DPTR,#06000H
+C51 COMPILER V9.51   USBUART_MSC                                                           04/28/2016 18:59:30 PAGE 5   
+
+004C E0                MOVX    A,@DPTR
+004D FF                MOV     R7,A
+004E EF                MOV     A,R7
+004F 5480              ANL     A,#080H
+0051 FF                MOV     R7,A
+0052 7E00              MOV     R6,#00H
+0054 EF                MOV     A,R7
+0055 4E                ORL     A,R6
+0056 6043              JZ      ?C0001
+                                           ; SOURCE LINE # 60
+                                           ; SOURCE LINE # 63
+0058 906001            MOV     DPTR,#06001H
+005B E0                MOVX    A,@DPTR
+005C FF                MOV     R7,A
+005D EF                MOV     A,R7
+005E 64FE              XRL     A,#0FEH
+0060 706A              JNZ     ?C0004
+                                           ; SOURCE LINE # 64
+                                           ; SOURCE LINE # 66
+0062 900000      R     MOV     DPTR,#value
+0065 E0                MOVX    A,@DPTR
+0066 FE                MOV     R6,A
+0067 A3                INC     DPTR
+0068 E0                MOVX    A,@DPTR
+0069 FF                MOV     R7,A
+006A EF                MOV     A,R7
+006B 4E                ORL     A,R6
+006C 705E              JNZ     ?C0004
+006E 900000      R     MOV     DPTR,#dataLength
+0071 E0                MOVX    A,@DPTR
+0072 FE                MOV     R6,A
+0073 A3                INC     DPTR
+0074 E0                MOVX    A,@DPTR
+0075 FF                MOV     R7,A
+0076 EF                MOV     A,R7
+0077 6401              XRL     A,#01H
+0079 4E                ORL     A,R6
+007A 7050              JNZ     ?C0004
+                                           ; SOURCE LINE # 68
+                                           ; SOURCE LINE # 70
+007C 7B01              MOV     R3,#01H
+007E 7A00        R     MOV     R2,#HIGH USBUART_lunCount
+0080 7900        R     MOV     R1,#LOW USBUART_lunCount
+0082 900000      E     MOV     DPTR,#USBUART_currentTD+02H
+0085 120000      E     LCALL   ?C?PSTXDATA
+                                           ; SOURCE LINE # 71
+0088 900000      E     MOV     DPTR,#USBUART_currentTD
+008B E4                CLR     A
+008C F0                MOVX    @DPTR,A
+008D A3                INC     DPTR
+008E 7401              MOV     A,#01H
+0090 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 73
+0091 120000      E     LCALL   USBUART_InitControlRead
+0094 900000      R     MOV     DPTR,#requestHandled
+0097 EF                MOV     A,R7
+0098 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 74
+                                           ; SOURCE LINE # 75
+                                           ; SOURCE LINE # 76
+0099 8031              SJMP    ?C0004
+009B         ?C0001:
+C51 COMPILER V9.51   USBUART_MSC                                                           04/28/2016 18:59:30 PAGE 6   
+
+                                           ; SOURCE LINE # 78
+                                           ; SOURCE LINE # 81
+009B 906001            MOV     DPTR,#06001H
+009E E0                MOVX    A,@DPTR
+009F FF                MOV     R7,A
+00A0 EF                MOV     A,R7
+00A1 B4FF28            CJNE    A,#0FFH,?C0004
+                                           ; SOURCE LINE # 82
+                                           ; SOURCE LINE # 84
+00A4 900000      R     MOV     DPTR,#value
+00A7 E0                MOVX    A,@DPTR
+00A8 FE                MOV     R6,A
+00A9 A3                INC     DPTR
+00AA E0                MOVX    A,@DPTR
+00AB FF                MOV     R7,A
+00AC EF                MOV     A,R7
+00AD 4E                ORL     A,R6
+00AE 701C              JNZ     ?C0004
+00B0 900000      R     MOV     DPTR,#dataLength
+00B3 E0                MOVX    A,@DPTR
+00B4 FE                MOV     R6,A
+00B5 A3                INC     DPTR
+00B6 E0                MOVX    A,@DPTR
+00B7 FF                MOV     R7,A
+00B8 EF                MOV     A,R7
+00B9 4E                ORL     A,R6
+00BA 7010              JNZ     ?C0004
+                                           ; SOURCE LINE # 86
+                                           ; SOURCE LINE # 88
+00BC 900000      E     MOV     DPTR,#USBUART_currentTD
+00BF E4                CLR     A
+00C0 F0                MOVX    @DPTR,A
+00C1 A3                INC     DPTR
+00C2 E4                CLR     A
+00C3 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 94
+00C4 120000      E     LCALL   USBUART_InitNoDataControlTransfer
+00C7 900000      R     MOV     DPTR,#requestHandled
+00CA EF                MOV     A,R7
+00CB F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 95
+                                           ; SOURCE LINE # 96
+                                           ; SOURCE LINE # 97
+00CC         ?C0004:
+                                           ; SOURCE LINE # 99
+00CC 900000      R     MOV     DPTR,#requestHandled
+00CF E0                MOVX    A,@DPTR
+00D0 FF                MOV     R7,A
+                                           ; SOURCE LINE # 100
+00D1         ?C0007:
+00D1 22                RET     
+             ; FUNCTION USBUART_DispatchMSCClassRqst (END)
+
+             ; FUNCTION _USBUART_MSC_SetLunCount (BEGIN)
+                                           ; SOURCE LINE # 120
+0000 900000      R     MOV     DPTR,#lunCount
+0003 EF                MOV     A,R7
+0004 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 121
+                                           ; SOURCE LINE # 122
+0005 900000      R     MOV     DPTR,#lunCount
+0008 E0                MOVX    A,@DPTR
+C51 COMPILER V9.51   USBUART_MSC                                                           04/28/2016 18:59:30 PAGE 7   
+
+0009 FF                MOV     R7,A
+000A EF                MOV     A,R7
+000B 14                DEC     A
+000C FF                MOV     R7,A
+000D 900000      R     MOV     DPTR,#USBUART_lunCount
+0010 EF                MOV     A,R7
+0011 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 123
+0012 22                RET     
+             ; FUNCTION _USBUART_MSC_SetLunCount (END)
+
+             ; FUNCTION USBUART_MSC_GetLunCount (BEGIN)
+                                           ; SOURCE LINE # 142
+                                           ; SOURCE LINE # 143
+                                           ; SOURCE LINE # 144
+0000 900000      R     MOV     DPTR,#USBUART_lunCount
+0003 E0                MOVX    A,@DPTR
+0004 FF                MOV     R7,A
+0005 EF                MOV     A,R7
+0006 04                INC     A
+0007 FF                MOV     R7,A
+                                           ; SOURCE LINE # 145
+0008         ?C0009:
+0008 22                RET     
+             ; FUNCTION USBUART_MSC_GetLunCount (END)
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    238    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =      1       6
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+   EDATA SIZE       =   ----    ----
+   HDATA SIZE       =   ----    ----
+   XDATA CONST SIZE =   ----    ----
+   FAR CONST SIZE   =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

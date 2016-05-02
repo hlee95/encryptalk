@@ -1,0 +1,2118 @@
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 1   
+
+
+C51 COMPILER V9.51, COMPILATION OF MODULE USBUART_DRV
+OBJECT MODULE PLACED IN .\DP8051_Keil_951\Debug\USBUART_drv.obj
+COMPILER INVOKED BY: C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\import\keil\pk51\9.51\C51\BIN\c51.exe 
+                    -.\Generated_Source\PSoC3\USBUART_drv.c NOIV LARGE MODDP2 OMF2 VB(1) NOIP INCDIR(.,Generated_Source\PSoC3) FF(3) DB WL(2)
+                    - PR(.\DP8051_Keil_951\Debug/USBUART_drv.lst) CD OT(2,SIZE) OJ(.\DP8051_Keil_951\Debug\USBUART_drv.obj)
+
+line level    source
+
+   1          /***************************************************************************//**
+   2          * \file USBUART_drv.c
+   3          * \version 3.0
+   4          *
+   5          * \brief
+   6          *  This file contains the Endpoint 0 Driver for the USBFS Component.  
+   7          *
+   8          ********************************************************************************
+   9          * \copyright
+  10          * Copyright 2008-2015, Cypress Semiconductor Corporation.  All rights reserved.
+  11          * You may use this file only in accordance with the license, terms, conditions,
+  12          * disclaimers, and limitations in the end user license agreement accompanying
+  13          * the software package with which this file was provided.
+  14          *******************************************************************************/
+  15          
+  16          #include "USBUART_pvt.h"
+  17          #include "cyapicallbacks.h"
+  18          
+  19          
+  20          /***************************************
+  21          * Global data allocation
+  22          ***************************************/
+  23          
+  24          volatile T_USBUART_EP_CTL_BLOCK USBUART_EP[USBUART_MAX_EP];
+  25          
+  26          /** Contains the current configuration number, which is set by the host using a 
+  27           * SET_CONFIGURATION request. This variable is initialized to zero in 
+  28           * USBFS_InitComponent() API and can be read by the USBFS_GetConfiguration() 
+  29           * API.*/
+  30          volatile uint8 USBUART_configuration;
+  31          
+  32          /** Contains the current interface number.*/
+  33          volatile uint8 USBUART_interfaceNumber;
+  34          
+  35          /** This variable is set to one after SET_CONFIGURATION and SET_INTERFACE 
+  36           *requests. It can be read by the USBFS_IsConfigurationChanged() API */
+  37          volatile uint8 USBUART_configurationChanged;
+  38          
+  39          /** Contains the current device address.*/
+  40          volatile uint8 USBUART_deviceAddress;
+  41          
+  42          /** This is a two-bit variable that contains power status in the bit 0 
+  43           * (DEVICE_STATUS_BUS_POWERED or DEVICE_STATUS_SELF_POWERED) and remote wakeup 
+  44           * status (DEVICE_STATUS_REMOTE_WAKEUP) in the bit 1. This variable is 
+  45           * initialized to zero in USBFS_InitComponent() API, configured by the 
+  46           * USBFS_SetPowerStatus() API. The remote wakeup status cannot be set using the 
+  47           * API SetPowerStatus(). */
+  48          volatile uint8 USBUART_deviceStatus;
+  49          
+  50          volatile uint8 USBUART_interfaceSetting[USBUART_MAX_INTERFACES_NUMBER];
+  51          volatile uint8 USBUART_interfaceSetting_last[USBUART_MAX_INTERFACES_NUMBER];
+  52          volatile uint8 USBUART_interfaceStatus[USBUART_MAX_INTERFACES_NUMBER];
+  53          
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 2   
+
+  54          /** Contains the started device number. This variable is set by the 
+  55           * USBFS_Start() or USBFS_InitComponent() APIs.*/
+  56          volatile uint8 USBUART_device;
+  57          
+  58          /** Initialized class array for each interface. It is used for handling Class 
+  59           * specific requests depend on interface class. Different classes in multiple 
+  60           * alternate settings are not supported.*/
+  61          const uint8 CYCODE *USBUART_interfaceClass;
+  62          
+  63          
+  64          /***************************************
+  65          * Local data allocation
+  66          ***************************************/
+  67          
+  68          volatile uint8  USBUART_ep0Toggle;
+  69          volatile uint8  USBUART_lastPacketSize;
+  70          
+  71          /** This variable is used by the communication functions to handle the current 
+  72          * transfer state.
+  73          * Initialized to TRANS_STATE_IDLE in the USBFS_InitComponent() API and after a 
+  74          * complete transfer in the status stage.
+  75          * Changed to the TRANS_STATE_CONTROL_READ or TRANS_STATE_CONTROL_WRITE in setup 
+  76          * transaction depending on the request type.
+  77          */
+  78          volatile uint8  USBUART_transferState;
+  79          volatile T_USBUART_TD USBUART_currentTD;
+  80          volatile uint8  USBUART_ep0Mode;
+  81          volatile uint8  USBUART_ep0Count;
+  82          volatile uint16 USBUART_transferByteCount;
+  83          
+  84          
+  85          /*******************************************************************************
+  86          * Function Name: USBUART_ep_0_Interrupt
+  87          ****************************************************************************//**
+  88          *
+  89          *  This Interrupt Service Routine handles Endpoint 0 (Control Pipe) traffic.
+  90          *  It dispatches setup requests and handles the data and status stages.
+  91          *
+  92          *
+  93          *******************************************************************************/
+  94          CY_ISR(USBUART_EP_0_ISR)
+  95          {
+  96   1          uint8 tempReg;
+  97   1          uint8 modifyReg;
+  98   1      
+  99   1      #ifdef USBUART_EP_0_ISR_ENTRY_CALLBACK
+                  USBUART_EP_0_ISR_EntryCallback();
+              #endif /* (USBUART_EP_0_ISR_ENTRY_CALLBACK) */
+ 102   1          
+ 103   1          tempReg = USBUART_EP0_CR_REG;
+ 104   1          if ((tempReg & USBUART_MODE_ACKD) != 0u)
+ 105   1          {
+ 106   2              modifyReg = 1u;
+ 107   2              if ((tempReg & USBUART_MODE_SETUP_RCVD) != 0u)
+ 108   2              {
+ 109   3                  if ((tempReg & USBUART_MODE_MASK) != USBUART_MODE_NAK_IN_OUT)
+ 110   3                  {
+ 111   4                      /* Mode not equal to NAK_IN_OUT: invalid setup */
+ 112   4                      modifyReg = 0u;
+ 113   4                  }
+ 114   3                  else
+ 115   3                  {
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 3   
+
+ 116   4                      USBUART_HandleSetup();
+ 117   4                      
+ 118   4                      if ((USBUART_ep0Mode & USBUART_MODE_SETUP_RCVD) != 0u)
+ 119   4                      {
+ 120   5                          /* SETUP bit set: exit without mode modificaiton */
+ 121   5                          modifyReg = 0u;
+ 122   5                      }
+ 123   4                  }
+ 124   3              }
+ 125   2              else if ((tempReg & USBUART_MODE_IN_RCVD) != 0u)
+ 126   2              {
+ 127   3                  USBUART_HandleIN();
+ 128   3              }
+ 129   2              else if ((tempReg & USBUART_MODE_OUT_RCVD) != 0u)
+ 130   2              {
+ 131   3                  USBUART_HandleOUT();
+ 132   3              }
+ 133   2              else
+ 134   2              {
+ 135   3                  modifyReg = 0u;
+ 136   3              }
+ 137   2              
+ 138   2              /* Modify the EP0_CR register */
+ 139   2              if (modifyReg != 0u)
+ 140   2              {
+ 141   3                  
+ 142   3                  tempReg = USBUART_EP0_CR_REG;
+ 143   3                  
+ 144   3                  /* Make sure that SETUP bit is cleared before modification */
+ 145   3                  if ((tempReg & USBUART_MODE_SETUP_RCVD) == 0u)
+ 146   3                  {
+ 147   4                      /* Update count register */
+ 148   4                      tempReg = (uint8) USBUART_ep0Toggle | USBUART_ep0Count;
+ 149   4                      USBUART_EP0_CNT_REG = tempReg;
+ 150   4                     
+ 151   4                      /* Make sure that previous write operaiton was successful */
+ 152   4                      if (tempReg == USBUART_EP0_CNT_REG)
+ 153   4                      {
+ 154   5                          /* Repeat until next successful write operation */
+ 155   5                          do
+ 156   5                          {
+ 157   6                              /* Init temporary variable */
+ 158   6                              modifyReg = USBUART_ep0Mode;
+ 159   6                              
+ 160   6                              /* Unlock register */
+ 161   6                              tempReg = (uint8) (USBUART_EP0_CR_REG & USBUART_MODE_SETUP_RCVD);
+ 162   6                              
+ 163   6                              /* Check if SETUP bit is not set */
+ 164   6                              if (0u == tempReg)
+ 165   6                              {
+ 166   7                                  /* Set the Mode Register  */
+ 167   7                                  USBUART_EP0_CR_REG = USBUART_ep0Mode;
+ 168   7                                  
+ 169   7                                  /* Writing check */
+ 170   7                                  modifyReg = USBUART_EP0_CR_REG & USBUART_MODE_MASK;
+ 171   7                              }
+ 172   6                          }
+ 173   5                          while (modifyReg != USBUART_ep0Mode);
+ 174   5                      }
+ 175   4                  }
+ 176   3              }
+ 177   2          }
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 4   
+
+ 178   1      
+ 179   1          USBUART_ClearSieInterruptSource(USBUART_INTR_SIE_EP0_INTR);
+ 180   1              
+ 181   1      #ifdef USBUART_EP_0_ISR_EXIT_CALLBACK
+                  USBUART_EP_0_ISR_ExitCallback();
+              #endif /* (USBUART_EP_0_ISR_EXIT_CALLBACK) */
+ 184   1      }
+ 185          
+ 186          
+ 187          /*******************************************************************************
+ 188          * Function Name: USBUART_HandleSetup
+ 189          ****************************************************************************//**
+ 190          *
+ 191          *  This Routine dispatches requests for the four USB request types
+ 192          *
+ 193          *
+ 194          * \reentrant
+ 195          *  No.
+ 196          *
+ 197          *******************************************************************************/
+ 198          void USBUART_HandleSetup(void) 
+ 199          {
+ 200   1          uint8 requestHandled;
+ 201   1          
+ 202   1          /* Clear register lock by SIE (read register) and clear setup bit 
+ 203   1          * (write any value in register).
+ 204   1          */
+ 205   1          requestHandled = (uint8) USBUART_EP0_CR_REG;
+ 206   1          USBUART_EP0_CR_REG = (uint8) requestHandled;
+ 207   1          requestHandled = (uint8) USBUART_EP0_CR_REG;
+ 208   1      
+ 209   1          if ((requestHandled & USBUART_MODE_SETUP_RCVD) != 0u)
+ 210   1          {
+ 211   2              /* SETUP bit is set: exit without mode modification. */
+ 212   2              USBUART_ep0Mode = requestHandled;
+ 213   2          }
+ 214   1          else
+ 215   1          {
+ 216   2              /* In case the previous transfer did not complete, close it out */
+ 217   2              USBUART_UpdateStatusBlock(USBUART_XFER_PREMATURE);
+ 218   2      
+ 219   2              /* Check request type. */
+ 220   2              switch (USBUART_bmRequestTypeReg & USBUART_RQST_TYPE_MASK)
+ 221   2              {
+ 222   3                  case USBUART_RQST_TYPE_STD:
+ 223   3                      requestHandled = USBUART_HandleStandardRqst();
+ 224   3                      break;
+ 225   3                      
+ 226   3                  case USBUART_RQST_TYPE_CLS:
+ 227   3                      requestHandled = USBUART_DispatchClassRqst();
+ 228   3                      break;
+ 229   3                      
+ 230   3                  case USBUART_RQST_TYPE_VND:
+ 231   3                      requestHandled = USBUART_HandleVendorRqst();
+ 232   3                      break;
+ 233   3                      
+ 234   3                  default:
+ 235   3                      requestHandled = USBUART_FALSE;
+ 236   3                      break;
+ 237   3              }
+ 238   2              
+ 239   2              /* If request is not recognized. Stall endpoint 0 IN and OUT. */
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 5   
+
+ 240   2              if (requestHandled == USBUART_FALSE)
+ 241   2              {
+ 242   3                  USBUART_ep0Mode = USBUART_MODE_STALL_IN_OUT;
+ 243   3              }
+ 244   2          }
+ 245   1      }
+ 246          
+ 247          
+ 248          /*******************************************************************************
+ 249          * Function Name: USBUART_HandleIN
+ 250          ****************************************************************************//**
+ 251          *
+ 252          *  This routine handles EP0 IN transfers.
+ 253          *
+ 254          *
+ 255          * \reentrant
+ 256          *  No.
+ 257          *
+ 258          *******************************************************************************/
+ 259          void USBUART_HandleIN(void) 
+ 260          {
+ 261   1          switch (USBUART_transferState)
+ 262   1          {
+ 263   2              case USBUART_TRANS_STATE_IDLE:
+ 264   2                  break;
+ 265   2              
+ 266   2              case USBUART_TRANS_STATE_CONTROL_READ:
+ 267   2                  USBUART_ControlReadDataStage();
+ 268   2                  break;
+ 269   2                  
+ 270   2              case USBUART_TRANS_STATE_CONTROL_WRITE:
+ 271   2                  USBUART_ControlWriteStatusStage();
+ 272   2                  break;
+ 273   2                  
+ 274   2              case USBUART_TRANS_STATE_NO_DATA_CONTROL:
+ 275   2                  USBUART_NoDataControlStatusStage();
+ 276   2                  break;
+ 277   2                  
+ 278   2              default:    /* there are no more states */
+ 279   2                  break;
+ 280   2          }
+ 281   1      }
+ 282          
+ 283          
+ 284          /*******************************************************************************
+ 285          * Function Name: USBUART_HandleOUT
+ 286          ****************************************************************************//**
+ 287          *
+ 288          *  This routine handles EP0 OUT transfers.
+ 289          *
+ 290          *
+ 291          * \reentrant
+ 292          *  No.
+ 293          *
+ 294          *******************************************************************************/
+ 295          void USBUART_HandleOUT(void) 
+ 296          {
+ 297   1          switch (USBUART_transferState)
+ 298   1          {
+ 299   2              case USBUART_TRANS_STATE_IDLE:
+ 300   2                  break;
+ 301   2              
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 6   
+
+ 302   2              case USBUART_TRANS_STATE_CONTROL_READ:
+ 303   2                  USBUART_ControlReadStatusStage();
+ 304   2                  break;
+ 305   2                  
+ 306   2              case USBUART_TRANS_STATE_CONTROL_WRITE:
+ 307   2                  USBUART_ControlWriteDataStage();
+ 308   2                  break;
+ 309   2                  
+ 310   2              case USBUART_TRANS_STATE_NO_DATA_CONTROL:
+ 311   2                  /* Update the completion block */
+ 312   2                  USBUART_UpdateStatusBlock(USBUART_XFER_ERROR);
+ 313   2                  
+ 314   2                  /* We expect no more data, so stall INs and OUTs */
+ 315   2                  USBUART_ep0Mode = USBUART_MODE_STALL_IN_OUT;
+ 316   2                  break;
+ 317   2                  
+ 318   2              default:    
+ 319   2                  /* There are no more states */
+ 320   2                  break;
+ 321   2          }
+ 322   1      }
+ 323          
+ 324          
+ 325          /*******************************************************************************
+ 326          * Function Name: USBUART_LoadEP0
+ 327          ****************************************************************************//**
+ 328          *
+ 329          *  This routine loads the EP0 data registers for OUT transfers. It uses the
+ 330          *  currentTD (previously initialized by the _InitControlWrite function and
+ 331          *  updated for each OUT transfer, and the bLastPacketSize) to determine how
+ 332          *  many uint8s to transfer on the current OUT.
+ 333          *
+ 334          *  If the number of uint8s remaining is zero and the last transfer was full,
+ 335          *  we need to send a zero length packet.  Otherwise we send the minimum
+ 336          *  of the control endpoint size (8) or remaining number of uint8s for the
+ 337          *  transaction.
+ 338          *
+ 339          *
+ 340          * \globalvars
+ 341          *  USBUART_transferByteCount - Update the transfer byte count from the
+ 342          *     last transaction.
+ 343          *  USBUART_ep0Count - counts the data loaded to the SIE memory in
+ 344          *     current packet.
+ 345          *  USBUART_lastPacketSize - remembers the USBFS_ep0Count value for the
+ 346          *     next packet.
+ 347          *  USBUART_transferByteCount - sum of the previous bytes transferred
+ 348          *     on previous packets(sum of USBFS_lastPacketSize)
+ 349          *  USBUART_ep0Toggle - inverted
+ 350          *  USBUART_ep0Mode  - prepare for mode register content.
+ 351          *  USBUART_transferState - set to TRANS_STATE_CONTROL_READ
+ 352          *
+ 353          * \reentrant
+ 354          *  No.
+ 355          *
+ 356          *******************************************************************************/
+ 357          void USBUART_LoadEP0(void) 
+ 358          {
+ 359   1          uint8 ep0Count = 0u;
+ 360   1      
+ 361   1          /* Update the transfer byte count from the last transaction */
+ 362   1          USBUART_transferByteCount += USBUART_lastPacketSize;
+ 363   1      
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 7   
+
+ 364   1          /* Now load the next transaction */
+ 365   1          while ((USBUART_currentTD.count > 0u) && (ep0Count < 8u))
+ 366   1          {
+ 367   2              USBUART_EP0_DR_BASE.epData[ep0Count] = (uint8) *USBUART_currentTD.pData;
+ 368   2              USBUART_currentTD.pData = &USBUART_currentTD.pData[1u];
+ 369   2              ep0Count++;
+ 370   2              USBUART_currentTD.count--;
+ 371   2          }
+ 372   1      
+ 373   1          /* Support zero-length packet */
+ 374   1          if ((USBUART_lastPacketSize == 8u) || (ep0Count > 0u))
+ 375   1          {
+ 376   2              /* Update the data toggle */
+ 377   2              USBUART_ep0Toggle ^= USBUART_EP0_CNT_DATA_TOGGLE;
+ 378   2              /* Set the Mode Register  */
+ 379   2              USBUART_ep0Mode = USBUART_MODE_ACK_IN_STATUS_OUT;
+ 380   2              /* Update the state (or stay the same) */
+ 381   2              USBUART_transferState = USBUART_TRANS_STATE_CONTROL_READ;
+ 382   2          }
+ 383   1          else
+ 384   1          {
+ 385   2              /* Expect Status Stage Out */
+ 386   2              USBUART_ep0Mode = USBUART_MODE_STATUS_OUT_ONLY;
+ 387   2              /* Update the state (or stay the same) */
+ 388   2              USBUART_transferState = USBUART_TRANS_STATE_CONTROL_READ;
+ 389   2          }
+ 390   1      
+ 391   1          /* Save the packet size for next time */
+ 392   1          USBUART_ep0Count =       (uint8) ep0Count;
+ 393   1          USBUART_lastPacketSize = (uint8) ep0Count;
+ 394   1      }
+ 395          
+ 396          
+ 397          /*******************************************************************************
+ 398          * Function Name: USBUART_InitControlRead
+ 399          ****************************************************************************//**
+ 400          *
+ 401          *  Initialize a control read transaction. It is used to send data to the host.
+ 402          *  The following global variables should be initialized before this function
+ 403          *  called. To send zero length packet use InitZeroLengthControlTransfer
+ 404          *  function.
+ 405          *
+ 406          *
+ 407          * \return
+ 408          *  requestHandled state.
+ 409          *
+ 410          * \globalvars
+ 411          *  USBUART_currentTD.count - counts of data to be sent.
+ 412          *  USBUART_currentTD.pData - data pointer.
+ 413          *
+ 414          * \reentrant
+ 415          *  No.
+ 416          *
+ 417          *******************************************************************************/
+ 418          uint8 USBUART_InitControlRead(void) 
+ 419          {
+ 420   1          uint16 xferCount;
+ 421   1      
+ 422   1          if (USBUART_currentTD.count == 0u)
+ 423   1          {
+ 424   2              (void) USBUART_InitZeroLengthControlTransfer();
+ 425   2          }
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 8   
+
+ 426   1          else
+ 427   1          {
+ 428   2              /* Set up the state machine */
+ 429   2              USBUART_transferState = USBUART_TRANS_STATE_CONTROL_READ;
+ 430   2              
+ 431   2              /* Set the toggle, it gets updated in LoadEP */
+ 432   2              USBUART_ep0Toggle = 0u;
+ 433   2              
+ 434   2              /* Initialize the Status Block */
+ 435   2              USBUART_InitializeStatusBlock();
+ 436   2              
+ 437   2              xferCount = ((uint16)((uint16) USBUART_lengthHiReg << 8u) | ((uint16) USBUART_lengthLoReg));
+ 438   2      
+ 439   2              if (USBUART_currentTD.count > xferCount)
+ 440   2              {
+ 441   3                  USBUART_currentTD.count = xferCount;
+ 442   3              }
+ 443   2              
+ 444   2              USBUART_LoadEP0();
+ 445   2          }
+ 446   1      
+ 447   1          return (USBUART_TRUE);
+ 448   1      }
+ 449          
+ 450          
+ 451          /*******************************************************************************
+ 452          * Function Name: USBUART_InitZeroLengthControlTransfer
+ 453          ****************************************************************************//**
+ 454          *
+ 455          *  Initialize a zero length data IN transfer.
+ 456          *
+ 457          * \return
+ 458          *  requestHandled state.
+ 459          *
+ 460          * \globalvars
+ 461          *  USBUART_ep0Toggle - set to EP0_CNT_DATA_TOGGLE
+ 462          *  USBUART_ep0Mode  - prepare for mode register content.
+ 463          *  USBUART_transferState - set to TRANS_STATE_CONTROL_READ
+ 464          *  USBUART_ep0Count - cleared, means the zero-length packet.
+ 465          *  USBUART_lastPacketSize - cleared.
+ 466          *
+ 467          * \reentrant
+ 468          *  No.
+ 469          *
+ 470          *******************************************************************************/
+ 471          uint8 USBUART_InitZeroLengthControlTransfer(void)
+ 472                                                          
+ 473          {
+ 474   1          /* Update the state */
+ 475   1          USBUART_transferState = USBUART_TRANS_STATE_CONTROL_READ;
+ 476   1          
+ 477   1          /* Set the data toggle */
+ 478   1          USBUART_ep0Toggle = USBUART_EP0_CNT_DATA_TOGGLE;
+ 479   1          
+ 480   1          /* Set the Mode Register  */
+ 481   1          USBUART_ep0Mode = USBUART_MODE_ACK_IN_STATUS_OUT;
+ 482   1          
+ 483   1          /* Save the packet size for next time */
+ 484   1          USBUART_lastPacketSize = 0u;
+ 485   1          
+ 486   1          USBUART_ep0Count = 0u;
+ 487   1      
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 9   
+
+ 488   1          return (USBUART_TRUE);
+ 489   1      }
+ 490          
+ 491          
+ 492          /*******************************************************************************
+ 493          * Function Name: USBUART_ControlReadDataStage
+ 494          ****************************************************************************//**
+ 495          *
+ 496          *  Handle the Data Stage of a control read transfer.
+ 497          *
+ 498          *
+ 499          * \reentrant
+ 500          *  No.
+ 501          *
+ 502          *******************************************************************************/
+ 503          void USBUART_ControlReadDataStage(void) 
+ 504          
+ 505          {
+ 506   1          USBUART_LoadEP0();
+ 507   1      }
+ 508          
+ 509          
+ 510          /*******************************************************************************
+ 511          * Function Name: USBUART_ControlReadStatusStage
+ 512          ****************************************************************************//**
+ 513          *
+ 514          *  Handle the Status Stage of a control read transfer.
+ 515          *
+ 516          *
+ 517          * \globalvars
+ 518          *  USBUART_USBFS_transferByteCount - updated with last packet size.
+ 519          *  USBUART_transferState - set to TRANS_STATE_IDLE.
+ 520          *  USBUART_ep0Mode  - set to MODE_STALL_IN_OUT.
+ 521          *
+ 522          * \reentrant
+ 523          *  No.
+ 524          *
+ 525          *******************************************************************************/
+ 526          void USBUART_ControlReadStatusStage(void) 
+ 527          {
+ 528   1          /* Update the transfer byte count */
+ 529   1          USBUART_transferByteCount += USBUART_lastPacketSize;
+ 530   1          
+ 531   1          /* Go Idle */
+ 532   1          USBUART_transferState = USBUART_TRANS_STATE_IDLE;
+ 533   1          
+ 534   1          /* Update the completion block */
+ 535   1          USBUART_UpdateStatusBlock(USBUART_XFER_STATUS_ACK);
+ 536   1          
+ 537   1          /* We expect no more data, so stall INs and OUTs */
+ 538   1          USBUART_ep0Mode = USBUART_MODE_STALL_IN_OUT;
+ 539   1      }
+ 540          
+ 541          
+ 542          /*******************************************************************************
+ 543          * Function Name: USBUART_InitControlWrite
+ 544          ****************************************************************************//**
+ 545          *
+ 546          *  Initialize a control write transaction
+ 547          *
+ 548          * \return
+ 549          *  requestHandled state.
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 10  
+
+ 550          *
+ 551          * \globalvars
+ 552          *  USBUART_USBFS_transferState - set to TRANS_STATE_CONTROL_WRITE
+ 553          *  USBUART_ep0Toggle - set to EP0_CNT_DATA_TOGGLE
+ 554          *  USBUART_ep0Mode  - set to MODE_ACK_OUT_STATUS_IN
+ 555          *
+ 556          * \reentrant
+ 557          *  No.
+ 558          *
+ 559          *******************************************************************************/
+ 560          uint8 USBUART_InitControlWrite(void) 
+ 561          {
+ 562   1          uint16 xferCount;
+ 563   1      
+ 564   1          /* Set up the state machine */
+ 565   1          USBUART_transferState = USBUART_TRANS_STATE_CONTROL_WRITE;
+ 566   1          
+ 567   1          /* This might not be necessary */
+ 568   1          USBUART_ep0Toggle = USBUART_EP0_CNT_DATA_TOGGLE;
+ 569   1          
+ 570   1          /* Initialize the Status Block */
+ 571   1          USBUART_InitializeStatusBlock();
+ 572   1      
+ 573   1          xferCount = ((uint16)((uint16) USBUART_lengthHiReg << 8u) | ((uint16) USBUART_lengthLoReg));
+ 574   1      
+ 575   1          if (USBUART_currentTD.count > xferCount)
+ 576   1          {
+ 577   2              USBUART_currentTD.count = xferCount;
+ 578   2          }
+ 579   1      
+ 580   1          /* Expect Data or Status Stage */
+ 581   1          USBUART_ep0Mode = USBUART_MODE_ACK_OUT_STATUS_IN;
+ 582   1      
+ 583   1          return(USBUART_TRUE);
+ 584   1      }
+ 585          
+ 586          
+ 587          /*******************************************************************************
+ 588          * Function Name: USBUART_ControlWriteDataStage
+ 589          ****************************************************************************//**
+ 590          *
+ 591          *  Handle the Data Stage of a control write transfer
+ 592          *       1. Get the data (We assume the destination was validated previously)
+ 593          *       2. Update the count and data toggle
+ 594          *       3. Update the mode register for the next transaction
+ 595          *
+ 596          *
+ 597          * \globalvars
+ 598          *  USBUART_transferByteCount - Update the transfer byte count from the
+ 599          *    last transaction.
+ 600          *  USBUART_ep0Count - counts the data loaded from the SIE memory
+ 601          *    in current packet.
+ 602          *  USBUART_transferByteCount - sum of the previous bytes transferred
+ 603          *    on previous packets(sum of USBFS_lastPacketSize)
+ 604          *  USBUART_ep0Toggle - inverted
+ 605          *  USBUART_ep0Mode  - set to MODE_ACK_OUT_STATUS_IN.
+ 606          *
+ 607          * \reentrant
+ 608          *  No.
+ 609          *
+ 610          *******************************************************************************/
+ 611          void USBUART_ControlWriteDataStage(void) 
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 11  
+
+ 612          {
+ 613   1          uint8 ep0Count;
+ 614   1          uint8 regIndex = 0u;
+ 615   1      
+ 616   1          ep0Count = (USBUART_EP0_CNT_REG & USBUART_EPX_CNT0_MASK) - USBUART_EPX_CNTX_CRC_COUNT;
+ 617   1      
+ 618   1          USBUART_transferByteCount += (uint8)ep0Count;
+ 619   1      
+ 620   1          while ((USBUART_currentTD.count > 0u) && (ep0Count > 0u))
+ 621   1          {
+ 622   2              *USBUART_currentTD.pData = (uint8) USBUART_EP0_DR_BASE.epData[regIndex];
+ 623   2              USBUART_currentTD.pData = &USBUART_currentTD.pData[1u];
+ 624   2              regIndex++;
+ 625   2              ep0Count--;
+ 626   2              USBUART_currentTD.count--;
+ 627   2          }
+ 628   1          
+ 629   1          USBUART_ep0Count = (uint8)ep0Count;
+ 630   1          
+ 631   1          /* Update the data toggle */
+ 632   1          USBUART_ep0Toggle ^= USBUART_EP0_CNT_DATA_TOGGLE;
+ 633   1          
+ 634   1          /* Expect Data or Status Stage */
+ 635   1          USBUART_ep0Mode = USBUART_MODE_ACK_OUT_STATUS_IN;
+ 636   1      }
+ 637          
+ 638          
+ 639          /*******************************************************************************
+ 640          * Function Name: USBUART_ControlWriteStatusStage
+ 641          ****************************************************************************//**
+ 642          *
+ 643          *  Handle the Status Stage of a control write transfer
+ 644          *
+ 645          * \globalvars
+ 646          *  USBUART_transferState - set to TRANS_STATE_IDLE.
+ 647          *  USBUART_USBFS_ep0Mode  - set to MODE_STALL_IN_OUT.
+ 648          *
+ 649          * \reentrant
+ 650          *  No.
+ 651          *
+ 652          *******************************************************************************/
+ 653          void USBUART_ControlWriteStatusStage(void) 
+ 654          {
+ 655   1          /* Go Idle */
+ 656   1          USBUART_transferState = USBUART_TRANS_STATE_IDLE;
+ 657   1          
+ 658   1          /* Update the completion block */    
+ 659   1          USBUART_UpdateStatusBlock(USBUART_XFER_STATUS_ACK);
+ 660   1          
+ 661   1          /* We expect no more data, so stall INs and OUTs */
+ 662   1          USBUART_ep0Mode = USBUART_MODE_STALL_IN_OUT;
+ 663   1      }
+ 664          
+ 665          
+ 666          /*******************************************************************************
+ 667          * Function Name: USBUART_InitNoDataControlTransfer
+ 668          ****************************************************************************//**
+ 669          *
+ 670          *  Initialize a no data control transfer
+ 671          *
+ 672          * \return
+ 673          *  requestHandled state.
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 12  
+
+ 674          *
+ 675          * \globalvars
+ 676          *  USBUART_transferState - set to TRANS_STATE_NO_DATA_CONTROL.
+ 677          *  USBUART_ep0Mode  - set to MODE_STATUS_IN_ONLY.
+ 678          *  USBUART_ep0Count - cleared.
+ 679          *  USBUART_ep0Toggle - set to EP0_CNT_DATA_TOGGLE
+ 680          *
+ 681          * \reentrant
+ 682          *  No.
+ 683          *
+ 684          *******************************************************************************/
+ 685          uint8 USBUART_InitNoDataControlTransfer(void) 
+ 686          {
+ 687   1          USBUART_transferState = USBUART_TRANS_STATE_NO_DATA_CONTROL;
+ 688   1          USBUART_ep0Mode       = USBUART_MODE_STATUS_IN_ONLY;
+ 689   1          USBUART_ep0Toggle     = USBUART_EP0_CNT_DATA_TOGGLE;
+ 690   1          USBUART_ep0Count      = 0u;
+ 691   1      
+ 692   1          return (USBUART_TRUE);
+ 693   1      }
+ 694          
+ 695          
+ 696          /*******************************************************************************
+ 697          * Function Name: USBUART_NoDataControlStatusStage
+ 698          ****************************************************************************//**
+ 699          *  Handle the Status Stage of a no data control transfer.
+ 700          *
+ 701          *  SET_ADDRESS is special, since we need to receive the status stage with
+ 702          *  the old address.
+ 703          *
+ 704          * \globalvars
+ 705          *  USBUART_transferState - set to TRANS_STATE_IDLE.
+ 706          *  USBUART_ep0Mode  - set to MODE_STALL_IN_OUT.
+ 707          *  USBUART_ep0Toggle - set to EP0_CNT_DATA_TOGGLE
+ 708          *  USBUART_deviceAddress - used to set new address and cleared
+ 709          *
+ 710          * \reentrant
+ 711          *  No.
+ 712          *
+ 713          *******************************************************************************/
+ 714          void USBUART_NoDataControlStatusStage(void) 
+ 715          {
+ 716   1          if (0u != USBUART_deviceAddress)
+ 717   1          {
+ 718   2              /* Update device address if we got new address. */
+ 719   2              USBUART_CR0_REG = (uint8) USBUART_deviceAddress | USBUART_CR0_ENABLE;
+ 720   2              USBUART_deviceAddress = 0u;
+ 721   2          }
+ 722   1      
+ 723   1          USBUART_transferState = USBUART_TRANS_STATE_IDLE;
+ 724   1          
+ 725   1          /* Update the completion block. */
+ 726   1          USBUART_UpdateStatusBlock(USBUART_XFER_STATUS_ACK);
+ 727   1          
+ 728   1          /* Stall IN and OUT, no more data is expected. */
+ 729   1          USBUART_ep0Mode = USBUART_MODE_STALL_IN_OUT;
+ 730   1      }
+ 731          
+ 732          
+ 733          /*******************************************************************************
+ 734          * Function Name: USBUART_UpdateStatusBlock
+ 735          ****************************************************************************//**
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 13  
+
+ 736          *
+ 737          *  Update the Completion Status Block for a Request.  The block is updated
+ 738          *  with the completion code the USBUART_transferByteCount.  The
+ 739          *  StatusBlock Pointer is set to NULL.
+ 740          *
+ 741          *  completionCode - status.
+ 742          *
+ 743          *
+ 744          * \globalvars
+ 745          *  USBUART_currentTD.pStatusBlock->status - updated by the
+ 746          *    completionCode parameter.
+ 747          *  USBUART_currentTD.pStatusBlock->length - updated.
+ 748          *  USBUART_currentTD.pStatusBlock - cleared.
+ 749          *
+ 750          * \reentrant
+ 751          *  No.
+ 752          *
+ 753          *******************************************************************************/
+ 754          void USBUART_UpdateStatusBlock(uint8 completionCode) 
+ 755          {
+ 756   1          if (USBUART_currentTD.pStatusBlock != NULL)
+ 757   1          {
+ 758   2              USBUART_currentTD.pStatusBlock->status = completionCode;
+ 759   2              USBUART_currentTD.pStatusBlock->length = USBUART_transferByteCount;
+ 760   2              USBUART_currentTD.pStatusBlock = NULL;
+ 761   2          }
+ 762   1      }
+ 763          
+ 764          
+ 765          /*******************************************************************************
+ 766          * Function Name: USBUART_InitializeStatusBlock
+ 767          ****************************************************************************//**
+ 768          *
+ 769          *  Initialize the Completion Status Block for a Request.  The completion
+ 770          *  code is set to USB_XFER_IDLE.
+ 771          *
+ 772          *  Also, initializes USBUART_transferByteCount.  Save some space,
+ 773          *  this is the only consumer.
+ 774          *
+ 775          * \globalvars
+ 776          *  USBUART_currentTD.pStatusBlock->status - set to XFER_IDLE.
+ 777          *  USBUART_currentTD.pStatusBlock->length - cleared.
+ 778          *  USBUART_transferByteCount - cleared.
+ 779          *
+ 780          * \reentrant
+ 781          *  No.
+ 782          *
+ 783          *******************************************************************************/
+ 784          void USBUART_InitializeStatusBlock(void) 
+ 785          {
+ 786   1          USBUART_transferByteCount = 0u;
+ 787   1          
+ 788   1          if (USBUART_currentTD.pStatusBlock != NULL)
+ 789   1          {
+ 790   2              USBUART_currentTD.pStatusBlock->status = USBUART_XFER_IDLE;
+ 791   2              USBUART_currentTD.pStatusBlock->length = 0u;
+ 792   2          }
+ 793   1      }
+ 794          
+ 795          
+ 796          /* [] END OF FILE */
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 14  
+
+ASSEMBLY LISTING OF GENERATED OBJECT CODE
+
+
+             ; FUNCTION USBUART_EP_0_ISR (BEGIN)
+0000 C0E0              PUSH    ACC
+0002 C0F0              PUSH    B
+0004 C083              PUSH    DPH
+0006 C082              PUSH    DPL
+0008 C085              PUSH    DPH1
+000A C084              PUSH    DPL1
+000C C086              PUSH    DPS
+000E 758600            MOV     DPS,#00H
+0011 C000        E     PUSH    ?C?XPAGE1SFR
+0013 750000      E     MOV     ?C?XPAGE1SFR,#?C?XPAGE1RST
+0016 C0D0              PUSH    PSW
+0018 75D000            MOV     PSW,#00H
+001B C000              PUSH    AR0
+001D C001              PUSH    AR1
+001F C002              PUSH    AR2
+0021 C003              PUSH    AR3
+0023 C004              PUSH    AR4
+0025 C005              PUSH    AR5
+0027 C006              PUSH    AR6
+0029 C007              PUSH    AR7
+                                           ; SOURCE LINE # 94
+                                           ; SOURCE LINE # 103
+002B 906028            MOV     DPTR,#06028H
+002E E0                MOVX    A,@DPTR
+002F FF                MOV     R7,A
+0030 900000      R     MOV     DPTR,#tempReg
+0033 EF                MOV     A,R7
+0034 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 104
+0035 900000      R     MOV     DPTR,#tempReg
+0038 E0                MOVX    A,@DPTR
+0039 FF                MOV     R7,A
+003A EF                MOV     A,R7
+003B 5410              ANL     A,#010H
+003D FF                MOV     R7,A
+003E 7E00              MOV     R6,#00H
+0040 EF                MOV     A,R7
+0041 4E                ORL     A,R6
+0042 7003              JNZ     $ + 5H
+0044 020000      R     LJMP    ?C0021
+                                           ; SOURCE LINE # 105
+                                           ; SOURCE LINE # 106
+0047 900000      R     MOV     DPTR,#modifyReg
+004A 7401              MOV     A,#01H
+004C F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 107
+004D 900000      R     MOV     DPTR,#tempReg
+0050 E0                MOVX    A,@DPTR
+0051 FF                MOV     R7,A
+0052 EF                MOV     A,R7
+0053 5480              ANL     A,#080H
+0055 FF                MOV     R7,A
+0056 7E00              MOV     R6,#00H
+0058 EF                MOV     A,R7
+0059 4E                ORL     A,R6
+005A 6031              JZ      ?C0002
+                                           ; SOURCE LINE # 108
+                                           ; SOURCE LINE # 109
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 15  
+
+005C 900000      R     MOV     DPTR,#tempReg
+005F E0                MOVX    A,@DPTR
+0060 FF                MOV     R7,A
+0061 EF                MOV     A,R7
+0062 540F              ANL     A,#0FH
+0064 FF                MOV     R7,A
+0065 7E00              MOV     R6,#00H
+0067 EF                MOV     A,R7
+0068 6401              XRL     A,#01H
+006A 4E                ORL     A,R6
+006B 6007              JZ      ?C0003
+                                           ; SOURCE LINE # 110
+                                           ; SOURCE LINE # 112
+006D 900000      R     MOV     DPTR,#modifyReg
+0070 E4                CLR     A
+0071 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 113
+0072 8046              SJMP    ?C0006
+0074         ?C0003:
+                                           ; SOURCE LINE # 115
+                                           ; SOURCE LINE # 116
+0074 120000      R     LCALL   USBUART_HandleSetup
+                                           ; SOURCE LINE # 118
+0077 900000      R     MOV     DPTR,#USBUART_ep0Mode
+007A E0                MOVX    A,@DPTR
+007B FF                MOV     R7,A
+007C EF                MOV     A,R7
+007D 5480              ANL     A,#080H
+007F FF                MOV     R7,A
+0080 7E00              MOV     R6,#00H
+0082 EF                MOV     A,R7
+0083 4E                ORL     A,R6
+0084 6034              JZ      ?C0006
+                                           ; SOURCE LINE # 119
+                                           ; SOURCE LINE # 121
+0086 900000      R     MOV     DPTR,#modifyReg
+0089 E4                CLR     A
+008A F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 122
+                                           ; SOURCE LINE # 123
+                                           ; SOURCE LINE # 124
+008B 802D              SJMP    ?C0006
+008D         ?C0002:
+                                           ; SOURCE LINE # 125
+008D 900000      R     MOV     DPTR,#tempReg
+0090 E0                MOVX    A,@DPTR
+0091 FF                MOV     R7,A
+0092 EF                MOV     A,R7
+0093 5440              ANL     A,#040H
+0095 FF                MOV     R7,A
+0096 7E00              MOV     R6,#00H
+0098 EF                MOV     A,R7
+0099 4E                ORL     A,R6
+009A 6005              JZ      ?C0007
+                                           ; SOURCE LINE # 126
+                                           ; SOURCE LINE # 127
+009C 120000      R     LCALL   USBUART_HandleIN
+                                           ; SOURCE LINE # 128
+009F 8019              SJMP    ?C0006
+00A1         ?C0007:
+                                           ; SOURCE LINE # 129
+00A1 900000      R     MOV     DPTR,#tempReg
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 16  
+
+00A4 E0                MOVX    A,@DPTR
+00A5 FF                MOV     R7,A
+00A6 EF                MOV     A,R7
+00A7 5420              ANL     A,#020H
+00A9 FF                MOV     R7,A
+00AA 7E00              MOV     R6,#00H
+00AC EF                MOV     A,R7
+00AD 4E                ORL     A,R6
+00AE 6005              JZ      ?C0009
+                                           ; SOURCE LINE # 130
+                                           ; SOURCE LINE # 131
+00B0 120000      R     LCALL   USBUART_HandleOUT
+                                           ; SOURCE LINE # 132
+00B3 8005              SJMP    ?C0006
+00B5         ?C0009:
+                                           ; SOURCE LINE # 134
+                                           ; SOURCE LINE # 135
+00B5 900000      R     MOV     DPTR,#modifyReg
+00B8 E4                CLR     A
+00B9 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 136
+00BA         ?C0006:
+                                           ; SOURCE LINE # 139
+00BA 900000      R     MOV     DPTR,#modifyReg
+00BD E0                MOVX    A,@DPTR
+00BE FF                MOV     R7,A
+00BF EF                MOV     A,R7
+00C0 7003              JNZ     $ + 5H
+00C2 020000      R     LJMP    ?C0021
+                                           ; SOURCE LINE # 140
+                                           ; SOURCE LINE # 142
+00C5 906028            MOV     DPTR,#06028H
+00C8 E0                MOVX    A,@DPTR
+00C9 FF                MOV     R7,A
+00CA 900000      R     MOV     DPTR,#tempReg
+00CD EF                MOV     A,R7
+00CE F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 145
+00CF 900000      R     MOV     DPTR,#tempReg
+00D2 E0                MOVX    A,@DPTR
+00D3 FF                MOV     R7,A
+00D4 EF                MOV     A,R7
+00D5 5480              ANL     A,#080H
+00D7 FF                MOV     R7,A
+00D8 7E00              MOV     R6,#00H
+00DA EF                MOV     A,R7
+00DB 4E                ORL     A,R6
+00DC 7070              JNZ     ?C0021
+                                           ; SOURCE LINE # 146
+                                           ; SOURCE LINE # 148
+00DE 900000      R     MOV     DPTR,#USBUART_ep0Count
+00E1 E0                MOVX    A,@DPTR
+00E2 FF                MOV     R7,A
+00E3 900000      R     MOV     DPTR,#USBUART_ep0Toggle
+00E6 E0                MOVX    A,@DPTR
+00E7 FE                MOV     R6,A
+00E8 EE                MOV     A,R6
+00E9 4F                ORL     A,R7
+00EA FF                MOV     R7,A
+00EB 900000      R     MOV     DPTR,#tempReg
+00EE EF                MOV     A,R7
+00EF F0                MOVX    @DPTR,A
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 17  
+
+                                           ; SOURCE LINE # 149
+00F0 900000      R     MOV     DPTR,#tempReg
+00F3 E0                MOVX    A,@DPTR
+00F4 FF                MOV     R7,A
+00F5 906029            MOV     DPTR,#06029H
+00F8 EF                MOV     A,R7
+00F9 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 152
+00FA 906029            MOV     DPTR,#06029H
+00FD E0                MOVX    A,@DPTR
+00FE FF                MOV     R7,A
+00FF 900000      R     MOV     DPTR,#tempReg
+0102 E0                MOVX    A,@DPTR
+0103 FE                MOV     R6,A
+0104 EE                MOV     A,R6
+0105 6F                XRL     A,R7
+0106 7046              JNZ     ?C0021
+                                           ; SOURCE LINE # 153
+0108         ?C0016:
+                                           ; SOURCE LINE # 156
+                                           ; SOURCE LINE # 158
+0108 900000      R     MOV     DPTR,#USBUART_ep0Mode
+010B E0                MOVX    A,@DPTR
+010C FF                MOV     R7,A
+010D 900000      R     MOV     DPTR,#modifyReg
+0110 EF                MOV     A,R7
+0111 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 161
+0112 906028            MOV     DPTR,#06028H
+0115 E0                MOVX    A,@DPTR
+0116 FF                MOV     R7,A
+0117 EF                MOV     A,R7
+0118 5480              ANL     A,#080H
+011A FF                MOV     R7,A
+011B 900000      R     MOV     DPTR,#tempReg
+011E EF                MOV     A,R7
+011F F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 164
+0120 900000      R     MOV     DPTR,#tempReg
+0123 E0                MOVX    A,@DPTR
+0124 FF                MOV     R7,A
+0125 EF                MOV     A,R7
+0126 7018              JNZ     ?C0014
+                                           ; SOURCE LINE # 165
+                                           ; SOURCE LINE # 167
+0128 900000      R     MOV     DPTR,#USBUART_ep0Mode
+012B E0                MOVX    A,@DPTR
+012C FF                MOV     R7,A
+012D 906028            MOV     DPTR,#06028H
+0130 EF                MOV     A,R7
+0131 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 170
+0132 906028            MOV     DPTR,#06028H
+0135 E0                MOVX    A,@DPTR
+0136 FF                MOV     R7,A
+0137 EF                MOV     A,R7
+0138 540F              ANL     A,#0FH
+013A FF                MOV     R7,A
+013B 900000      R     MOV     DPTR,#modifyReg
+013E EF                MOV     A,R7
+013F F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 171
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 18  
+
+                                           ; SOURCE LINE # 172
+0140         ?C0014:
+                                           ; SOURCE LINE # 173
+0140 900000      R     MOV     DPTR,#USBUART_ep0Mode
+0143 E0                MOVX    A,@DPTR
+0144 FF                MOV     R7,A
+0145 900000      R     MOV     DPTR,#modifyReg
+0148 E0                MOVX    A,@DPTR
+0149 FE                MOV     R6,A
+014A EE                MOV     A,R6
+014B B507BA            CJNE    A,AR7,?C0016
+                                           ; SOURCE LINE # 174
+                                           ; SOURCE LINE # 175
+                                           ; SOURCE LINE # 176
+                                           ; SOURCE LINE # 177
+                                           ; SOURCE LINE # 179
+                                           ; SOURCE LINE # 184
+014E         ?C0021:
+014E D007              POP     AR7
+0150 D006              POP     AR6
+0152 D005              POP     AR5
+0154 D004              POP     AR4
+0156 D003              POP     AR3
+0158 D002              POP     AR2
+015A D001              POP     AR1
+015C D000              POP     AR0
+015E D0D0              POP     PSW
+0160 D000        E     POP     ?C?XPAGE1SFR
+0162 D086              POP     DPS
+0164 D084              POP     DPL1
+0166 D085              POP     DPH1
+0168 D082              POP     DPL
+016A D083              POP     DPH
+016C D0F0              POP     B
+016E D0E0              POP     ACC
+0170 32                RETI    
+             ; FUNCTION USBUART_EP_0_ISR (END)
+
+             ; FUNCTION USBUART_HandleSetup (BEGIN)
+                                           ; SOURCE LINE # 198
+                                           ; SOURCE LINE # 199
+                                           ; SOURCE LINE # 205
+0000 906028            MOV     DPTR,#06028H
+0003 E0                MOVX    A,@DPTR
+0004 FF                MOV     R7,A
+0005 900000      R     MOV     DPTR,#requestHandled
+0008 EF                MOV     A,R7
+0009 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 206
+000A 900000      R     MOV     DPTR,#requestHandled
+000D E0                MOVX    A,@DPTR
+000E FF                MOV     R7,A
+000F 906028            MOV     DPTR,#06028H
+0012 EF                MOV     A,R7
+0013 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 207
+0014 906028            MOV     DPTR,#06028H
+0017 E0                MOVX    A,@DPTR
+0018 FF                MOV     R7,A
+0019 900000      R     MOV     DPTR,#requestHandled
+001C EF                MOV     A,R7
+001D F0                MOVX    @DPTR,A
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 19  
+
+                                           ; SOURCE LINE # 209
+001E 900000      R     MOV     DPTR,#requestHandled
+0021 E0                MOVX    A,@DPTR
+0022 FF                MOV     R7,A
+0023 EF                MOV     A,R7
+0024 5480              ANL     A,#080H
+0026 FF                MOV     R7,A
+0027 7E00              MOV     R6,#00H
+0029 EF                MOV     A,R7
+002A 4E                ORL     A,R6
+002B 600B              JZ      ?C0022
+                                           ; SOURCE LINE # 210
+                                           ; SOURCE LINE # 212
+002D 900000      R     MOV     DPTR,#requestHandled
+0030 E0                MOVX    A,@DPTR
+0031 FF                MOV     R7,A
+0032 900000      R     MOV     DPTR,#USBUART_ep0Mode
+0035 EF                MOV     A,R7
+0036 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 213
+0037 22                RET     
+0038         ?C0022:
+                                           ; SOURCE LINE # 215
+                                           ; SOURCE LINE # 217
+0038 7F02              MOV     R7,#02H
+003A 120000      R     LCALL   _USBUART_UpdateStatusBlock
+                                           ; SOURCE LINE # 220
+003D 906000            MOV     DPTR,#06000H
+0040 E0                MOVX    A,@DPTR
+0041 FF                MOV     R7,A
+0042 EF                MOV     A,R7
+0043 5460              ANL     A,#060H
+0045 FF                MOV     R7,A
+0046 EF                MOV     A,R7
+0047 120000      E     LCALL   ?C?CCASE
+004A 0000        R     DW      ?C0025
+004C 00                DB      00H
+004D 0000        R     DW      ?C0026
+004F 20                DB      020H
+0050 0000        R     DW      ?C0027
+0052 40                DB      040H
+0053 0000              DW      00H
+0055 0000        R     DW      ?C0028
+                                           ; SOURCE LINE # 221
+                                           ; SOURCE LINE # 222
+0057         ?C0025:
+                                           ; SOURCE LINE # 223
+0057 120000      E     LCALL   USBUART_HandleStandardRqst
+005A 900000      R     MOV     DPTR,#requestHandled
+005D EF                MOV     A,R7
+005E F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 224
+005F 8019              SJMP    ?C0024
+                                           ; SOURCE LINE # 226
+0061         ?C0026:
+                                           ; SOURCE LINE # 227
+0061 120000      E     LCALL   USBUART_DispatchClassRqst
+0064 900000      R     MOV     DPTR,#requestHandled
+0067 EF                MOV     A,R7
+0068 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 228
+0069 800F              SJMP    ?C0024
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 20  
+
+                                           ; SOURCE LINE # 230
+006B         ?C0027:
+                                           ; SOURCE LINE # 231
+006B 120000      E     LCALL   USBUART_HandleVendorRqst
+006E 900000      R     MOV     DPTR,#requestHandled
+0071 EF                MOV     A,R7
+0072 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 232
+0073 8005              SJMP    ?C0024
+                                           ; SOURCE LINE # 234
+0075         ?C0028:
+                                           ; SOURCE LINE # 235
+0075 900000      R     MOV     DPTR,#requestHandled
+0078 E4                CLR     A
+0079 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 236
+                                           ; SOURCE LINE # 237
+007A         ?C0024:
+                                           ; SOURCE LINE # 240
+007A 900000      R     MOV     DPTR,#requestHandled
+007D E0                MOVX    A,@DPTR
+007E FF                MOV     R7,A
+007F EF                MOV     A,R7
+0080 7006              JNZ     ?C0030
+                                           ; SOURCE LINE # 241
+                                           ; SOURCE LINE # 242
+0082 900000      R     MOV     DPTR,#USBUART_ep0Mode
+0085 7403              MOV     A,#03H
+0087 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 243
+                                           ; SOURCE LINE # 244
+                                           ; SOURCE LINE # 245
+0088         ?C0030:
+0088 22                RET     
+             ; FUNCTION USBUART_HandleSetup (END)
+
+             ; FUNCTION USBUART_HandleIN (BEGIN)
+                                           ; SOURCE LINE # 259
+                                           ; SOURCE LINE # 260
+                                           ; SOURCE LINE # 261
+0000 900000      R     MOV     DPTR,#USBUART_transferState
+0003 E0                MOVX    A,@DPTR
+0004 FF                MOV     R7,A
+0005 EF                MOV     A,R7
+0006 120000      E     LCALL   ?C?CCASE
+0009 0000        R     DW      ?C0037
+000B 00                DB      00H
+000C 0000        R     DW      ?C0033
+000E 02                DB      02H
+000F 0000        R     DW      ?C0034
+0011 04                DB      04H
+0012 0000        R     DW      ?C0035
+0014 06                DB      06H
+0015 0000              DW      00H
+0017 0000        R     DW      ?C0037
+                                           ; SOURCE LINE # 262
+                                           ; SOURCE LINE # 263
+                                           ; SOURCE LINE # 264
+                                           ; SOURCE LINE # 266
+0019         ?C0033:
+                                           ; SOURCE LINE # 267
+0019 120000      R     LCALL   USBUART_ControlReadDataStage
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 21  
+
+                                           ; SOURCE LINE # 268
+001C 22                RET     
+                                           ; SOURCE LINE # 270
+001D         ?C0034:
+                                           ; SOURCE LINE # 271
+001D 120000      R     LCALL   USBUART_ControlWriteStatusStage
+                                           ; SOURCE LINE # 272
+0020 22                RET     
+                                           ; SOURCE LINE # 274
+0021         ?C0035:
+                                           ; SOURCE LINE # 275
+0021 120000      R     LCALL   USBUART_NoDataControlStatusStage
+                                           ; SOURCE LINE # 276
+                                           ; SOURCE LINE # 278
+                                           ; SOURCE LINE # 279
+                                           ; SOURCE LINE # 280
+                                           ; SOURCE LINE # 281
+0024         ?C0037:
+0024 22                RET     
+             ; FUNCTION USBUART_HandleIN (END)
+
+             ; FUNCTION USBUART_HandleOUT (BEGIN)
+                                           ; SOURCE LINE # 295
+                                           ; SOURCE LINE # 296
+                                           ; SOURCE LINE # 297
+0000 900000      R     MOV     DPTR,#USBUART_transferState
+0003 E0                MOVX    A,@DPTR
+0004 FF                MOV     R7,A
+0005 EF                MOV     A,R7
+0006 120000      E     LCALL   ?C?CCASE
+0009 0000        R     DW      ?C0044
+000B 00                DB      00H
+000C 0000        R     DW      ?C0040
+000E 02                DB      02H
+000F 0000        R     DW      ?C0041
+0011 04                DB      04H
+0012 0000        R     DW      ?C0042
+0014 06                DB      06H
+0015 0000              DW      00H
+0017 0000        R     DW      ?C0044
+                                           ; SOURCE LINE # 298
+                                           ; SOURCE LINE # 299
+                                           ; SOURCE LINE # 300
+                                           ; SOURCE LINE # 302
+0019         ?C0040:
+                                           ; SOURCE LINE # 303
+0019 120000      R     LCALL   USBUART_ControlReadStatusStage
+                                           ; SOURCE LINE # 304
+001C 22                RET     
+                                           ; SOURCE LINE # 306
+001D         ?C0041:
+                                           ; SOURCE LINE # 307
+001D 120000      R     LCALL   USBUART_ControlWriteDataStage
+                                           ; SOURCE LINE # 308
+0020 22                RET     
+                                           ; SOURCE LINE # 310
+0021         ?C0042:
+                                           ; SOURCE LINE # 312
+0021 7F03              MOV     R7,#03H
+0023 120000      R     LCALL   _USBUART_UpdateStatusBlock
+                                           ; SOURCE LINE # 315
+0026 900000      R     MOV     DPTR,#USBUART_ep0Mode
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 22  
+
+0029 7403              MOV     A,#03H
+002B F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 316
+                                           ; SOURCE LINE # 318
+                                           ; SOURCE LINE # 320
+                                           ; SOURCE LINE # 321
+                                           ; SOURCE LINE # 322
+002C         ?C0044:
+002C 22                RET     
+             ; FUNCTION USBUART_HandleOUT (END)
+
+             ; FUNCTION USBUART_LoadEP0 (BEGIN)
+                                           ; SOURCE LINE # 357
+                                           ; SOURCE LINE # 358
+                                           ; SOURCE LINE # 359
+0000 900000      R     MOV     DPTR,#ep0Count
+0003 E4                CLR     A
+0004 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 362
+0005 900000      R     MOV     DPTR,#USBUART_lastPacketSize
+0008 E0                MOVX    A,@DPTR
+0009 FF                MOV     R7,A
+000A 7E00              MOV     R6,#00H
+000C 900000      R     MOV     DPTR,#USBUART_transferByteCount
+000F EE                MOV     A,R6
+0010 8FF0              MOV     B,R7
+0012 120000      E     LCALL   ?C?IILDX
+0015         ?C0045:
+                                           ; SOURCE LINE # 365
+0015 900000      R     MOV     DPTR,#USBUART_currentTD
+0018 E0                MOVX    A,@DPTR
+0019 FE                MOV     R6,A
+001A A3                INC     DPTR
+001B E0                MOVX    A,@DPTR
+001C FF                MOV     R7,A
+001D D3                SETB    C
+001E EF                MOV     A,R7
+001F 9400              SUBB    A,#00H
+0021 EE                MOV     A,R6
+0022 9400              SUBB    A,#00H
+0024 404C              JC      ?C0046
+0026 900000      R     MOV     DPTR,#ep0Count
+0029 E0                MOVX    A,@DPTR
+002A FF                MOV     R7,A
+002B EF                MOV     A,R7
+002C C3                CLR     C
+002D 9408              SUBB    A,#08H
+002F 5041              JNC     ?C0046
+                                           ; SOURCE LINE # 366
+                                           ; SOURCE LINE # 367
+0031 900000      R     MOV     DPTR,#USBUART_currentTD+02H
+0034 120000      E     LCALL   ?C?PLDXDATA
+0037 120000      E     LCALL   ?C?CLDPTR
+003A FF                MOV     R7,A
+003B 900000      R     MOV     DPTR,#ep0Count
+003E E0                MOVX    A,@DPTR
+003F FE                MOV     R6,A
+0040 E4                CLR     A
+0041 2E                ADD     A,R6
+0042 F582              MOV     DPL,A
+0044 E4                CLR     A
+0045 3460              ADDC    A,#060H
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 23  
+
+0047 F583              MOV     DPH,A
+0049 EF                MOV     A,R7
+004A F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 368
+004B 900000      R     MOV     DPTR,#USBUART_currentTD+02H
+004E 120000      E     LCALL   ?C?PLDXDATA
+0051 E9                MOV     A,R1
+0052 2401              ADD     A,#01H
+0054 F9                MOV     R1,A
+0055 EA                MOV     A,R2
+0056 3400              ADDC    A,#00H
+0058 FA                MOV     R2,A
+0059 900000      R     MOV     DPTR,#USBUART_currentTD+02H
+005C 120000      E     LCALL   ?C?PSTXDATA
+                                           ; SOURCE LINE # 369
+005F 900000      R     MOV     DPTR,#ep0Count
+0062 E0                MOVX    A,@DPTR
+0063 04                INC     A
+0064 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 370
+0065 900000      R     MOV     DPTR,#USBUART_currentTD
+0068 74FF              MOV     A,#0FFH
+006A 75F0FF            MOV     B,#0FFH
+006D 120000      E     LCALL   ?C?IILDX
+                                           ; SOURCE LINE # 371
+0070 80A3              SJMP    ?C0045
+0072         ?C0046:
+                                           ; SOURCE LINE # 374
+0072 900000      R     MOV     DPTR,#USBUART_lastPacketSize
+0075 E0                MOVX    A,@DPTR
+0076 FF                MOV     R7,A
+0077 EF                MOV     A,R7
+0078 6408              XRL     A,#08H
+007A 600B              JZ      ?C0048
+007C 900000      R     MOV     DPTR,#ep0Count
+007F E0                MOVX    A,@DPTR
+0080 FF                MOV     R7,A
+0081 EF                MOV     A,R7
+0082 D3                SETB    C
+0083 9400              SUBB    A,#00H
+0085 401C              JC      ?C0047
+0087         ?C0048:
+                                           ; SOURCE LINE # 375
+                                           ; SOURCE LINE # 377
+0087 900000      R     MOV     DPTR,#USBUART_ep0Toggle
+008A E0                MOVX    A,@DPTR
+008B FF                MOV     R7,A
+008C EF                MOV     A,R7
+008D 6480              XRL     A,#080H
+008F FF                MOV     R7,A
+0090 900000      R     MOV     DPTR,#USBUART_ep0Toggle
+0093 EF                MOV     A,R7
+0094 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 379
+0095 900000      R     MOV     DPTR,#USBUART_ep0Mode
+0098 740F              MOV     A,#0FH
+009A F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 381
+009B 900000      R     MOV     DPTR,#USBUART_transferState
+009E 7402              MOV     A,#02H
+00A0 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 382
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 24  
+
+00A1 800C              SJMP    ?C0049
+00A3         ?C0047:
+                                           ; SOURCE LINE # 384
+                                           ; SOURCE LINE # 386
+00A3 900000      R     MOV     DPTR,#USBUART_ep0Mode
+00A6 7402              MOV     A,#02H
+00A8 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 388
+00A9 900000      R     MOV     DPTR,#USBUART_transferState
+00AC 7402              MOV     A,#02H
+00AE F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 389
+00AF         ?C0049:
+                                           ; SOURCE LINE # 392
+00AF 900000      R     MOV     DPTR,#ep0Count
+00B2 E0                MOVX    A,@DPTR
+00B3 FF                MOV     R7,A
+00B4 900000      R     MOV     DPTR,#USBUART_ep0Count
+00B7 EF                MOV     A,R7
+00B8 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 393
+00B9 900000      R     MOV     DPTR,#ep0Count
+00BC E0                MOVX    A,@DPTR
+00BD FF                MOV     R7,A
+00BE 900000      R     MOV     DPTR,#USBUART_lastPacketSize
+00C1 EF                MOV     A,R7
+00C2 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 394
+00C3 22                RET     
+             ; FUNCTION USBUART_LoadEP0 (END)
+
+             ; FUNCTION USBUART_InitControlRead (BEGIN)
+                                           ; SOURCE LINE # 418
+                                           ; SOURCE LINE # 419
+                                           ; SOURCE LINE # 422
+0000 900000      R     MOV     DPTR,#USBUART_currentTD
+0003 E0                MOVX    A,@DPTR
+0004 FE                MOV     R6,A
+0005 A3                INC     DPTR
+0006 E0                MOVX    A,@DPTR
+0007 FF                MOV     R7,A
+0008 EF                MOV     A,R7
+0009 4E                ORL     A,R6
+000A 7005              JNZ     ?C0051
+                                           ; SOURCE LINE # 423
+                                           ; SOURCE LINE # 424
+000C 120000      R     LCALL   USBUART_InitZeroLengthControlTransfer
+                                           ; SOURCE LINE # 425
+000F 8058              SJMP    ?C0052
+0011         ?C0051:
+                                           ; SOURCE LINE # 427
+                                           ; SOURCE LINE # 429
+0011 900000      R     MOV     DPTR,#USBUART_transferState
+0014 7402              MOV     A,#02H
+0016 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 432
+0017 900000      R     MOV     DPTR,#USBUART_ep0Toggle
+001A E4                CLR     A
+001B F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 435
+001C 120000      R     LCALL   USBUART_InitializeStatusBlock
+                                           ; SOURCE LINE # 437
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 25  
+
+001F 906007            MOV     DPTR,#06007H
+0022 E0                MOVX    A,@DPTR
+0023 FF                MOV     R7,A
+0024 7E00              MOV     R6,#00H
+0026 EF                MOV     A,R7
+0027 7F00              MOV     R7,#00H
+0029 FE                MOV     R6,A
+002A 906006            MOV     DPTR,#06006H
+002D E0                MOVX    A,@DPTR
+002E FD                MOV     R5,A
+002F 7C00              MOV     R4,#00H
+0031 EE                MOV     A,R6
+0032 4C                ORL     A,R4
+0033 FE                MOV     R6,A
+0034 EF                MOV     A,R7
+0035 4D                ORL     A,R5
+0036 FF                MOV     R7,A
+0037 900000      R     MOV     DPTR,#xferCount
+003A EE                MOV     A,R6
+003B F0                MOVX    @DPTR,A
+003C A3                INC     DPTR
+003D EF                MOV     A,R7
+003E F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 439
+003F 900000      R     MOV     DPTR,#xferCount
+0042 E0                MOVX    A,@DPTR
+0043 FE                MOV     R6,A
+0044 A3                INC     DPTR
+0045 E0                MOVX    A,@DPTR
+0046 FF                MOV     R7,A
+0047 900000      R     MOV     DPTR,#USBUART_currentTD
+004A E0                MOVX    A,@DPTR
+004B FC                MOV     R4,A
+004C A3                INC     DPTR
+004D E0                MOVX    A,@DPTR
+004E FD                MOV     R5,A
+004F D3                SETB    C
+0050 ED                MOV     A,R5
+0051 9F                SUBB    A,R7
+0052 EC                MOV     A,R4
+0053 9E                SUBB    A,R6
+0054 4010              JC      ?C0053
+                                           ; SOURCE LINE # 440
+                                           ; SOURCE LINE # 441
+0056 900000      R     MOV     DPTR,#xferCount
+0059 E0                MOVX    A,@DPTR
+005A FE                MOV     R6,A
+005B A3                INC     DPTR
+005C E0                MOVX    A,@DPTR
+005D FF                MOV     R7,A
+005E 900000      R     MOV     DPTR,#USBUART_currentTD
+0061 EE                MOV     A,R6
+0062 F0                MOVX    @DPTR,A
+0063 A3                INC     DPTR
+0064 EF                MOV     A,R7
+0065 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 442
+0066         ?C0053:
+                                           ; SOURCE LINE # 444
+0066 120000      R     LCALL   USBUART_LoadEP0
+                                           ; SOURCE LINE # 445
+0069         ?C0052:
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 26  
+
+                                           ; SOURCE LINE # 447
+0069 7F01              MOV     R7,#01H
+                                           ; SOURCE LINE # 448
+006B         ?C0054:
+006B 22                RET     
+             ; FUNCTION USBUART_InitControlRead (END)
+
+             ; FUNCTION USBUART_InitZeroLengthControlTransfer (BEGIN)
+                                           ; SOURCE LINE # 471
+                                           ; SOURCE LINE # 473
+                                           ; SOURCE LINE # 475
+0000 900000      R     MOV     DPTR,#USBUART_transferState
+0003 7402              MOV     A,#02H
+0005 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 478
+0006 900000      R     MOV     DPTR,#USBUART_ep0Toggle
+0009 7480              MOV     A,#080H
+000B F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 481
+000C 900000      R     MOV     DPTR,#USBUART_ep0Mode
+000F 740F              MOV     A,#0FH
+0011 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 484
+0012 900000      R     MOV     DPTR,#USBUART_lastPacketSize
+0015 E4                CLR     A
+0016 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 486
+0017 900000      R     MOV     DPTR,#USBUART_ep0Count
+001A E4                CLR     A
+001B F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 488
+001C 7F01              MOV     R7,#01H
+                                           ; SOURCE LINE # 489
+001E         ?C0055:
+001E 22                RET     
+             ; FUNCTION USBUART_InitZeroLengthControlTransfer (END)
+
+             ; FUNCTION USBUART_ControlReadDataStage (BEGIN)
+                                           ; SOURCE LINE # 503
+                                           ; SOURCE LINE # 505
+                                           ; SOURCE LINE # 506
+0000 120000      R     LCALL   USBUART_LoadEP0
+                                           ; SOURCE LINE # 507
+0003 22                RET     
+             ; FUNCTION USBUART_ControlReadDataStage (END)
+
+             ; FUNCTION USBUART_ControlReadStatusStage (BEGIN)
+                                           ; SOURCE LINE # 526
+                                           ; SOURCE LINE # 527
+                                           ; SOURCE LINE # 529
+0000 900000      R     MOV     DPTR,#USBUART_lastPacketSize
+0003 E0                MOVX    A,@DPTR
+0004 FF                MOV     R7,A
+0005 7E00              MOV     R6,#00H
+0007 900000      R     MOV     DPTR,#USBUART_transferByteCount
+000A EE                MOV     A,R6
+000B 8FF0              MOV     B,R7
+000D 120000      E     LCALL   ?C?IILDX
+                                           ; SOURCE LINE # 532
+0010 900000      R     MOV     DPTR,#USBUART_transferState
+0013 E4                CLR     A
+0014 F0                MOVX    @DPTR,A
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 27  
+
+                                           ; SOURCE LINE # 535
+0015 7F01              MOV     R7,#01H
+0017 120000      R     LCALL   _USBUART_UpdateStatusBlock
+                                           ; SOURCE LINE # 538
+001A 900000      R     MOV     DPTR,#USBUART_ep0Mode
+001D 7403              MOV     A,#03H
+001F F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 539
+0020 22                RET     
+             ; FUNCTION USBUART_ControlReadStatusStage (END)
+
+             ; FUNCTION USBUART_InitControlWrite (BEGIN)
+                                           ; SOURCE LINE # 560
+                                           ; SOURCE LINE # 561
+                                           ; SOURCE LINE # 565
+0000 900000      R     MOV     DPTR,#USBUART_transferState
+0003 7404              MOV     A,#04H
+0005 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 568
+0006 900000      R     MOV     DPTR,#USBUART_ep0Toggle
+0009 7480              MOV     A,#080H
+000B F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 571
+000C 120000      R     LCALL   USBUART_InitializeStatusBlock
+                                           ; SOURCE LINE # 573
+000F 906007            MOV     DPTR,#06007H
+0012 E0                MOVX    A,@DPTR
+0013 FF                MOV     R7,A
+0014 7E00              MOV     R6,#00H
+0016 EF                MOV     A,R7
+0017 7F00              MOV     R7,#00H
+0019 FE                MOV     R6,A
+001A 906006            MOV     DPTR,#06006H
+001D E0                MOVX    A,@DPTR
+001E FD                MOV     R5,A
+001F 7C00              MOV     R4,#00H
+0021 EE                MOV     A,R6
+0022 4C                ORL     A,R4
+0023 FE                MOV     R6,A
+0024 EF                MOV     A,R7
+0025 4D                ORL     A,R5
+0026 FF                MOV     R7,A
+0027 900000      R     MOV     DPTR,#xferCount
+002A EE                MOV     A,R6
+002B F0                MOVX    @DPTR,A
+002C A3                INC     DPTR
+002D EF                MOV     A,R7
+002E F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 575
+002F 900000      R     MOV     DPTR,#xferCount
+0032 E0                MOVX    A,@DPTR
+0033 FE                MOV     R6,A
+0034 A3                INC     DPTR
+0035 E0                MOVX    A,@DPTR
+0036 FF                MOV     R7,A
+0037 900000      R     MOV     DPTR,#USBUART_currentTD
+003A E0                MOVX    A,@DPTR
+003B FC                MOV     R4,A
+003C A3                INC     DPTR
+003D E0                MOVX    A,@DPTR
+003E FD                MOV     R5,A
+003F D3                SETB    C
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 28  
+
+0040 ED                MOV     A,R5
+0041 9F                SUBB    A,R7
+0042 EC                MOV     A,R4
+0043 9E                SUBB    A,R6
+0044 4010              JC      ?C0058
+                                           ; SOURCE LINE # 576
+                                           ; SOURCE LINE # 577
+0046 900000      R     MOV     DPTR,#xferCount
+0049 E0                MOVX    A,@DPTR
+004A FE                MOV     R6,A
+004B A3                INC     DPTR
+004C E0                MOVX    A,@DPTR
+004D FF                MOV     R7,A
+004E 900000      R     MOV     DPTR,#USBUART_currentTD
+0051 EE                MOV     A,R6
+0052 F0                MOVX    @DPTR,A
+0053 A3                INC     DPTR
+0054 EF                MOV     A,R7
+0055 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 578
+0056         ?C0058:
+                                           ; SOURCE LINE # 581
+0056 900000      R     MOV     DPTR,#USBUART_ep0Mode
+0059 740B              MOV     A,#0BH
+005B F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 583
+005C 7F01              MOV     R7,#01H
+                                           ; SOURCE LINE # 584
+005E         ?C0059:
+005E 22                RET     
+             ; FUNCTION USBUART_InitControlWrite (END)
+
+             ; FUNCTION USBUART_ControlWriteDataStage (BEGIN)
+                                           ; SOURCE LINE # 611
+                                           ; SOURCE LINE # 612
+                                           ; SOURCE LINE # 614
+0000 900000      R     MOV     DPTR,#regIndex
+0003 E4                CLR     A
+0004 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 616
+0005 906029            MOV     DPTR,#06029H
+0008 E0                MOVX    A,@DPTR
+0009 FF                MOV     R7,A
+000A EF                MOV     A,R7
+000B 540F              ANL     A,#0FH
+000D FF                MOV     R7,A
+000E EF                MOV     A,R7
+000F 24FE              ADD     A,#0FEH
+0011 FF                MOV     R7,A
+0012 900000      R     MOV     DPTR,#ep0Count
+0015 EF                MOV     A,R7
+0016 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 618
+0017 900000      R     MOV     DPTR,#ep0Count
+001A E0                MOVX    A,@DPTR
+001B FF                MOV     R7,A
+001C 7E00              MOV     R6,#00H
+001E 900000      R     MOV     DPTR,#USBUART_transferByteCount
+0021 EE                MOV     A,R6
+0022 8FF0              MOV     B,R7
+0024 120000      E     LCALL   ?C?IILDX
+0027         ?C0060:
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 29  
+
+                                           ; SOURCE LINE # 620
+0027 900000      R     MOV     DPTR,#USBUART_currentTD
+002A E0                MOVX    A,@DPTR
+002B FE                MOV     R6,A
+002C A3                INC     DPTR
+002D E0                MOVX    A,@DPTR
+002E FF                MOV     R7,A
+002F D3                SETB    C
+0030 EF                MOV     A,R7
+0031 9400              SUBB    A,#00H
+0033 EE                MOV     A,R6
+0034 9400              SUBB    A,#00H
+0036 4052              JC      ?C0061
+0038 900000      R     MOV     DPTR,#ep0Count
+003B E0                MOVX    A,@DPTR
+003C FF                MOV     R7,A
+003D EF                MOV     A,R7
+003E D3                SETB    C
+003F 9400              SUBB    A,#00H
+0041 4047              JC      ?C0061
+                                           ; SOURCE LINE # 621
+                                           ; SOURCE LINE # 622
+0043 900000      R     MOV     DPTR,#regIndex
+0046 E0                MOVX    A,@DPTR
+0047 FF                MOV     R7,A
+0048 E4                CLR     A
+0049 2F                ADD     A,R7
+004A F582              MOV     DPL,A
+004C E4                CLR     A
+004D 3460              ADDC    A,#060H
+004F F583              MOV     DPH,A
+0051 E0                MOVX    A,@DPTR
+0052 FF                MOV     R7,A
+0053 900000      R     MOV     DPTR,#USBUART_currentTD+02H
+0056 120000      E     LCALL   ?C?PLDXDATA
+0059 EF                MOV     A,R7
+005A 120000      E     LCALL   ?C?CSTPTR
+                                           ; SOURCE LINE # 623
+005D 900000      R     MOV     DPTR,#USBUART_currentTD+02H
+0060 120000      E     LCALL   ?C?PLDXDATA
+0063 E9                MOV     A,R1
+0064 2401              ADD     A,#01H
+0066 F9                MOV     R1,A
+0067 EA                MOV     A,R2
+0068 3400              ADDC    A,#00H
+006A FA                MOV     R2,A
+006B 900000      R     MOV     DPTR,#USBUART_currentTD+02H
+006E 120000      E     LCALL   ?C?PSTXDATA
+                                           ; SOURCE LINE # 624
+0071 900000      R     MOV     DPTR,#regIndex
+0074 E0                MOVX    A,@DPTR
+0075 04                INC     A
+0076 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 625
+0077 900000      R     MOV     DPTR,#ep0Count
+007A E0                MOVX    A,@DPTR
+007B 14                DEC     A
+007C F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 626
+007D 900000      R     MOV     DPTR,#USBUART_currentTD
+0080 74FF              MOV     A,#0FFH
+0082 75F0FF            MOV     B,#0FFH
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 30  
+
+0085 120000      E     LCALL   ?C?IILDX
+                                           ; SOURCE LINE # 627
+0088 809D              SJMP    ?C0060
+008A         ?C0061:
+                                           ; SOURCE LINE # 629
+008A 900000      R     MOV     DPTR,#ep0Count
+008D E0                MOVX    A,@DPTR
+008E FF                MOV     R7,A
+008F 900000      R     MOV     DPTR,#USBUART_ep0Count
+0092 EF                MOV     A,R7
+0093 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 632
+0094 900000      R     MOV     DPTR,#USBUART_ep0Toggle
+0097 E0                MOVX    A,@DPTR
+0098 FF                MOV     R7,A
+0099 EF                MOV     A,R7
+009A 6480              XRL     A,#080H
+009C FF                MOV     R7,A
+009D 900000      R     MOV     DPTR,#USBUART_ep0Toggle
+00A0 EF                MOV     A,R7
+00A1 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 635
+00A2 900000      R     MOV     DPTR,#USBUART_ep0Mode
+00A5 740B              MOV     A,#0BH
+00A7 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 636
+00A8 22                RET     
+             ; FUNCTION USBUART_ControlWriteDataStage (END)
+
+             ; FUNCTION USBUART_ControlWriteStatusStage (BEGIN)
+                                           ; SOURCE LINE # 653
+                                           ; SOURCE LINE # 654
+                                           ; SOURCE LINE # 656
+0000 900000      R     MOV     DPTR,#USBUART_transferState
+0003 E4                CLR     A
+0004 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 659
+0005 7F01              MOV     R7,#01H
+0007 120000      R     LCALL   _USBUART_UpdateStatusBlock
+                                           ; SOURCE LINE # 662
+000A 900000      R     MOV     DPTR,#USBUART_ep0Mode
+000D 7403              MOV     A,#03H
+000F F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 663
+0010 22                RET     
+             ; FUNCTION USBUART_ControlWriteStatusStage (END)
+
+             ; FUNCTION USBUART_InitNoDataControlTransfer (BEGIN)
+                                           ; SOURCE LINE # 685
+                                           ; SOURCE LINE # 686
+                                           ; SOURCE LINE # 687
+0000 900000      R     MOV     DPTR,#USBUART_transferState
+0003 7406              MOV     A,#06H
+0005 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 688
+0006 900000      R     MOV     DPTR,#USBUART_ep0Mode
+0009 7406              MOV     A,#06H
+000B F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 689
+000C 900000      R     MOV     DPTR,#USBUART_ep0Toggle
+000F 7480              MOV     A,#080H
+0011 F0                MOVX    @DPTR,A
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 31  
+
+                                           ; SOURCE LINE # 690
+0012 900000      R     MOV     DPTR,#USBUART_ep0Count
+0015 E4                CLR     A
+0016 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 692
+0017 7F01              MOV     R7,#01H
+                                           ; SOURCE LINE # 693
+0019         ?C0064:
+0019 22                RET     
+             ; FUNCTION USBUART_InitNoDataControlTransfer (END)
+
+             ; FUNCTION USBUART_NoDataControlStatusStage (BEGIN)
+                                           ; SOURCE LINE # 714
+                                           ; SOURCE LINE # 715
+                                           ; SOURCE LINE # 716
+0000 900000      R     MOV     DPTR,#USBUART_deviceAddress
+0003 E0                MOVX    A,@DPTR
+0004 FF                MOV     R7,A
+0005 EF                MOV     A,R7
+0006 6013              JZ      ?C0065
+                                           ; SOURCE LINE # 717
+                                           ; SOURCE LINE # 719
+0008 900000      R     MOV     DPTR,#USBUART_deviceAddress
+000B E0                MOVX    A,@DPTR
+000C FF                MOV     R7,A
+000D EF                MOV     A,R7
+000E 4480              ORL     A,#080H
+0010 FF                MOV     R7,A
+0011 906008            MOV     DPTR,#06008H
+0014 EF                MOV     A,R7
+0015 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 720
+0016 900000      R     MOV     DPTR,#USBUART_deviceAddress
+0019 E4                CLR     A
+001A F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 721
+001B         ?C0065:
+                                           ; SOURCE LINE # 723
+001B 900000      R     MOV     DPTR,#USBUART_transferState
+001E E4                CLR     A
+001F F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 726
+0020 7F01              MOV     R7,#01H
+0022 120000      R     LCALL   _USBUART_UpdateStatusBlock
+                                           ; SOURCE LINE # 729
+0025 900000      R     MOV     DPTR,#USBUART_ep0Mode
+0028 7403              MOV     A,#03H
+002A F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 730
+002B 22                RET     
+             ; FUNCTION USBUART_NoDataControlStatusStage (END)
+
+             ; FUNCTION _USBUART_UpdateStatusBlock (BEGIN)
+                                           ; SOURCE LINE # 754
+0000 900000      R     MOV     DPTR,#completionCode
+0003 EF                MOV     A,R7
+0004 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 755
+                                           ; SOURCE LINE # 756
+0005 7B00              MOV     R3,#00H
+0007 7A00              MOV     R2,#00H
+0009 7900              MOV     R1,#00H
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 32  
+
+000B C003              PUSH    AR3
+000D C002              PUSH    AR2
+000F C001              PUSH    AR1
+0011 900000      R     MOV     DPTR,#USBUART_currentTD+05H
+0014 120000      E     LCALL   ?C?PLDXDATA
+0017 D082              POP     DPL
+0019 D083              POP     DPH
+001B D0E0              POP     ACC
+001D 6B                XRL     A,R3
+001E 7008              JNZ     ?C0071
+0020 E9                MOV     A,R1
+0021 6582              XRL     A,DPL
+0023 7003              JNZ     ?C0071
+0025 EA                MOV     A,R2
+0026 6583              XRL     A,DPH
+0028         ?C0071:
+0028 6037              JZ      ?C0068
+                                           ; SOURCE LINE # 757
+                                           ; SOURCE LINE # 758
+002A 900000      R     MOV     DPTR,#completionCode
+002D E0                MOVX    A,@DPTR
+002E FF                MOV     R7,A
+002F 900000      R     MOV     DPTR,#USBUART_currentTD+05H
+0032 120000      E     LCALL   ?C?PLDXDATA
+0035 EF                MOV     A,R7
+0036 120000      E     LCALL   ?C?CSTPTR
+                                           ; SOURCE LINE # 759
+0039 900000      R     MOV     DPTR,#USBUART_transferByteCount
+003C E0                MOVX    A,@DPTR
+003D FE                MOV     R6,A
+003E A3                INC     DPTR
+003F E0                MOVX    A,@DPTR
+0040 FF                MOV     R7,A
+0041 900000      R     MOV     DPTR,#USBUART_currentTD+05H
+0044 120000      E     LCALL   ?C?PLDXDATA
+0047 E9                MOV     A,R1
+0048 2401              ADD     A,#01H
+004A F9                MOV     R1,A
+004B EA                MOV     A,R2
+004C 3400              ADDC    A,#00H
+004E FA                MOV     R2,A
+004F EE                MOV     A,R6
+0050 8FF0              MOV     B,R7
+0052 120000      E     LCALL   ?C?ISTPTR
+                                           ; SOURCE LINE # 760
+0055 7B00              MOV     R3,#00H
+0057 7A00              MOV     R2,#00H
+0059 7900              MOV     R1,#00H
+005B 900000      R     MOV     DPTR,#USBUART_currentTD+05H
+005E 120000      E     LCALL   ?C?PSTXDATA
+                                           ; SOURCE LINE # 761
+                                           ; SOURCE LINE # 762
+0061         ?C0068:
+0061 22                RET     
+             ; FUNCTION _USBUART_UpdateStatusBlock (END)
+
+             ; FUNCTION USBUART_InitializeStatusBlock (BEGIN)
+                                           ; SOURCE LINE # 784
+                                           ; SOURCE LINE # 785
+                                           ; SOURCE LINE # 786
+0000 900000      R     MOV     DPTR,#USBUART_transferByteCount
+0003 E4                CLR     A
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 33  
+
+0004 F0                MOVX    @DPTR,A
+0005 A3                INC     DPTR
+0006 E4                CLR     A
+0007 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 788
+0008 7B00              MOV     R3,#00H
+000A 7A00              MOV     R2,#00H
+000C 7900              MOV     R1,#00H
+000E C003              PUSH    AR3
+0010 C002              PUSH    AR2
+0012 C001              PUSH    AR1
+0014 900000      R     MOV     DPTR,#USBUART_currentTD+05H
+0017 120000      E     LCALL   ?C?PLDXDATA
+001A D082              POP     DPL
+001C D083              POP     DPH
+001E D0E0              POP     ACC
+0020 6B                XRL     A,R3
+0021 7008              JNZ     ?C0072
+0023 E9                MOV     A,R1
+0024 6582              XRL     A,DPL
+0026 7003              JNZ     ?C0072
+0028 EA                MOV     A,R2
+0029 6583              XRL     A,DPH
+002B         ?C0072:
+002B 601F              JZ      ?C0070
+                                           ; SOURCE LINE # 789
+                                           ; SOURCE LINE # 790
+002D 900000      R     MOV     DPTR,#USBUART_currentTD+05H
+0030 120000      E     LCALL   ?C?PLDXDATA
+0033 E4                CLR     A
+0034 120000      E     LCALL   ?C?CSTPTR
+                                           ; SOURCE LINE # 791
+0037 900000      R     MOV     DPTR,#USBUART_currentTD+05H
+003A 120000      E     LCALL   ?C?PLDXDATA
+003D E9                MOV     A,R1
+003E 2401              ADD     A,#01H
+0040 F9                MOV     R1,A
+0041 EA                MOV     A,R2
+0042 3400              ADDC    A,#00H
+0044 FA                MOV     R2,A
+0045 E4                CLR     A
+0046 75F000            MOV     B,#00H
+0049 120000      E     LCALL   ?C?ISTPTR
+                                           ; SOURCE LINE # 792
+                                           ; SOURCE LINE # 793
+004C         ?C0070:
+004C 22                RET     
+             ; FUNCTION USBUART_InitializeStatusBlock (END)
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1486    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =    128      11
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+   EDATA SIZE       =   ----    ----
+   HDATA SIZE       =   ----    ----
+   XDATA CONST SIZE =   ----    ----
+C51 COMPILER V9.51   USBUART_DRV                                                           04/28/2016 18:59:26 PAGE 34  
+
+   FAR CONST SIZE   =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

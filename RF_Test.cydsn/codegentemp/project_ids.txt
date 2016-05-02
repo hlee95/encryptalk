@@ -1,0 +1,8 @@
+C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\RF_Test.cydsn\RF_Test.cyprj|dc3cae04-6d44-4f7a-a6b6-19285ffcfea0
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|6f7af31b-9046-4686-8545-1f3902be763e
+C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\USBFS_UART01.cydsn\USBFS_UART01.cyprj|1f371ee2-7de4-4e16-963a-7d95dc07bcb6
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\default\CyReferenceLibrary\CyReferenceLibrary.cylib\CyReferenceLibrary.cyprj|f955b81f-6fae-4a21-87eb-ebad2b118f3d
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|d6e295b0-dca1-48b1-9794-aa445d569d48
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|e4bb7776-f099-4df0-8560-cac66e20137e
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|25f6e9f4-d55d-44e8-a9ea-e71e3d298b97
+C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\MiniPsocRF.cyprj|2d724cac-01f9-463d-865d-cf2eb3c0d984
