@@ -56,17 +56,17 @@ int main()
         // Send byte to NRF24L01 and echo it back
         // rfByte = nrfEcho(psocByte);
         
-        print("Reading config register.");
-        readRegister(CONFIG);
-        uint8 testReg = RX_PW_P0;
-        print("Writing psocByte to test register.");
-        writeRegister(testReg, psocByte);
-        print("Reading test register.");
-        readRegister(testReg);
+        //print("Reading config register.");
+        //readRegister(CONFIG);
+        //uint8 testReg = RX_PW_P0;
+        //print("Writing psocByte to test register.");
+        //writeRegister(testReg, psocByte);
+        //print("Reading test register.");
+        //readRegister(testReg);
         
         // Display rfByte on LCD
-        LCD_Char_1_ClearDisplay();
-        LCD_Char_1_PutChar(rfByte);
+        //LCD_Char_1_ClearDisplay();
+        //LCD_Char_1_PutChar(rfByte);
         // Echo original byte back to PC
         print("echoing");
         UART_1_PutChar(rfByte);

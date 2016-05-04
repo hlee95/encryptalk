@@ -20,6 +20,16 @@
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\cyfitteriar.inc" value="NONE;" />
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\cyfitter.h" value="NONE;" />
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\cydisabledsheets.h" value="NONE;" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\UART_1.c" value="ARM_C_FILE;UART_1" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\UART_1.h" value="NONE;UART_1" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\UART_1_PM.c" value="ARM_C_FILE;UART_1" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\UART_1_INT.c" value="ARM_C_FILE;UART_1" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\UART_1_BOOT.c" value="ARM_C_FILE;UART_1" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\Pin_1_aliases.h" value="NONE;Pin_1" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\Pin_1.c" value="ARM_C_FILE;Pin_1" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\Pin_1.h" value="NONE;Pin_1" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\UART_1_IntClock.c" value="ARM_C_FILE;UART_1_IntClock" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\UART_1_IntClock.h" value="NONE;UART_1_IntClock" />
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\cycodeshareimport.ld" value="NONE;" />
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\cycodeshareexport.ld" value="NONE;" />
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\cycodeshareimport.scat" value="NONE;" />
