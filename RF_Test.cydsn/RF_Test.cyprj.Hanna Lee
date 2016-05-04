@@ -882,22 +882,6 @@
 <v>Cypress Component Catalog\Communications\LIN Slave Macro [v3.30]</v>
 <v>Cypress Component Catalog\Communications\MDIO Interface</v>
 <v>Cypress Component Catalog\Communications\SMBus/PMBus Slave</v>
-<v>Cypress Component Catalog\Communications\Software Transmit UART [v1.50]</v>
-<v>Cypress Component Catalog\Communications\SPDIF Transmitter [v1.20]</v>
-<v>Cypress Component Catalog\Communications\SPI</v>
-<v>Cypress Component Catalog\Communications\SPI\SPI Master [v2.50]</v>
-<v>Cypress Component Catalog\Communications\SPI\SPI Master Bidirectional mode Macro [v2.50]</v>
-<v>Cypress Component Catalog\Communications\SPI\SPI Master Full Duplex mode Macro [v2.50]</v>
-<v>Cypress Component Catalog\Communications\SPI\SPI Slave [v2.70]</v>
-<v>Cypress Component Catalog\Communications\SPI\SPI Slave Bidirectional mode Macro [v2.70]</v>
-<v>Cypress Component Catalog\Communications\SPI\SPI Slave Full Duplex mode Macro [v2.70]</v>
-<v>Cypress Component Catalog\Communications\SPI\SPI Slave Multislave Mode macro [v2.70]</v>
-<v>Cypress Component Catalog\Communications\UART [v2.50]</v>
-<v>Cypress Component Catalog\Communications\USB</v>
-<v>Cypress Component Catalog\Digital</v>
-<v>Cypress Component Catalog\Display</v>
-<v>Cypress Component Catalog\Filters</v>
-<v>Cypress Component Catalog\Ports and Pins</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 <CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="Off-Chip Component Catalog">

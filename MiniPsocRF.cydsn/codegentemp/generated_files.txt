@@ -28,8 +28,51 @@
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\Pin_1_aliases.h" value="NONE;Pin_1" />
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\Pin_1.c" value="ARM_C_FILE;Pin_1" />
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\Pin_1.h" value="NONE;Pin_1" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\ADC_DelSig_1.c" value="ARM_C_FILE;ADC_DelSig_1" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\ADC_DelSig_1.h" value="NONE;ADC_DelSig_1" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\ADC_DelSig_1_PM.c" value="ARM_C_FILE;ADC_DelSig_1" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\ADC_DelSig_1_INT.c" value="ARM_C_FILE;ADC_DelSig_1" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\VDAC8_1.c" value="ARM_C_FILE;VDAC8_1" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\VDAC8_1.h" value="NONE;VDAC8_1" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\VDAC8_1_PM.c" value="ARM_C_FILE;VDAC8_1" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\SPIM_1.c" value="ARM_C_FILE;SPIM_1" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\SPIM_1.h" value="NONE;SPIM_1" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\SPIM_1_PM.c" value="ARM_C_FILE;SPIM_1" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\SPIM_1_INT.c" value="ARM_C_FILE;SPIM_1" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\SPIM_1_PVT.h" value="NONE;SPIM_1" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\MISO_aliases.h" value="NONE;MISO" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\MISO.c" value="ARM_C_FILE;MISO" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\MISO.h" value="NONE;MISO" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\MOSI_aliases.h" value="NONE;MOSI" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\MOSI.c" value="ARM_C_FILE;MOSI" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\MOSI.h" value="NONE;MOSI" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\SCLK_aliases.h" value="NONE;SCLK" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\SCLK.c" value="ARM_C_FILE;SCLK" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\SCLK.h" value="NONE;SCLK" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\CSN_aliases.h" value="NONE;CSN" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\CSN.c" value="ARM_C_FILE;CSN" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\CSN.h" value="NONE;CSN" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\CE_aliases.h" value="NONE;CE" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\CE.c" value="ARM_C_FILE;CE" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\CE.h" value="NONE;CE" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\ADC_Input_aliases.h" value="NONE;ADC_Input" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\ADC_Input.c" value="ARM_C_FILE;ADC_Input" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\ADC_Input.h" value="NONE;ADC_Input" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\DAC_Output_aliases.h" value="NONE;DAC_Output" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\DAC_Output.c" value="ARM_C_FILE;DAC_Output" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\DAC_Output.h" value="NONE;DAC_Output" />
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\UART_1_IntClock.c" value="ARM_C_FILE;UART_1_IntClock" />
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\UART_1_IntClock.h" value="NONE;UART_1_IntClock" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\ADC_DelSig_1_AMux.c" value="ARM_C_FILE;ADC_DelSig_1_AMux" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\ADC_DelSig_1_AMux.h" value="NONE;ADC_DelSig_1_AMux" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\ADC_DelSig_1_Ext_CP_Clk.c" value="ARM_C_FILE;ADC_DelSig_1_Ext_CP_Clk" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\ADC_DelSig_1_Ext_CP_Clk.h" value="NONE;ADC_DelSig_1_Ext_CP_Clk" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\ADC_DelSig_1_IRQ.c" value="ARM_C_FILE;ADC_DelSig_1_IRQ" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\ADC_DelSig_1_IRQ.h" value="NONE;ADC_DelSig_1_IRQ" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\ADC_DelSig_1_theACLK.c" value="ARM_C_FILE;ADC_DelSig_1_theACLK" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\ADC_DelSig_1_theACLK.h" value="NONE;ADC_DelSig_1_theACLK" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\SPIM_1_IntClock.c" value="ARM_C_FILE;SPIM_1_IntClock" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\SPIM_1_IntClock.h" value="NONE;SPIM_1_IntClock" />
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\cycodeshareimport.ld" value="NONE;" />
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\cycodeshareexport.ld" value="NONE;" />
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\cycodeshareimport.scat" value="NONE;" />
