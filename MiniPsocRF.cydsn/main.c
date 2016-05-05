@@ -37,11 +37,15 @@ int main()
 
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
     setup();
-    
+    VDAC8_1_Wakeup();
     for(;;)
     {
         // Ferry values from the ADC to the DAC to test the playback system
-        adcToDac();
+        // adcToDac();
+        VDAC8_1_SetValue(255);
+        CyDelay(1);
+        VDAC8_1_SetValue(0);
+        CyDelay(1);
     }
 }
 

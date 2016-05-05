@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
   29:.\Generated_Source\PSoC5/SPIM_1.c ****     volatile uint8 SPIM_1_rxBufferFull;
   30:.\Generated_Source\PSoC5/SPIM_1.c ****     volatile uint8 SPIM_1_rxBufferRead;
   31:.\Generated_Source\PSoC5/SPIM_1.c ****     volatile uint8 SPIM_1_rxBufferWrite;
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 2
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 2
 
 
   32:.\Generated_Source\PSoC5/SPIM_1.c **** #endif /* (SPIM_1_RX_SOFTWARE_BUF_ENABLED) */
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
   86:.\Generated_Source\PSoC5/SPIM_1.c ****         SPIM_1_rxBufferFull  = 0u;
   87:.\Generated_Source\PSoC5/SPIM_1.c ****         SPIM_1_rxBufferRead  = 0u;
   88:.\Generated_Source\PSoC5/SPIM_1.c ****         SPIM_1_rxBufferWrite = 0u;
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 3
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 3
 
 
   89:.\Generated_Source\PSoC5/SPIM_1.c ****     #endif /* (SPIM_1_RX_SOFTWARE_BUF_ENABLED) */
@@ -170,40 +170,40 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
   37              	.LVL0:
  125:.\Generated_Source\PSoC5/SPIM_1.c ****     SPIM_1_COUNTER_CONTROL_REG |= SPIM_1_CNTR_ENABLE;
   38              		.loc 1 125 0
-  39 0006 0A4A     		ldr	r2, .L3
+  39 0006 0B4A     		ldr	r2, .L3
   40 0008 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
   41 000a 43F02003 		orr	r3, r3, #32
   42 000e 1370     		strb	r3, [r2]
  126:.\Generated_Source\PSoC5/SPIM_1.c ****     SPIM_1_TX_STATUS_ACTL_REG  |= SPIM_1_INT_ENABLE;
   43              		.loc 1 126 0
-  44 0010 013A     		subs	r2, r2, #1
-  45 0012 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 4
+  44 0010 02F58072 		add	r2, r2, #256
+  45 0014 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 4
 
 
-  46 0014 43F01003 		orr	r3, r3, #16
-  47 0018 1370     		strb	r3, [r2]
+  46 0016 43F01003 		orr	r3, r3, #16
+  47 001a 1370     		strb	r3, [r2]
  127:.\Generated_Source\PSoC5/SPIM_1.c ****     SPIM_1_RX_STATUS_ACTL_REG  |= SPIM_1_INT_ENABLE;
   48              		.loc 1 127 0
-  49 001a 0232     		adds	r2, r2, #2
-  50 001c 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
-  51 001e 43F01003 		orr	r3, r3, #16
-  52 0022 1370     		strb	r3, [r2]
+  49 001c A2F20112 		subw	r2, r2, #257
+  50 0020 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+  51 0022 43F01003 		orr	r3, r3, #16
+  52 0026 1370     		strb	r3, [r2]
  128:.\Generated_Source\PSoC5/SPIM_1.c ****     CyExitCriticalSection(enableInterrupts);
   53              		.loc 1 128 0
-  54 0024 FFF7FEFF 		bl	CyExitCriticalSection
+  54 0028 FFF7FEFF 		bl	CyExitCriticalSection
   55              	.LVL1:
  129:.\Generated_Source\PSoC5/SPIM_1.c **** 
  130:.\Generated_Source\PSoC5/SPIM_1.c ****     #if(0u != SPIM_1_INTERNAL_CLOCK)
  131:.\Generated_Source\PSoC5/SPIM_1.c ****         SPIM_1_IntClock_Enable();
   56              		.loc 1 131 0
-  57 0028 FFF7FEFF 		bl	SPIM_1_IntClock_Start
+  57 002c FFF7FEFF 		bl	SPIM_1_IntClock_Start
   58              	.LVL2:
-  59 002c 08BD     		pop	{r3, pc}
+  59 0030 08BD     		pop	{r3, pc}
   60              	.L4:
-  61 002e 00BF     		.align	2
+  61 0032 00BF     		.align	2
   62              	.L3:
-  63 0030 9A640040 		.word	1073767578
+  63 0034 9A640040 		.word	1073767578
   64              		.cfi_endproc
   65              	.LFE1:
   66              		.size	SPIM_1_Enable, .-SPIM_1_Enable
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  152:.\Generated_Source\PSoC5/SPIM_1.c **** * Global variables:
  153:.\Generated_Source\PSoC5/SPIM_1.c **** *  SPIM_1_initVar - used to check initial configuration, modified on
  154:.\Generated_Source\PSoC5/SPIM_1.c **** *  first function call.
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 5
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 5
 
 
  155:.\Generated_Source\PSoC5/SPIM_1.c **** *
@@ -296,34 +296,34 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
   85              	.LVL3:
  197:.\Generated_Source\PSoC5/SPIM_1.c ****     SPIM_1_TX_STATUS_ACTL_REG &= ((uint8) ~SPIM_1_INT_ENABLE);
   86              		.loc 1 197 0
-  87 0006 074A     		ldr	r2, .L7
+  87 0006 084A     		ldr	r2, .L7
   88 0008 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 6
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 6
 
 
   89 000a 03F0EF03 		and	r3, r3, #239
   90 000e 1370     		strb	r3, [r2]
  198:.\Generated_Source\PSoC5/SPIM_1.c ****     SPIM_1_RX_STATUS_ACTL_REG &= ((uint8) ~SPIM_1_INT_ENABLE);
   91              		.loc 1 198 0
-  92 0010 0232     		adds	r2, r2, #2
-  93 0012 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
-  94 0014 03F0EF03 		and	r3, r3, #239
-  95 0018 1370     		strb	r3, [r2]
+  92 0010 A2F20112 		subw	r2, r2, #257
+  93 0014 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+  94 0016 03F0EF03 		and	r3, r3, #239
+  95 001a 1370     		strb	r3, [r2]
  199:.\Generated_Source\PSoC5/SPIM_1.c ****     CyExitCriticalSection(enableInterrupts);
   96              		.loc 1 199 0
-  97 001a FFF7FEFF 		bl	CyExitCriticalSection
+  97 001c FFF7FEFF 		bl	CyExitCriticalSection
   98              	.LVL4:
  200:.\Generated_Source\PSoC5/SPIM_1.c **** 
  201:.\Generated_Source\PSoC5/SPIM_1.c ****     #if(0u != SPIM_1_INTERNAL_CLOCK)
  202:.\Generated_Source\PSoC5/SPIM_1.c ****         SPIM_1_IntClock_Disable();
   99              		.loc 1 202 0
- 100 001e FFF7FEFF 		bl	SPIM_1_IntClock_Stop
+ 100 0020 FFF7FEFF 		bl	SPIM_1_IntClock_Stop
  101              	.LVL5:
- 102 0022 08BD     		pop	{r3, pc}
+ 102 0024 08BD     		pop	{r3, pc}
  103              	.L8:
- 104              		.align	2
+ 104 0026 00BF     		.align	2
  105              	.L7:
- 106 0024 99640040 		.word	1073767577
+ 106 0028 9A650040 		.word	1073767834
  107              		.cfi_endproc
  108              	.LFE3:
  109              		.size	SPIM_1_Stop, .-SPIM_1_Stop
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  223:.\Generated_Source\PSoC5/SPIM_1.c **** * Theory:
  224:.\Generated_Source\PSoC5/SPIM_1.c **** *  Enable the internal Tx interrupt output -or- the interrupt component itself.
  225:.\Generated_Source\PSoC5/SPIM_1.c **** *
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 7
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 7
 
 
  226:.\Generated_Source\PSoC5/SPIM_1.c **** *******************************************************************************/
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  144 0002 00BF     		.section	.text.SPIM_1_DisableTxInt,"ax",%progbits
  145              		.align	2
  146              		.global	SPIM_1_DisableTxInt
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 8
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 8
 
 
  147              		.thumb
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  286:.\Generated_Source\PSoC5/SPIM_1.c **** * Function Name: SPIM_1_DisableRxInt
  287:.\Generated_Source\PSoC5/SPIM_1.c **** ********************************************************************************
  288:.\Generated_Source\PSoC5/SPIM_1.c **** *
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 9
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 9
 
 
  289:.\Generated_Source\PSoC5/SPIM_1.c **** * Summary:
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  326:.\Generated_Source\PSoC5/SPIM_1.c **** *
  327:.\Generated_Source\PSoC5/SPIM_1.c **** *******************************************************************************/
  328:.\Generated_Source\PSoC5/SPIM_1.c **** void SPIM_1_SetTxInterruptMode(uint8 intSrc) 
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 10
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 10
 
 
  329:.\Generated_Source\PSoC5/SPIM_1.c **** {
@@ -556,7 +556,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  196              	.L15:
  197 0006 00BF     		.align	2
  198              	.L14:
- 199 0008 89640040 		.word	1073767561
+ 199 0008 8A650040 		.word	1073767818
  200              		.cfi_endproc
  201              	.LFE8:
  202              		.size	SPIM_1_SetTxInterruptMode, .-SPIM_1_SetTxInterruptMode
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  215              		@ link register save eliminated.
  216              	.LVL7:
  354:.\Generated_Source\PSoC5/SPIM_1.c ****     SPIM_1_RX_STATUS_MASK_REG  = intSrc;
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 11
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 11
 
 
  217              		.loc 1 354 0
@@ -608,7 +608,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  221              	.L18:
  222 0006 00BF     		.align	2
  223              	.L17:
- 224 0008 8B640040 		.word	1073767563
+ 224 0008 89640040 		.word	1073767561
  225              		.cfi_endproc
  226              	.LFE9:
  227              		.size	SPIM_1_SetRxInterruptMode, .-SPIM_1_SetRxInterruptMode
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  238              		@ args = 0, pretend = 0, frame = 0
  239              		@ frame_needed = 0, uses_anonymous_args = 0
  240              		@ link register save eliminated.
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 12
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 12
 
 
  388:.\Generated_Source\PSoC5/SPIM_1.c ****     uint8 tmpStatus;
@@ -689,7 +689,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  247              	.L21:
  248 0006 00BF     		.align	2
  249              	.L20:
- 250 0008 69640040 		.word	1073767529
+ 250 0008 6A650040 		.word	1073767786
  251              		.cfi_endproc
  252              	.LFE10:
  253              		.size	SPIM_1_ReadTxStatus, .-SPIM_1_ReadTxStatus
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  421:.\Generated_Source\PSoC5/SPIM_1.c **** *
  422:.\Generated_Source\PSoC5/SPIM_1.c **** * Global variables:
  423:.\Generated_Source\PSoC5/SPIM_1.c **** *  SPIM_1_swStatusRx - used to store in software Rx status register,
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 13
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 13
 
 
  424:.\Generated_Source\PSoC5/SPIM_1.c **** *  modified every function call - resets to zero.
@@ -769,7 +769,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  273              	.L24:
  274 0006 00BF     		.align	2
  275              	.L23:
- 276 0008 6B640040 		.word	1073767531
+ 276 0008 69640040 		.word	1073767529
  277              		.cfi_endproc
  278              	.LFE11:
  279              		.size	SPIM_1_ReadRxStatus, .-SPIM_1_ReadRxStatus
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  282              		.global	SPIM_1_WriteTxData
  283              		.thumb
  284              		.thumb_func
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 14
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 14
 
 
  285              		.type	SPIM_1_WriteTxData, %function
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  502:.\Generated_Source\PSoC5/SPIM_1.c ****         do
  503:.\Generated_Source\PSoC5/SPIM_1.c ****         {
  504:.\Generated_Source\PSoC5/SPIM_1.c ****             tmpTxBufferRead = SPIM_1_txBufferRead;
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 15
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 15
 
 
  505:.\Generated_Source\PSoC5/SPIM_1.c ****             if(0u == tmpTxBufferRead)
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  296 0000 034B     		ldr	r3, .L27
  297 0002 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
  298 0004 13F0040F 		tst	r3, #4
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 16
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 16
 
 
  299 0008 FAD0     		beq	.L26
@@ -914,7 +914,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  304              	.L28:
  305              		.align	2
  306              	.L27:
- 307 0010 69640040 		.word	1073767529
+ 307 0010 6A650040 		.word	1073767786
  308 0014 4A640040 		.word	1073767498
  309              		.cfi_endproc
  310              	.LFE12:
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  591:.\Generated_Source\PSoC5/SPIM_1.c **** *  Allows the user to read a byte of data received.
  592:.\Generated_Source\PSoC5/SPIM_1.c **** *
  593:.\Generated_Source\PSoC5/SPIM_1.c **** * Side Effects:
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 17
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 17
 
 
  594:.\Generated_Source\PSoC5/SPIM_1.c **** *  Will return invalid data if the FIFO is empty. The user should Call
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  329              		.loc 1 638 0
  330 0004 7047     		bx	lr
  331              	.L31:
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 18
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 18
 
 
  332 0006 00BF     		.align	2
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  674:.\Generated_Source\PSoC5/SPIM_1.c **** 
  675:.\Generated_Source\PSoC5/SPIM_1.c ****         if(SPIM_1_rxBufferRead == SPIM_1_rxBufferWrite)
  676:.\Generated_Source\PSoC5/SPIM_1.c ****         {
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 19
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 19
 
 
  677:.\Generated_Source\PSoC5/SPIM_1.c ****             size = 0u;
@@ -1118,7 +1118,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  363              	.L36:
  364 0012 00BF     		.align	2
  365              	.L35:
- 366 0014 6B640040 		.word	1073767531
+ 366 0014 69640040 		.word	1073767529
  367              		.cfi_endproc
  368              	.LFE14:
  369              		.size	SPIM_1_GetRxBufferSize, .-SPIM_1_GetRxBufferSize
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  704:.\Generated_Source\PSoC5/SPIM_1.c **** *
  705:.\Generated_Source\PSoC5/SPIM_1.c **** * Summary:
  706:.\Generated_Source\PSoC5/SPIM_1.c **** *  Returns the number of bytes/words of data currently held in the TX buffer.
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 20
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 20
 
 
  707:.\Generated_Source\PSoC5/SPIM_1.c **** *  If TX Software Buffer not used then function return 0 - if FIFO empty, 1 - if
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  386 0004 DBB2     		uxtb	r3, r3
  387              	.LVL13:
  753:.\Generated_Source\PSoC5/SPIM_1.c **** 
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 21
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 21
 
 
  754:.\Generated_Source\PSoC5/SPIM_1.c ****         if(0u != (size & SPIM_1_STS_TX_FIFO_EMPTY))
@@ -1241,7 +1241,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  407              	.L42:
  408 001e 00BF     		.align	2
  409              	.L41:
- 410 0020 69640040 		.word	1073767529
+ 410 0020 6A650040 		.word	1073767786
  411              		.cfi_endproc
  412              	.LFE15:
  413              		.size	SPIM_1_GetTxBufferSize, .-SPIM_1_GetTxBufferSize
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  773:.\Generated_Source\PSoC5/SPIM_1.c **** /*******************************************************************************
  774:.\Generated_Source\PSoC5/SPIM_1.c **** * Function Name: SPIM_1_ClearRxBuffer
  775:.\Generated_Source\PSoC5/SPIM_1.c **** ********************************************************************************
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 22
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 22
 
 
  776:.\Generated_Source\PSoC5/SPIM_1.c **** *
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  812:.\Generated_Source\PSoC5/SPIM_1.c ****     }
  813:.\Generated_Source\PSoC5/SPIM_1.c **** 
  814:.\Generated_Source\PSoC5/SPIM_1.c ****     #if(SPIM_1_RX_SOFTWARE_BUF_ENABLED)
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 23
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 23
 
 
  815:.\Generated_Source\PSoC5/SPIM_1.c ****         /* Disable RX interrupt to protect global veriables */
@@ -1337,7 +1337,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  442 0012 00BF     		.align	2
  443              	.L46:
  444 0014 5A640040 		.word	1073767514
- 445 0018 6B640040 		.word	1073767531
+ 445 0018 69640040 		.word	1073767529
  446              		.cfi_endproc
  447              	.LFE16:
  448              		.size	SPIM_1_ClearRxBuffer, .-SPIM_1_ClearRxBuffer
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  851:.\Generated_Source\PSoC5/SPIM_1.c **** *  remained in the RAM.
  852:.\Generated_Source\PSoC5/SPIM_1.c **** *
  853:.\Generated_Source\PSoC5/SPIM_1.c **** * Side Effects:
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 24
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 24
 
 
  854:.\Generated_Source\PSoC5/SPIM_1.c **** *  Any data not yet transmitted from the RAM buffer will be lost when
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  489              		.align	2
  490              		.global	SPIM_1_PutArray
  491              		.thumb
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 25
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 25
 
 
  492              		.thumb_func
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  926:.\Generated_Source\PSoC5/SPIM_1.c ****     * Return:
  927:.\Generated_Source\PSoC5/SPIM_1.c ****     *  None.
  928:.\Generated_Source\PSoC5/SPIM_1.c ****     *
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 26
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 26
 
 
  929:.\Generated_Source\PSoC5/SPIM_1.c ****     *******************************************************************************/
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  511 0006 0025     		movs	r5, #0
  968:.\Generated_Source\PSoC5/SPIM_1.c **** 
  969:.\Generated_Source\PSoC5/SPIM_1.c ****     while(byteCount > 0u)
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 27
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 27
 
 
  512              		.loc 1 969 0
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  988:.\Generated_Source\PSoC5/SPIM_1.c **** * Return:
  989:.\Generated_Source\PSoC5/SPIM_1.c **** *  None.
  990:.\Generated_Source\PSoC5/SPIM_1.c **** *
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 28
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 28
 
 
  991:.\Generated_Source\PSoC5/SPIM_1.c **** * Side Effects:
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
 1012:.\Generated_Source\PSoC5/SPIM_1.c ****         SPIM_1_AUX_CONTROL_DP1_REG |= ((uint8)  SPIM_1_TX_FIFO_CLR);
 1013:.\Generated_Source\PSoC5/SPIM_1.c ****         SPIM_1_AUX_CONTROL_DP1_REG &= ((uint8) ~SPIM_1_TX_FIFO_CLR);
 1014:.\Generated_Source\PSoC5/SPIM_1.c ****     #endif /* (SPIM_1_USE_SECOND_DATAPATH) */
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 29
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 29
 
 
 1015:.\Generated_Source\PSoC5/SPIM_1.c ****     CyExitCriticalSection(enableInterrupts);
@@ -1690,7 +1690,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  584 002e 00BF     		.align	2
  585              	.L60:
  586 0030 5A640040 		.word	1073767514
- 587 0034 6B640040 		.word	1073767531
+ 587 0034 69640040 		.word	1073767529
  588 0038 9A640040 		.word	1073767578
  589              		.cfi_endproc
  590              	.LFE19:
@@ -1715,7 +1715,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
   66:.\Generated_Source\PSoC5/SPIM_1.c **** 
  608              		.loc 1 66 0
  609 0002 0F22     		movs	r2, #15
- 610 0004 064B     		ldr	r3, .L64
+ 610 0004 074B     		ldr	r3, .L64
  611 0006 1A70     		strb	r2, [r3]
   83:.\Generated_Source\PSoC5/SPIM_1.c **** 
  612              		.loc 1 83 0
@@ -1732,21 +1732,21 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  101:.\Generated_Source\PSoC5/SPIM_1.c ****     SPIM_1_RX_STATUS_MASK_REG = SPIM_1_RX_INIT_INTERRUPTS_MASK;
  621              		.loc 1 101 0
  622 0014 0023     		movs	r3, #0
- 623 0016 034A     		ldr	r2, .L64+4
+ 623 0016 044A     		ldr	r2, .L64+4
  624 0018 1370     		strb	r3, [r2]
  102:.\Generated_Source\PSoC5/SPIM_1.c **** }
  625              		.loc 1 102 0
- 626 001a 0232     		adds	r2, r2, #2
- 627 001c 1370     		strb	r3, [r2]
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 30
+ 626 001a A2F20112 		subw	r2, r2, #257
+ 627 001e 1370     		strb	r3, [r2]
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 30
 
 
- 628 001e 08BD     		pop	{r3, pc}
+ 628 0020 08BD     		pop	{r3, pc}
  629              	.L65:
- 630              		.align	2
+ 630 0022 00BF     		.align	2
  631              	.L64:
- 632 0020 8A640040 		.word	1073767562
- 633 0024 89640040 		.word	1073767561
+ 632 0024 8A640040 		.word	1073767562
+ 633 0028 8A650040 		.word	1073767818
  634              		.cfi_endproc
  635              	.LFE0:
  636              		.size	SPIM_1_Init, .-SPIM_1_Init
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  677              		.align	2
  678              		.global	SPIM_1_EnableInt
  679              		.thumb
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 31
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 31
 
 
  680              		.thumb_func
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
 1049:.\Generated_Source\PSoC5/SPIM_1.c **** * Function Name: SPIM_1_DisableInt
 1050:.\Generated_Source\PSoC5/SPIM_1.c **** ********************************************************************************
 1051:.\Generated_Source\PSoC5/SPIM_1.c **** *
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 32
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 32
 
 
 1052:.\Generated_Source\PSoC5/SPIM_1.c **** * Summary:
@@ -1918,7 +1918,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
 1089:.\Generated_Source\PSoC5/SPIM_1.c **** *******************************************************************************/
 1090:.\Generated_Source\PSoC5/SPIM_1.c **** void SPIM_1_SetInterruptMode(uint8 intSrc) 
 1091:.\Generated_Source\PSoC5/SPIM_1.c **** {
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 33
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 33
 
 
  718              		.loc 1 1091 0
@@ -1934,13 +1934,13 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  727 0006 1A70     		strb	r2, [r3]
 1093:.\Generated_Source\PSoC5/SPIM_1.c ****     SPIM_1_RX_STATUS_MASK_REG  =  intSrc;
  728              		.loc 1 1093 0
- 729 0008 0233     		adds	r3, r3, #2
- 730 000a 1870     		strb	r0, [r3]
- 731 000c 7047     		bx	lr
+ 729 0008 A3F20113 		subw	r3, r3, #257
+ 730 000c 1870     		strb	r0, [r3]
+ 731 000e 7047     		bx	lr
  732              	.L75:
- 733 000e 00BF     		.align	2
+ 733              		.align	2
  734              	.L74:
- 735 0010 89640040 		.word	1073767561
+ 735 0010 8A650040 		.word	1073767818
  736              		.cfi_endproc
  737              	.LFE22:
  738              		.size	SPIM_1_SetInterruptMode, .-SPIM_1_SetInterruptMode
@@ -1978,7 +1978,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
 1117:.\Generated_Source\PSoC5/SPIM_1.c **** *
 1118:.\Generated_Source\PSoC5/SPIM_1.c **** * Side Effects:
 1119:.\Generated_Source\PSoC5/SPIM_1.c **** *  Clear status register of the component.
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 34
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 34
 
 
 1120:.\Generated_Source\PSoC5/SPIM_1.c **** *
@@ -2034,11 +2034,11 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  765              	.L78:
  766              		.align	2
  767              	.L77:
- 768 0010 6B640040 		.word	1073767531
- 769 0014 69640040 		.word	1073767529
+ 768 0010 69640040 		.word	1073767529
+ 769 0014 6A650040 		.word	1073767786
  770              		.cfi_endproc
  771              	.LFE23:
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 35
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 35
 
 
  772              		.size	SPIM_1_ReadStatus, .-SPIM_1_ReadStatus
@@ -2098,7 +2098,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  826 0050 08       		.byte	0x8
  827 0051 05       		.byte	0x5
  828 0052 7B030000 		.4byte	.LASF6
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 36
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 36
 
 
  829 0056 02       		.uleb128 0x2
@@ -2146,7 +2146,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  871 00a9 01       		.byte	0x1
  872 00aa 78       		.byte	0x78
  873 00ab 00000000 		.4byte	.LFB1
- 874 00af 34000000 		.4byte	.LFE1-.LFB1
+ 874 00af 38000000 		.4byte	.LFE1-.LFB1
  875 00b3 01       		.uleb128 0x1
  876 00b4 9C       		.byte	0x9c
  877 00b5 E4000000 		.4byte	0xe4
@@ -2158,15 +2158,15 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  883 00c4 00000000 		.4byte	.LLST0
  884 00c8 08       		.uleb128 0x8
  885 00c9 06000000 		.4byte	.LVL0
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 37
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 37
 
 
  886 00cd 87040000 		.4byte	0x487
  887 00d1 08       		.uleb128 0x8
- 888 00d2 28000000 		.4byte	.LVL1
+ 888 00d2 2C000000 		.4byte	.LVL1
  889 00d6 92040000 		.4byte	0x492
  890 00da 08       		.uleb128 0x8
- 891 00db 2C000000 		.4byte	.LVL2
+ 891 00db 30000000 		.4byte	.LVL2
  892 00df A3040000 		.4byte	0x4a3
  893 00e3 00       		.byte	0
  894 00e4 06       		.uleb128 0x6
@@ -2174,7 +2174,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  896 00e9 01       		.byte	0x1
  897 00ea C0       		.byte	0xc0
  898 00eb 00000000 		.4byte	.LFB3
- 899 00ef 28000000 		.4byte	.LFE3-.LFB3
+ 899 00ef 2C000000 		.4byte	.LFE3-.LFB3
  900 00f3 01       		.uleb128 0x1
  901 00f4 9C       		.byte	0x9c
  902 00f5 24010000 		.4byte	0x124
@@ -2188,10 +2188,10 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  910 0109 06000000 		.4byte	.LVL3
  911 010d 87040000 		.4byte	0x487
  912 0111 08       		.uleb128 0x8
- 913 0112 1E000000 		.4byte	.LVL4
+ 913 0112 20000000 		.4byte	.LVL4
  914 0116 92040000 		.4byte	0x492
  915 011a 08       		.uleb128 0x8
- 916 011b 22000000 		.4byte	.LVL5
+ 916 011b 24000000 		.4byte	.LVL5
  917 011f AA040000 		.4byte	0x4aa
  918 0123 00       		.byte	0
  919 0124 09       		.uleb128 0x9
@@ -2218,7 +2218,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  940 0152 02000000 		.4byte	.LFE6-.LFB6
  941 0156 01       		.uleb128 0x1
  942 0157 9C       		.byte	0x9c
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 38
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 38
 
 
  943 0158 0A       		.uleb128 0xa
@@ -2278,7 +2278,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  997 01d3 01       		.byte	0x1
  998 01d4 8401     		.2byte	0x184
  999 01d6 6B000000 		.4byte	0x6b
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 39
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 39
 
 
  1000 01da 01       		.uleb128 0x1
@@ -2338,7 +2338,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1054 0252 50       		.byte	0x50
  1055 0253 00       		.byte	0
  1056 0254 0D       		.uleb128 0xd
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 40
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 40
 
 
  1057 0255 AA000000 		.4byte	.LASF32
@@ -2398,7 +2398,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1111 02d6 5F03     		.2byte	0x35f
  1112 02d8 6B000000 		.4byte	0x6b
  1113 02dc 44000000 		.4byte	.LLST3
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 41
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 41
 
 
  1114 02e0 08       		.uleb128 0x8
@@ -2458,7 +2458,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1168 0369 01       		.byte	0x1
  1169 036a E503     		.2byte	0x3e5
  1170 036c 6B000000 		.4byte	0x6b
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 42
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 42
 
 
  1171 0370 C8000000 		.4byte	.LLST7
@@ -2474,7 +2474,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1181 038c 01       		.byte	0x1
  1182 038d 3F       		.byte	0x3f
  1183 038e 00000000 		.4byte	.LFB0
- 1184 0392 28000000 		.4byte	.LFE0-.LFB0
+ 1184 0392 2C000000 		.4byte	.LFE0-.LFB0
  1185 0396 01       		.uleb128 0x1
  1186 0397 9C       		.byte	0x9c
  1187 0398 B8030000 		.4byte	0x3b8
@@ -2518,7 +2518,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1225 03f8 2904     		.2byte	0x429
  1226 03fa 00000000 		.4byte	.LFB21
  1227 03fe 02000000 		.4byte	.LFE21-.LFB21
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 43
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 43
 
 
  1228 0402 01       		.uleb128 0x1
@@ -2578,7 +2578,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1282 047b 01       		.byte	0x1
  1283 047c 25       		.byte	0x25
  1284 047d 98000000 		.4byte	0x98
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 44
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 44
 
 
  1285 0481 05       		.uleb128 0x5
@@ -2638,7 +2638,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1339 001b 0E       		.uleb128 0xe
  1340 001c 00       		.byte	0
  1341 001d 00       		.byte	0
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 45
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 45
 
 
  1342 001e 03       		.uleb128 0x3
@@ -2698,7 +2698,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1396 0055 00       		.byte	0
  1397 0056 00       		.byte	0
  1398 0057 07       		.uleb128 0x7
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 46
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 46
 
 
  1399 0058 34       		.uleb128 0x34
@@ -2758,7 +2758,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1453 0091 0B       		.uleb128 0xb
  1454 0092 3B       		.uleb128 0x3b
  1455 0093 05       		.uleb128 0x5
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 47
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 47
 
 
  1456 0094 27       		.uleb128 0x27
@@ -2818,7 +2818,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1510 00cc 01       		.byte	0x1
  1511 00cd 3F       		.uleb128 0x3f
  1512 00ce 19       		.uleb128 0x19
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 48
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 48
 
 
  1513 00cf 03       		.uleb128 0x3
@@ -2878,7 +2878,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1567 0106 00       		.byte	0
  1568 0107 03       		.uleb128 0x3
  1569 0108 0E       		.uleb128 0xe
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 49
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 49
 
 
  1570 0109 3A       		.uleb128 0x3a
@@ -2938,7 +2938,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1624 013f 27       		.uleb128 0x27
  1625 0140 19       		.uleb128 0x19
  1626 0141 49       		.uleb128 0x49
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 50
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 50
 
 
  1627 0142 13       		.uleb128 0x13
@@ -2994,17 +2994,17 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1677              	.Ldebug_loc0:
  1678              	.LLST0:
  1679 0000 06000000 		.4byte	.LVL0
- 1680 0004 27000000 		.4byte	.LVL1-1
+ 1680 0004 2B000000 		.4byte	.LVL1-1
  1681 0008 0100     		.2byte	0x1
  1682 000a 50       		.byte	0x50
  1683 000b 00000000 		.4byte	0
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 51
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 51
 
 
  1684 000f 00000000 		.4byte	0
  1685              	.LLST1:
  1686 0013 06000000 		.4byte	.LVL3
- 1687 0017 1D000000 		.4byte	.LVL4-1
+ 1687 0017 1F000000 		.4byte	.LVL4-1
  1688 001b 0100     		.2byte	0x1
  1689 001d 50       		.byte	0x50
  1690 001e 00000000 		.4byte	0
@@ -3058,7 +3058,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1738 00a2 0A000000 		.4byte	.LVL19
  1739 00a6 0200     		.2byte	0x2
  1740 00a8 30       		.byte	0x30
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 52
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 52
 
 
  1741 00a9 9F       		.byte	0x9f
@@ -3104,9 +3104,9 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1781 000c 0000     		.2byte	0
  1782 000e 0000     		.2byte	0
  1783 0010 00000000 		.4byte	.LFB1
- 1784 0014 34000000 		.4byte	.LFE1-.LFB1
+ 1784 0014 38000000 		.4byte	.LFE1-.LFB1
  1785 0018 00000000 		.4byte	.LFB3
- 1786 001c 28000000 		.4byte	.LFE3-.LFB3
+ 1786 001c 2C000000 		.4byte	.LFE3-.LFB3
  1787 0020 00000000 		.4byte	.LFB4
  1788 0024 02000000 		.4byte	.LFE4-.LFB4
  1789 0028 00000000 		.4byte	.LFB5
@@ -3118,7 +3118,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1795 0040 00000000 		.4byte	.LFB8
  1796 0044 0C000000 		.4byte	.LFE8-.LFB8
  1797 0048 00000000 		.4byte	.LFB9
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 53
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 53
 
 
  1798 004c 0C000000 		.4byte	.LFE9-.LFB9
@@ -3143,7 +3143,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1817 0098 00000000 		.4byte	.LFB19
  1818 009c 3C000000 		.4byte	.LFE19-.LFB19
  1819 00a0 00000000 		.4byte	.LFB0
- 1820 00a4 28000000 		.4byte	.LFE0-.LFB0
+ 1820 00a4 2C000000 		.4byte	.LFE0-.LFB0
  1821 00a8 00000000 		.4byte	.LFB2
  1822 00ac 1C000000 		.4byte	.LFE2-.LFB2
  1823 00b0 00000000 		.4byte	.LFB20
@@ -3159,9 +3159,9 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1833              		.section	.debug_ranges,"",%progbits
  1834              	.Ldebug_ranges0:
  1835 0000 00000000 		.4byte	.LFB1
- 1836 0004 34000000 		.4byte	.LFE1
+ 1836 0004 38000000 		.4byte	.LFE1
  1837 0008 00000000 		.4byte	.LFB3
- 1838 000c 28000000 		.4byte	.LFE3
+ 1838 000c 2C000000 		.4byte	.LFE3
  1839 0010 00000000 		.4byte	.LFB4
  1840 0014 02000000 		.4byte	.LFE4
  1841 0018 00000000 		.4byte	.LFB5
@@ -3178,7 +3178,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1852 0044 0C000000 		.4byte	.LFE10
  1853 0048 00000000 		.4byte	.LFB11
  1854 004c 0C000000 		.4byte	.LFE11
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 54
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 54
 
 
  1855 0050 00000000 		.4byte	.LFB12
@@ -3198,7 +3198,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1869 0088 00000000 		.4byte	.LFB19
  1870 008c 3C000000 		.4byte	.LFE19
  1871 0090 00000000 		.4byte	.LFB0
- 1872 0094 28000000 		.4byte	.LFE0
+ 1872 0094 2C000000 		.4byte	.LFE0
  1873 0098 00000000 		.4byte	.LFB2
  1874 009c 1C000000 		.4byte	.LFE2
  1875 00a0 00000000 		.4byte	.LFB20
@@ -3238,7 +3238,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1894              	.LASF31:
  1895 0046 72784461 		.ascii	"rxData\000"
  1895      746100
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 55
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 55
 
 
  1896              	.LASF15:
@@ -3298,7 +3298,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1915      72727570 
  1916              	.LASF48:
  1917 0109 5350494D 		.ascii	"SPIM_1_initVar\000"
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 56
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 56
 
 
  1917      5F315F69 
@@ -3358,7 +3358,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1937      6C65496E 
  1937      7400
  1938              	.LASF10:
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 57
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 57
 
 
  1939 01b9 646F7562 		.ascii	"double\000"
@@ -3418,7 +3418,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1960 028a 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
  1960      20726576 
  1960      6973696F 
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 58
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 58
 
 
  1960      6E203232 
@@ -3478,7 +3478,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  1980      7400
  1981              	.LASF11:
  1982 038f 63686172 		.ascii	"char\000"
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 59
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 59
 
 
  1982      00
@@ -3538,7 +3538,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 1
  2005              	.LASF21:
  2006 042e 5350494D 		.ascii	"SPIM_1_DisableRxInt\000"
  2006      5F315F44 
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccp7OzkK.s 			page 60
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cciQCNpZ.s 			page 60
 
 
  2006      69736162 

@@ -14,14 +14,15 @@
 #include <stdio.h>
 #include <nrf.h>
 
+// Declare global variables
 uint8 psocByte;
 uint8 rfByte;
 uint8 statusByte;
-
 char printbuf[8];
 
-// Declare Functions
+// Declare functions
 void setup();
+
 uint8 readRegister(uint8 reg);
 void writeRegister(uint8 reg, uint8 data);
 uint8 nrfEcho(uint8 byte);
@@ -29,25 +30,38 @@ void nrfReceive(uint8 byte);
 uint8 nrfSend(uint8 byte);
 void ce(uint8 byte);
 void csn(uint8 byte);
+
 void blink();
 void stop();
 void printByte(uint8 byte);
 void print(char *string);
 void printRxBuffer();
 
+void sendSquareWave();
+void echoR31JP();
+
+// Interrupt received for new Rx data on UART
+CY_ISR(RX_INT)
+{
+    LCD_Char_1_PutChar(UART_1_ReadRxData());     // RX ISR
+}
+
 // Main function
 // Sends bytes from PC -> PSOC -> NRF24L01 -> PSOC -> PC
 int main()
 {
-    CyGlobalIntEnable; /* Enable global interrupts. */
-
+    
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */  
     setup();
     
     for(;;)
     {
-        /* Place your application code here. */
+        /* Sandbox Testing -- PSOC -> R31JP */
+        // sendSquareWave();
+        echoR31JP();
         
+        
+        /* NRF TESTING */
         // Receive byte from the PC
         // Wait for Rx FIFO to be not empty
         while(~UART_1_ReadRxStatus() & UART_1_RX_STS_FIFO_NOTEMPTY);
@@ -78,7 +92,10 @@ int main()
 }
 
 void setup() {
-     // Initialize LCD, UART, and SPI Master
+    CyGlobalIntEnable; /* Enable global interrupts. */
+    //rx_int_StartEx(RX_INT);
+    
+    // Initialize LCD, UART, and SPI Master
     LCD_Char_1_Start();
     LCD_Char_1_ClearDisplay();
     UART_1_Start();
@@ -88,6 +105,7 @@ void setup() {
     UART_1_ClearTxBuffer();
     SPIM_1_ClearRxBuffer();
     SPIM_1_ClearTxBuffer();
+    
     // Enable certain interrupts for UART so we can tell when
     // we've received a byte or when a transmission is complete
     UART_1_SetRxInterruptMode(UART_1_RX_STS_FIFO_NOTEMPTY);
@@ -193,7 +211,41 @@ uint8 nrfSend(uint8 byte) {
     UART_1_PutString("done reading\n");
 }
 
+/**************************/
+/* Interaction with R31JP */
+/**************************/
 
+// Loops endlessly and sends a 255 and then a 0 over UART to the R31JP
+void sendSquareWave() {
+    while (1) {
+        UART_1_PutChar(255);
+        // Wait for it to send
+        while(~UART_1_ReadTxStatus() & UART_1_TX_STS_COMPLETE);
+        CyDelay(1000);
+        UART_1_PutChar(0);
+        while(~UART_1_ReadTxStatus() & UART_1_TX_STS_COMPLETE);
+        CyDelay(1000);
+    }
+}
+
+// Loops endlessly, echoing characters received from R31JP
+void echoR31JP() {
+    uint8 r31jpByte;
+    uint8 maskedByte;
+    uint8 mask = 24; // arbitrary
+    while (1) {
+        // Wait for character
+        while(~UART_1_ReadRxStatus() & UART_1_RX_STS_FIFO_NOTEMPTY); 
+        r31jpByte = UART_1_GetChar();
+        // XOR it twice just to take up (a tiny bit of) time and fake the "encryption"
+        maskedByte = r31jpByte ^ mask ^ mask;
+        LCD_Char_1_ClearDisplay();
+        LCD_Char_1_PrintNumber(r31jpByte);
+        LCD_Char_1_PrintString("  ");
+        LCD_Char_1_PrintNumber(maskedByte);
+        UART_1_PutChar(maskedByte);
+    }
+}
 
 /***********/
 /* HELPERS */

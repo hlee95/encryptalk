@@ -1,9 +1,0 @@
-C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\RF_Test.cydsn\RF_Test.cyprj|19e0e258-255b-4d78-858f-34207b7c8db7
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|273a4597-71f9-4377-9a8a-2b211bb36c75
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|151f14d9-a306-4771-a027-49eadfd02178
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|bb2c9280-157b-4c6d-9021-b33cb03c80b5
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|b942615f-bb44-42b2-a52c-93ddc79321b0
-C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\MiniPsocRF.cyprj|a0fce5b7-e307-425e-a7a7-41ce511753b3
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\dev\psoc3\AnalogDevice\PSoC35AnalogDevice.cylib\PSoC35AnalogDevice.cyprj|e3223cb0-78f0-4239-af98-e5adfd4e28ae
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\default\CyReferenceLibrary\CyReferenceLibrary.cylib\CyReferenceLibrary.cyprj|eb3cb41e-3854-48ae-9099-c698bde08856
-C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\USBFS_UART01.cydsn\USBFS_UART01.cyprj|a7998af6-6d52-4ee0-b075-7329a8ac38db

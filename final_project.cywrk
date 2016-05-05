@@ -3,12 +3,13 @@
 <!--This file is machine generated and read. It is not intended to be edited by hand.-->
 <!--Due to this, there is no schema for this file.-->
 <CyGuid_2867d519-54d2-4c01-9830-c51cb08bc3dd type_name="CyDesigner.Common.ProjMgmt.Model.CyPrjMgmtWrkspc" version="5" xml_contents_version="3" name="final_project" persistent="" platform="NOT_USED">
-<current_project name=".\MiniPsocRF.cydsn\MiniPsocRF.cyprj" />
+<current_project name=".\RF_Test.cydsn\RF_Test.cyprj" />
 <wrkspc_folders />
 <files />
 <projects>
 <v>.\RF_Test.cydsn\RF_Test.cyprj</v>
 <v>.\MiniPsocRF.cydsn\MiniPsocRF.cyprj</v>
+<v>..\..\..\Downloads\RS232.cydsn\RS232.cyprj</v>
 </projects>
 <workspace_id v="1e9d89d8-9f24-4c6b-962c-4b8e6bed826c" />
 <WriteAppVersionLastSavedWith v="3.3.0.7343" />

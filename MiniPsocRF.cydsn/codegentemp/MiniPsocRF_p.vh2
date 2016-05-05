@@ -1,5 +1,5 @@
 -- Project:   MiniPsocRF
--- Generated: 05/04/2016 15:53:37
+-- Generated: 05/04/2016 20:45:57
 -- PSoC Creator  3.3 CP2
 
 ENTITY MiniPsocRF IS
@@ -43,11 +43,11 @@ ARCHITECTURE __DEFAULT__ OF MiniPsocRF IS
     SIGNAL MOSI(0)__PA : bit;
     SIGNAL Net_15 : bit;
     SIGNAL Net_20 : bit;
-    SIGNAL Net_38 : bit;
     SIGNAL Net_45 : bit;
     SIGNAL Net_46 : bit;
     SIGNAL Net_48 : bit;
     SIGNAL Net_62 : bit;
+    SIGNAL Net_82 : bit;
     SIGNAL Pin_1(0)__PA : bit;
     SIGNAL Rx_1(0)__PA : bit;
     SIGNAL SCLK(0)__PA : bit;
@@ -1832,7 +1832,7 @@ BEGIN
         GENERIC MAP(
             int_type => "10")
         PORT MAP(
-            interrupt => Net_38,
+            interrupt => Net_82,
             clock => ClockBlock_BUS_CLK);
 
     \ADC_DelSig_1:DEC\:decimatorcell
@@ -1846,7 +1846,7 @@ BEGIN
             mod_dat_0 => \ADC_DelSig_1:mod_dat_0\,
             ext_start => __ONE__,
             modrst => \ADC_DelSig_1:mod_reset\,
-            interrupt => Net_38);
+            interrupt => Net_82);
 
     __ONE__:macrocell
         GENERIC MAP(

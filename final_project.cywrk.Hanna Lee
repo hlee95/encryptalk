@@ -13,10 +13,9 @@
 <v>Output</v>
 </TreeKeys>
 <TreeStates>
-<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="final_project\RF_Test\Header Files\nrf.h">
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="final_project\RF_Test">
 <ExpandedNodeIds>
 <v>final_project</v>
-<v>final_project\MiniPsocRF</v>
 <v>final_project\MiniPsocRF\TopDesign</v>
 <v>final_project\MiniPsocRF\MiniPsocRF.cydwr</v>
 <v>final_project\MiniPsocRF\Header Files</v>
@@ -209,6 +208,9 @@
 <v>final_project\RF_Test\Generated_Source\PSoC5\Pin_6\Pin_6.c</v>
 <v>final_project\RF_Test\Generated_Source\PSoC5\Pin_6\Pin_6.h</v>
 <v>final_project\RF_Test\Generated_Source\PSoC5\Pin_6\Pin_6_aliases.h</v>
+<v>final_project\RF_Test\Generated_Source\PSoC5\rx_int</v>
+<v>final_project\RF_Test\Generated_Source\PSoC5\rx_int\rx_int.c</v>
+<v>final_project\RF_Test\Generated_Source\PSoC5\rx_int\rx_int.h</v>
 <v>final_project\RF_Test\Generated_Source\PSoC5\SPIM_1</v>
 <v>final_project\RF_Test\Generated_Source\PSoC5\SPIM_1\SPIM_1.c</v>
 <v>final_project\RF_Test\Generated_Source\PSoC5\SPIM_1\SPIM_1.h</v>
@@ -218,6 +220,9 @@
 <v>final_project\RF_Test\Generated_Source\PSoC5\SPIM_1_IntClock</v>
 <v>final_project\RF_Test\Generated_Source\PSoC5\SPIM_1_IntClock\SPIM_1_IntClock.c</v>
 <v>final_project\RF_Test\Generated_Source\PSoC5\SPIM_1_IntClock\SPIM_1_IntClock.h</v>
+<v>final_project\RF_Test\Generated_Source\PSoC5\tx_int</v>
+<v>final_project\RF_Test\Generated_Source\PSoC5\tx_int\tx_int.c</v>
+<v>final_project\RF_Test\Generated_Source\PSoC5\tx_int\tx_int.h</v>
 <v>final_project\RF_Test\Generated_Source\PSoC5\UART_1</v>
 <v>final_project\RF_Test\Generated_Source\PSoC5\UART_1\UART_1.c</v>
 <v>final_project\RF_Test\Generated_Source\PSoC5\UART_1\UART_1.h</v>
@@ -247,29 +252,110 @@
 <v>final_project\RF_Test\Generated_Source\PSoC5\cyfitterrv.inc</v>
 <v>final_project\RF_Test\Generated_Source\PSoC5\cymetadata.c</v>
 <v>final_project\RF_Test\Generated_Source\PSoC5\project.h</v>
+<v>final_project\RS232</v>
+<v>final_project\RS232\TopDesign</v>
+<v>final_project\RS232\RS232.cydwr</v>
+<v>final_project\RS232\Header Files</v>
+<v>final_project\RS232\Header Files\device.h</v>
+<v>final_project\RS232\Source Files</v>
+<v>final_project\RS232\Source Files\main.c</v>
+<v>final_project\RS232\Generated_Source</v>
+<v>final_project\RS232\Generated_Source\PSoC5</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot\cm3gcc.ld</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot\Cm3Iar.icf</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot\Cm3RealView.scat</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot\Cm3Start.c</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot\core_cm3.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot\core_cm3_psoc5.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot\core_cmFunc.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot\core_cmInstr.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot\CyBootAsmGnu.s</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot\CyBootAsmIar.s</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot\CyBootAsmRv.s</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot\CyDmac.c</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot\CyDmac.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot\CyFlash.c</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot\CyFlash.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot\CyLib.c</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot\CyLib.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot\cypins.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot\cyPm.c</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot\cyPm.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot\CySpc.c</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot\CySpc.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot\cytypes.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cy_boot\cyutils.c</v>
+<v>final_project\RS232\Generated_Source\PSoC5\LCD</v>
+<v>final_project\RS232\Generated_Source\PSoC5\LCD\LCD.c</v>
+<v>final_project\RS232\Generated_Source\PSoC5\LCD\LCD.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\LCD\LCD_PM.c</v>
+<v>final_project\RS232\Generated_Source\PSoC5\LCD_LCDPort</v>
+<v>final_project\RS232\Generated_Source\PSoC5\LCD_LCDPort\LCD_LCDPort.c</v>
+<v>final_project\RS232\Generated_Source\PSoC5\LCD_LCDPort\LCD_LCDPort.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\LCD_LCDPort\LCD_LCDPort_aliases.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\rx_int</v>
+<v>final_project\RS232\Generated_Source\PSoC5\rx_int\rx_int.c</v>
+<v>final_project\RS232\Generated_Source\PSoC5\rx_int\rx_int.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\TX</v>
+<v>final_project\RS232\Generated_Source\PSoC5\TX\TX.c</v>
+<v>final_project\RS232\Generated_Source\PSoC5\TX\TX.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\TX\TX_aliases.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\tx_int</v>
+<v>final_project\RS232\Generated_Source\PSoC5\tx_int\tx_int.c</v>
+<v>final_project\RS232\Generated_Source\PSoC5\tx_int\tx_int.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\UART</v>
+<v>final_project\RS232\Generated_Source\PSoC5\UART\UART.c</v>
+<v>final_project\RS232\Generated_Source\PSoC5\UART\UART.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\UART\UART_BOOT.c</v>
+<v>final_project\RS232\Generated_Source\PSoC5\UART\UART_INT.c</v>
+<v>final_project\RS232\Generated_Source\PSoC5\UART\UART_PM.c</v>
+<v>final_project\RS232\Generated_Source\PSoC5\UART_IntClock</v>
+<v>final_project\RS232\Generated_Source\PSoC5\UART_IntClock\UART_IntClock.c</v>
+<v>final_project\RS232\Generated_Source\PSoC5\UART_IntClock\UART_IntClock.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cycodeshareexport.ld</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cycodeshareimport.ld</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cycodeshareimport.scat</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cydevice.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cydevice_trm.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cydevicegnu.inc</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cydevicegnu_trm.inc</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cydeviceiar.inc</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cydeviceiar_trm.inc</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cydevicerv.inc</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cydevicerv_trm.inc</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cydisabledsheets.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cyfitter.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cyfitter_cfg.c</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cyfitter_cfg.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cyfittergnu.inc</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cyfitteriar.inc</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cyfitterrv.inc</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cymetadata.c</v>
+<v>final_project\RS232\Generated_Source\PSoC5\project.h</v>
 </ExpandedNodeIds>
 <VisibleNodeIds>
-<v>final_project\MiniPsocRF\Generated_Source\PSoC5\DAC_Output\DAC_Output.h</v>
-<v>final_project\MiniPsocRF\Generated_Source\PSoC5\DAC_Output\DAC_Output_aliases.h</v>
-<v>final_project\MiniPsocRF\Generated_Source\PSoC5\MISO</v>
-<v>final_project\MiniPsocRF\Generated_Source\PSoC5\MISO\MISO.c</v>
-<v>final_project\MiniPsocRF\Generated_Source\PSoC5\MISO\MISO.h</v>
-<v>final_project\MiniPsocRF\Generated_Source\PSoC5\MISO\MISO_aliases.h</v>
-<v>final_project\MiniPsocRF\Generated_Source\PSoC5\MOSI</v>
-<v>final_project\MiniPsocRF\Generated_Source\PSoC5\MOSI\MOSI.c</v>
-<v>final_project\MiniPsocRF\Generated_Source\PSoC5\MOSI\MOSI.h</v>
-<v>final_project\MiniPsocRF\Generated_Source\PSoC5\MOSI\MOSI_aliases.h</v>
-<v>final_project\MiniPsocRF\Generated_Source\PSoC5\Pin_1</v>
-<v>final_project\MiniPsocRF\Generated_Source\PSoC5\Pin_1\Pin_1.c</v>
-<v>final_project\MiniPsocRF\Generated_Source\PSoC5\Pin_1\Pin_1.h</v>
-<v>final_project\MiniPsocRF\Generated_Source\PSoC5\Pin_1\Pin_1_aliases.h</v>
-<v>final_project\MiniPsocRF\Generated_Source\PSoC5\SCLK</v>
-<v>final_project\MiniPsocRF\Generated_Source\PSoC5\SCLK\SCLK.c</v>
-<v>final_project\MiniPsocRF\Generated_Source\PSoC5\SCLK\SCLK.h</v>
-<v>final_project\MiniPsocRF\Generated_Source\PSoC5\SCLK\SCLK_aliases.h</v>
-<v>final_project\MiniPsocRF\Generated_Source\PSoC5\SPIM_1</v>
-<v>final_project\MiniPsocRF\Generated_Source\PSoC5\SPIM_1\SPIM_1.c</v>
-<v>final_project\MiniPsocRF\Generated_Source\PSoC5\SPIM_1\SPIM_1.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\UART_IntClock</v>
+<v>final_project\RS232\Generated_Source\PSoC5\UART_IntClock\UART_IntClock.c</v>
+<v>final_project\RS232\Generated_Source\PSoC5\UART_IntClock\UART_IntClock.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cycodeshareexport.ld</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cycodeshareimport.ld</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cycodeshareimport.scat</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cydevice.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cydevice_trm.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cydevicegnu.inc</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cydevicegnu_trm.inc</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cydeviceiar.inc</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cydeviceiar_trm.inc</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cydevicerv.inc</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cydevicerv_trm.inc</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cydisabledsheets.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cyfitter.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cyfitter_cfg.c</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cyfitter_cfg.h</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cyfittergnu.inc</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cyfitteriar.inc</v>
+<v>final_project\RS232\Generated_Source\PSoC5\cyfitterrv.inc</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 <CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
@@ -281,6 +367,9 @@
 <v>final_project\RF_Test</v>
 <v>final_project\RF_Test\TopDesign</v>
 <v>final_project\RF_Test\TopDesign\TopDesign.cysch</v>
+<v>final_project\RS232</v>
+<v>final_project\RS232\TopDesign</v>
+<v>final_project\RS232\TopDesign\TopDesign.cysch</v>
 </ExpandedNodeIds>
 <VisibleNodeIds>
 <v>final_project</v>
@@ -290,6 +379,9 @@
 <v>final_project\RF_Test</v>
 <v>final_project\RF_Test\TopDesign</v>
 <v>final_project\RF_Test\TopDesign\TopDesign.cysch</v>
+<v>final_project\RS232</v>
+<v>final_project\RS232\TopDesign</v>
+<v>final_project\RS232\TopDesign\TopDesign.cysch</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 <CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
@@ -368,10 +460,12 @@
 <v>final_project\RF_Test\CortexM3\ARM_GCC_493\Debug\Listing Files\Pin_4.lst</v>
 <v>final_project\RF_Test\CortexM3\ARM_GCC_493\Debug\Listing Files\Pin_5.lst</v>
 <v>final_project\RF_Test\CortexM3\ARM_GCC_493\Debug\Listing Files\Pin_6.lst</v>
+<v>final_project\RF_Test\CortexM3\ARM_GCC_493\Debug\Listing Files\rx_int.lst</v>
 <v>final_project\RF_Test\CortexM3\ARM_GCC_493\Debug\Listing Files\SPIM_1.lst</v>
 <v>final_project\RF_Test\CortexM3\ARM_GCC_493\Debug\Listing Files\SPIM_1_INT.lst</v>
 <v>final_project\RF_Test\CortexM3\ARM_GCC_493\Debug\Listing Files\SPIM_1_IntClock.lst</v>
 <v>final_project\RF_Test\CortexM3\ARM_GCC_493\Debug\Listing Files\SPIM_1_PM.lst</v>
+<v>final_project\RF_Test\CortexM3\ARM_GCC_493\Debug\Listing Files\tx_int.lst</v>
 <v>final_project\RF_Test\CortexM3\ARM_GCC_493\Debug\Listing Files\UART_1.lst</v>
 <v>final_project\RF_Test\CortexM3\ARM_GCC_493\Debug\Listing Files\UART_1_BOOT.lst</v>
 <v>final_project\RF_Test\CortexM3\ARM_GCC_493\Debug\Listing Files\UART_1_INT.lst</v>
@@ -383,6 +477,39 @@
 <v>final_project\RF_Test\RF_Test.gpdsc</v>
 <v>final_project\RF_Test\RF_Test.rpt</v>
 <v>final_project\RF_Test\RF_Test_timing.html</v>
+<v>final_project\RS232</v>
+<v>final_project\RS232\CortexM3</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\Listing Files</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\Listing Files\Cm3Start.lst</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\Listing Files\CyBootAsmGnu.lst</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\Listing Files\CyDmac.lst</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\Listing Files\cyfitter_cfg.lst</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\Listing Files\CyFlash.lst</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\Listing Files\CyLib.lst</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\Listing Files\cymetadata.lst</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\Listing Files\cyPm.lst</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\Listing Files\CySpc.lst</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\Listing Files\cyutils.lst</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\Listing Files\LCD.lst</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\Listing Files\LCD_LCDPort.lst</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\Listing Files\LCD_PM.lst</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\Listing Files\main.lst</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\Listing Files\rx_int.lst</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\Listing Files\TX.lst</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\Listing Files\tx_int.lst</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\Listing Files\UART.lst</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\Listing Files\UART_BOOT.lst</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\Listing Files\UART_INT.lst</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\Listing Files\UART_IntClock.lst</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\Listing Files\UART_PM.lst</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\RS232.elf</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\RS232.hex</v>
+<v>final_project\RS232\CortexM3\ARM_GCC_493\Debug\RS232.map</v>
+<v>final_project\RS232\RS232.gpdsc</v>
+<v>final_project\RS232\RS232.rpt</v>
+<v>final_project\RS232\RS232_timing.html</v>
 </ExpandedNodeIds>
 <VisibleNodeIds>
 <v>final_project</v>
@@ -432,10 +559,24 @@
 <v>final_project\RF_Test\System Reference Guides</v>
 <v>final_project\RF_Test\System Reference Guides\cy_boot_v5_30</v>
 <v>final_project\RF_Test\CharLCD_v2_20.pdf</v>
+<v>final_project\RF_Test\cy_isr_v1_70</v>
+<v>final_project\RF_Test\cy_isr_v1_70\cy_isr_v1_70.pdf</v>
 <v>final_project\RF_Test\cy_pins_v2_20</v>
 <v>final_project\RF_Test\cy_pins_v2_20\cy_pins_v2_20.pdf</v>
 <v>final_project\RF_Test\SPI_Master_v2_50.pdf</v>
 <v>final_project\RF_Test\UART_v2_50.pdf</v>
+<v>final_project\RS232</v>
+<v>final_project\RS232\PSoC 5 Architecture TRM</v>
+<v>final_project\RS232\CY8C58LP Family Datasheet</v>
+<v>final_project\RS232\System Reference Guides</v>
+<v>final_project\RS232\System Reference Guides\cy_boot_v5_30</v>
+<v>final_project\RS232\CharLCD_v2_20.pdf</v>
+<v>final_project\RS232\cy_isr_v1_70</v>
+<v>final_project\RS232\cy_isr_v1_70\cy_isr_v1_70.pdf</v>
+<v>final_project\RS232\cy_pins_v2_20</v>
+<v>final_project\RS232\cy_pins_v2_20\cy_pins_v2_20.pdf</v>
+<v>final_project\RS232\UART_v2_50.pdf</v>
+<v>final_project\RS232\ZeroTerminal.pdf</v>
 </ExpandedNodeIds>
 <VisibleNodeIds>
 <v>final_project</v>
@@ -456,8 +597,8 @@
 <v>final_project\RF_Test\System Reference Guides</v>
 <v>final_project\RF_Test\System Reference Guides\cy_boot_v5_30</v>
 <v>final_project\RF_Test\CharLCD_v2_20.pdf</v>
-<v>final_project\RF_Test\cy_pins_v2_20</v>
-<v>final_project\RF_Test\cy_pins_v2_20\cy_pins_v2_20.pdf</v>
+<v>final_project\RF_Test\cy_isr_v1_70</v>
+<v>final_project\RF_Test\cy_isr_v1_70\cy_isr_v1_70.pdf</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 </TreeStatesV2>
@@ -484,6 +625,11 @@
 <name v=".\RF_Test.cydsn\TopDesign\TopDesign.cysch" />
 <name v=".\RF_Test.cydsn\RF_Test.cydwr" />
 <name v=".\RF_Test.cydsn\main.c" />
+<name v=".\RF_Test.cydsn\nrf.h" />
+<name v=".\MiniPsocRF.cydsn\TopDesign\TopDesign.cysch" />
+<name v=".\MiniPsocRF.cydsn\MiniPsocRF.cydwr" />
+<name v=".\MiniPsocRF.cydsn\main.c" />
+<name v=".\MiniPsocRF.cydsn\nrf.h" />
 </OpenDocs>
 <config v="" />
 <AutoUpdate v="true" />

@@ -35,6 +35,8 @@
 #include "Pin_5.h"
 #include "Pin_6_aliases.h"
 #include "Pin_6.h"
+#include "tx_int.h"
+#include "rx_int.h"
 #include "LCD_Char_1_LCDPort_aliases.h"
 #include "LCD_Char_1_LCDPort.h"
 #include "UART_1_IntClock.h"

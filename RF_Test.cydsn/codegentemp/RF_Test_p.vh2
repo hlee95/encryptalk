@@ -1,5 +1,5 @@
 -- Project:   RF_Test
--- Generated: 04/29/2016 16:51:01
+-- Generated: 05/05/2016 14:11:27
 -- PSoC Creator  3.3 CP2
 
 ENTITY RF_Test IS
@@ -45,10 +45,12 @@ ARCHITECTURE __DEFAULT__ OF RF_Test IS
     SIGNAL Net_21 : bit;
     SIGNAL Net_26 : bit;
     SIGNAL Net_26_SYNCOUT : bit;
+    SIGNAL Net_28 : bit;
     SIGNAL Net_33 : bit;
     SIGNAL Net_36 : bit;
     SIGNAL Net_56 : bit;
     SIGNAL Net_57 : bit;
+    SIGNAL Net_65 : bit;
     SIGNAL Pin_1(0)__PA : bit;
     SIGNAL Pin_2(0)__PA : bit;
     SIGNAL Pin_3(0)__PA : bit;
@@ -418,6 +420,11 @@ ARCHITECTURE __DEFAULT__ OF RF_Test IS
     ATTRIBUTE udb_chain OF datapathcell : COMPONENT IS "ce0i,ce0,cl0i,cl0,z0i,z0,ff0i,ff0,ce1i,ce1,cl1i,cl1,z1i,z1,ff1i,ff1,cap0i,cap0,cap1i,cap1,ci,co_msb,sir,sol_msb,cfbi,cfbo,sil,sor,cmsbi,cmsbo";
     ATTRIBUTE chain_lsb OF datapathcell : COMPONENT IS "ce0i,cl0i,z0i,ff0i,ce1i,cl1i,z1i,ff1i,cap0i,cap1i,ci,sir,cfbi,sor,cmsbo";
     ATTRIBUTE chain_msb OF datapathcell : COMPONENT IS "ce0,cl0,z0,ff0,ce1,cl1,z1,ff1,cap0,cap1,co_msb,sol_msb,cfbo,sil,cmsbi";
+    COMPONENT interrupt
+        PORT (
+            interrupt : IN std_ulogic;
+            clock : IN std_ulogic);
+    END COMPONENT;
     COMPONENT iocell
         PORT (
             pin_input : IN std_ulogic;
@@ -1523,15 +1530,6 @@ BEGIN
             q => \UART_1:BUART:tx_status_2\,
             main_0 => \UART_1:BUART:tx_fifo_notfull\);
 
-    Rx_1(0)_SYNC:synccell
-        GENERIC MAP(
-            clk_inv => '0',
-            clken_mode => 1)
-        PORT MAP(
-            in => Net_26,
-            out => Net_26_SYNCOUT,
-            clock => ClockBlock_BUS_CLK);
-
     \UART_1:BUART:rx_counter_load\:macrocell
         GENERIC MAP(
             eqn_main => "(!main_0 * !main_1 * !main_2 * !main_3)",
@@ -1705,7 +1703,8 @@ BEGIN
             status_3 => \UART_1:BUART:tx_fifo_notfull\,
             status_2 => \UART_1:BUART:tx_status_2\,
             status_1 => \UART_1:BUART:tx_fifo_empty\,
-            status_0 => \UART_1:BUART:tx_status_0\);
+            status_0 => \UART_1:BUART:tx_status_0\,
+            interrupt => Net_65);
 
     \UART_1:BUART:sRX:RxShifter:u0\:datapathcell
         GENERIC MAP(
@@ -1785,7 +1784,8 @@ BEGIN
             status_3 => \UART_1:BUART:rx_status_3\,
             status_2 => open,
             status_1 => open,
-            status_0 => open);
+            status_0 => open,
+            interrupt => Net_28);
 
     \SPIM_1:BSPIM:BitCounter\:count7cell
         GENERIC MAP(
@@ -1883,6 +1883,20 @@ BEGIN
             f1_bus_stat_comb => \SPIM_1:BSPIM:rx_status_5\,
             f1_blk_stat_comb => \SPIM_1:BSPIM:rx_status_4\,
             busclk => ClockBlock_BUS_CLK);
+
+    tx_int:interrupt
+        GENERIC MAP(
+            int_type => "01")
+        PORT MAP(
+            interrupt => Net_65,
+            clock => ClockBlock_BUS_CLK);
+
+    rx_int:interrupt
+        GENERIC MAP(
+            int_type => "10")
+        PORT MAP(
+            interrupt => Net_28,
+            clock => ClockBlock_BUS_CLK);
 
     \UART_1:BUART:txn\:macrocell
         GENERIC MAP(
@@ -2220,6 +2234,15 @@ BEGIN
             main_6 => \SPIM_1:BSPIM:count_1\,
             main_7 => \SPIM_1:BSPIM:count_0\,
             main_8 => \SPIM_1:BSPIM:load_cond\);
+
+    Rx_1(0)_SYNC:synccell
+        GENERIC MAP(
+            clk_inv => '0',
+            clken_mode => 1)
+        PORT MAP(
+            in => Net_26,
+            out => Net_26_SYNCOUT,
+            clock => ClockBlock_BUS_CLK);
 
     \SPIM_1:BSPIM:ld_ident\:macrocell
         GENERIC MAP(

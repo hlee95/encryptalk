@@ -2,7 +2,7 @@
 --	Conversion of RF_Test.v to vh2:
 --
 --	Cypress Semiconductor - WARP Version 6.3 IR 41
---	Fri Apr 29 16:50:59 2016
+--	Thu May 05 14:11:25 2016
 --
 
 USE cypress.cypress.all;
@@ -58,7 +58,7 @@ SIGNAL \UART_1:BUART:reset_sr\ : bit;
 SIGNAL \UART_1:BUART:HalfDuplexSend_last\ : bit;
 SIGNAL Net_21 : bit;
 SIGNAL \UART_1:BUART:txn\ : bit;
-SIGNAL Net_27 : bit;
+SIGNAL Net_65 : bit;
 SIGNAL \UART_1:BUART:tx_interrupt_out\ : bit;
 SIGNAL Net_28 : bit;
 SIGNAL \UART_1:BUART:rx_interrupt_out\ : bit;
@@ -596,10 +596,6 @@ Net_21 <= (not \UART_1:BUART:txn\);
 
 \UART_1:BUART:tx_status_2\ <= (not \UART_1:BUART:tx_fifo_notfull\);
 
-Net_23D <= ((not \UART_1:BUART:reset_reg\ and \UART_1:BUART:tx_state_2\)
-	OR (not \UART_1:BUART:reset_reg\ and \UART_1:BUART:tx_state_0\)
-	OR (not \UART_1:BUART:reset_reg\ and \UART_1:BUART:tx_state_1\));
-
 \UART_1:BUART:tx_bitclk\\D\ <= ((not \UART_1:BUART:tx_state_2\ and \UART_1:BUART:tx_bitclk_enable_pre\)
 	OR (\UART_1:BUART:tx_state_0\ and \UART_1:BUART:tx_bitclk_enable_pre\)
 	OR (\UART_1:BUART:tx_state_1\ and \UART_1:BUART:tx_bitclk_enable_pre\));
@@ -714,9 +710,9 @@ Net_23D <= ((not \UART_1:BUART:reset_reg\ and \UART_1:BUART:tx_state_2\)
 	OR (not \SPIM_1:BSPIM:state_2\ and not \SPIM_1:BSPIM:state_1\ and \SPIM_1:BSPIM:state_0\));
 
 \SPIM_1:BSPIM:state_1\\D\ <= ((not \SPIM_1:BSPIM:state_2\ and not \SPIM_1:BSPIM:state_0\ and \SPIM_1:BSPIM:state_1\ and \SPIM_1:BSPIM:count_0\)
-	OR (\SPIM_1:BSPIM:state_1\ and \SPIM_1:BSPIM:state_0\ and \SPIM_1:BSPIM:count_1\)
-	OR (not \SPIM_1:BSPIM:state_2\ and not \SPIM_1:BSPIM:count_0\ and \SPIM_1:BSPIM:state_1\ and \SPIM_1:BSPIM:count_2\)
-	OR (not \SPIM_1:BSPIM:state_2\ and not \SPIM_1:BSPIM:count_2\ and not \SPIM_1:BSPIM:count_1\ and \SPIM_1:BSPIM:state_1\)
+	OR (not \SPIM_1:BSPIM:count_2\ and \SPIM_1:BSPIM:state_1\ and \SPIM_1:BSPIM:state_0\)
+	OR (not \SPIM_1:BSPIM:state_2\ and not \SPIM_1:BSPIM:count_1\ and not \SPIM_1:BSPIM:count_0\ and \SPIM_1:BSPIM:state_1\)
+	OR (not \SPIM_1:BSPIM:state_2\ and \SPIM_1:BSPIM:state_1\ and \SPIM_1:BSPIM:count_2\ and \SPIM_1:BSPIM:count_1\)
 	OR (not \SPIM_1:BSPIM:state_2\ and not \SPIM_1:BSPIM:state_0\ and \SPIM_1:BSPIM:state_1\ and \SPIM_1:BSPIM:ld_ident\)
 	OR (\SPIM_1:BSPIM:state_1\ and \SPIM_1:BSPIM:state_0\ and \SPIM_1:BSPIM:tx_status_1\)
 	OR (not \SPIM_1:BSPIM:state_1\ and not \SPIM_1:BSPIM:state_0\ and \SPIM_1:BSPIM:state_2\)
@@ -916,7 +912,7 @@ Pin_1:cy_psoc3_pins_v1_10
 		id=>"b0162966-0060-4af5-82d1-fcb491ad7619/be0a0e37-ad17-42ca-b5a1-1a654d736358",
 		source_clock_id=>"",
 		divisor=>0,
-		period=>"2170138888.88889",
+		period=>"13020833333.3333",
 		is_direct=>'0',
 		is_digital=>'1')
 	PORT MAP(clock_out=>\UART_1:Net_9\,
@@ -1107,7 +1103,7 @@ Pin_1:cy_psoc3_pins_v1_10
 		clock=>\UART_1:BUART:clock_op\,
 		status=>(zero, zero, zero, \UART_1:BUART:tx_fifo_notfull\,
 			\UART_1:BUART:tx_status_2\, \UART_1:BUART:tx_fifo_empty\, \UART_1:BUART:tx_status_0\),
-		interrupt=>\UART_1:BUART:tx_interrupt_out\);
+		interrupt=>Net_65);
 \UART_1:BUART:sRX:RxShifter:u0\:cy_psoc3_dp
 	GENERIC MAP(cy_dpconfig=>"0000000000000000000000000000000000000000000000000000001001000000000100000000000000010000001100000001000000000000000100100001000011111111000000001111111111111111101000000110001001000001111100000000000000001100",
 		d0_init=>"00000000",
@@ -1215,7 +1211,7 @@ Pin_1:cy_psoc3_pins_v1_10
 		clock=>\UART_1:BUART:clock_op\,
 		status=>(zero, \UART_1:BUART:rx_status_5\, \UART_1:BUART:rx_status_4\, \UART_1:BUART:rx_status_3\,
 			\UART_1:BUART:rx_status_2\, zero, zero),
-		interrupt=>\UART_1:BUART:rx_interrupt_out\);
+		interrupt=>Net_28);
 Rx_1:cy_psoc3_pins_v1_10
 	GENERIC MAP(id=>"1425177d-0d0e-4468-8bcc-e638e5509a9b",
 		drive_mode=>"001",
@@ -1838,6 +1834,12 @@ Pin_6:cy_psoc3_pins_v1_10
 		out_clock_en=>tmpOE__Pin_1_net_0,
 		out_reset=>zero,
 		interrupt=>tmpINTERRUPT_0__Pin_6_net_0);
+tx_int:cy_isr_v1_0
+	GENERIC MAP(int_type=>"01")
+	PORT MAP(int_signal=>Net_65);
+rx_int:cy_isr_v1_0
+	GENERIC MAP(int_type=>"10")
+	PORT MAP(int_signal=>Net_28);
 \UART_1:BUART:reset_reg\:cy_dff
 	PORT MAP(d=>zero,
 		clk=>\UART_1:BUART:clock_op\,
@@ -1859,7 +1861,7 @@ Pin_6:cy_psoc3_pins_v1_10
 		clk=>\UART_1:BUART:clock_op\,
 		q=>\UART_1:BUART:tx_state_2\);
 Net_23:cy_dff
-	PORT MAP(d=>Net_23D,
+	PORT MAP(d=>zero,
 		clk=>\UART_1:BUART:clock_op\,
 		q=>Net_23);
 \UART_1:BUART:tx_bitclk\:cy_dff

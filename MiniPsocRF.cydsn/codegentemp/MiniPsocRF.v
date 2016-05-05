@@ -1,6 +1,6 @@
 // ======================================================================
 // MiniPsocRF.v generated from TopDesign.cysch
-// 05/04/2016 at 15:53
+// 05/04/2016 at 20:45
 // This file is auto generated. ANY EDITS YOU MAKE MAY BE LOST WHEN THIS FILE IS REGENERATED!!!
 // ======================================================================
 
@@ -470,7 +470,7 @@ module ADC_DelSig_v3_20_1 (
 
 endmodule
 
-// VDAC8_v1_90(Data_Source=0, Initial_Value=100, Strobe_Mode=0, VDAC_Range=0, VDAC_Speed=0, Voltage=255, CY_API_CALLBACK_HEADER_INCLUDE=#include "cyapicallbacks.h", CY_COMPONENT_NAME=VDAC8_v1_90, CY_CONTROL_FILE=<:default:>, CY_DATASHEET_FILE=<:default:>, CY_FITTER_NAME=VDAC8_1, CY_INSTANCE_SHORT_NAME=VDAC8_1, CY_MAJOR_VERSION=1, CY_MINOR_VERSION=90, CY_REMOVE=false, CY_SUPPRESS_API_GEN=false, CY_VERSION=PSoC Creator  3.3 CP2, INSTANCE_NAME=VDAC8_1, )
+// VDAC8_v1_90(Data_Source=0, Initial_Value=100, Strobe_Mode=0, VDAC_Range=4, VDAC_Speed=0, Voltage=1600, CY_API_CALLBACK_HEADER_INCLUDE=#include "cyapicallbacks.h", CY_COMPONENT_NAME=VDAC8_v1_90, CY_CONTROL_FILE=<:default:>, CY_DATASHEET_FILE=<:default:>, CY_FITTER_NAME=VDAC8_1, CY_INSTANCE_SHORT_NAME=VDAC8_1, CY_MAJOR_VERSION=1, CY_MINOR_VERSION=90, CY_REMOVE=false, CY_SUPPRESS_API_GEN=false, CY_VERSION=PSoC Creator  3.3 CP2, INSTANCE_NAME=VDAC8_1, )
 module VDAC8_v1_90_2 (
     strobe,
     data,
@@ -622,44 +622,44 @@ module top ;
           wire  Net_62;
           wire  Net_46;
           wire  Net_45;
-          wire [7:0] Net_43;
-          wire  Net_42;
-          wire  Net_41;
-    electrical  Net_40;
-          wire  Net_39;
-          wire  Net_38;
-          wire  Net_37;
-    electrical  Net_36;
+          wire [7:0] Net_104;
+          wire  Net_103;
+          wire  Net_85;
+    electrical  Net_84;
+          wire  Net_83;
+          wire  Net_82;
+          wire  Net_81;
+    electrical  Net_80;
     electrical  Net_35;
-          wire  Net_26;
-          wire  Net_25;
-          wire  Net_24;
-          wire  Net_23;
-          wire  Net_22;
-          wire  Net_21;
+          wire  Net_96;
+          wire  Net_95;
+          wire  Net_94;
+          wire  Net_93;
+          wire  Net_92;
+          wire  Net_91;
           wire  Net_20;
-          wire  Net_19;
-          wire  Net_18;
-          wire  Net_17;
-          wire  Net_16;
+          wire  Net_90;
+          wire  Net_89;
+          wire  Net_88;
+          wire  Net_87;
           wire  Net_15;
-          wire  Net_14;
+          wire  Net_86;
     electrical  Net_73;
 
     UART_v2_50_0 UART_1 (
         .cts_n(1'b0),
         .tx(Net_15),
-        .rts_n(Net_16),
-        .tx_en(Net_17),
+        .rts_n(Net_87),
+        .tx_en(Net_88),
         .clock(1'b0),
         .reset(1'b0),
         .rx(Net_20),
-        .tx_interrupt(Net_21),
-        .rx_interrupt(Net_22),
-        .tx_data(Net_23),
-        .tx_clk(Net_24),
-        .rx_data(Net_25),
-        .rx_clk(Net_26));
+        .tx_interrupt(Net_91),
+        .rx_interrupt(Net_92),
+        .tx_data(Net_93),
+        .tx_clk(Net_94),
+        .rx_data(Net_95),
+        .rx_clk(Net_96));
     defparam UART_1.Address1 = 0;
     defparam UART_1.Address2 = 0;
     defparam UART_1.EnIntRXInterrupt = 0;
@@ -899,11 +899,11 @@ module top ;
 
     ADC_DelSig_v3_20_1 ADC_DelSig_1 (
         .vplus(Net_35),
-        .vminus(Net_36),
+        .vminus(Net_80),
         .soc(1'b1),
-        .eoc(Net_38),
+        .eoc(Net_82),
         .aclk(1'b0),
-        .nVref(Net_40),
+        .nVref(Net_84),
         .mi(1'b0));
 
     VDAC8_v1_90_2 VDAC8_1 (

@@ -51,6 +51,10 @@
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\RF_Test.cydsn\codegentemp\Pin_6_aliases.h" value="NONE;Pin_6" />
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\RF_Test.cydsn\codegentemp\Pin_6.c" value="ARM_C_FILE;Pin_6" />
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\RF_Test.cydsn\codegentemp\Pin_6.h" value="NONE;Pin_6" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\RF_Test.cydsn\codegentemp\tx_int.c" value="ARM_C_FILE;tx_int" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\RF_Test.cydsn\codegentemp\tx_int.h" value="NONE;tx_int" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\RF_Test.cydsn\codegentemp\rx_int.c" value="ARM_C_FILE;rx_int" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\RF_Test.cydsn\codegentemp\rx_int.h" value="NONE;rx_int" />
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\RF_Test.cydsn\codegentemp\LCD_Char_1_LCDPort_aliases.h" value="NONE;LCD_Char_1_LCDPort" />
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\RF_Test.cydsn\codegentemp\LCD_Char_1_LCDPort.c" value="ARM_C_FILE;LCD_Char_1_LCDPort" />
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\RF_Test.cydsn\codegentemp\LCD_Char_1_LCDPort.h" value="NONE;LCD_Char_1_LCDPort" />
