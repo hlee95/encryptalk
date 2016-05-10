@@ -140,6 +140,10 @@
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\ADC_DelSig_1_theACLK.h</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\SPIM_1_IntClock.c</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\SPIM_1_IntClock.h</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\tx_int.c</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\tx_int.h</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\rx_int.c</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC5\rx_int.h</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\Export\ARM_GCC_Generic">

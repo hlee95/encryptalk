@@ -14,10 +14,15 @@
 #include <stdio.h>
 
 // Declare functions
+void nrfTest();
 uint8 readRegister(uint8 reg);
 void writeRegister(uint8 reg, uint8 data);
+
 void adcToDac();
+void dacSquareWave();
+
 void echoUART();
+
 void setup();
 void blink();
 void printByte(uint8 byte);
@@ -37,16 +42,42 @@ int main()
 
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
     setup();
-    VDAC8_1_Wakeup();
     for(;;)
     {
+        // Echo values over serial to PC
+        // echoUART();
+        
+        // Test reading and writing to registers in NRF24L01
+        nrfTest();
+        
         // Ferry values from the ADC to the DAC to test the playback system
         // adcToDac();
-        VDAC8_1_SetValue(255);
-        CyDelay(1);
-        VDAC8_1_SetValue(0);
-        CyDelay(1);
+        // Write a square wave to the DAC
+        // dacSquareWave();
     }
+}
+
+void nrfTest() {
+    uint8 nrfByte;
+    // Wait for Rx FIFO to be not empty
+    while(~UART_1_ReadRxStatus() & UART_1_RX_STS_FIFO_NOTEMPTY);
+    psocByte = UART_1_GetChar();
+    
+    // Read CONFIG register
+    print("Reading...");
+    nrfByte = readRegister(CONFIG);
+    // Write to the CONFIG register
+    print("Writing...");
+    writeRegister(CONFIG, 0x09);
+    // Read CONFIG register again
+    print("Reading again...");
+    nrfByte = readRegister(CONFIG);
+    print("Echo...");
+    UART_1_PutChar(psocByte);
+    print("");
+    // Wait for transmission to complete
+    while(~UART_1_ReadTxStatus() & UART_1_TX_STS_COMPLETE);
+    
 }
 
 // Reads a register from the NRF24L01
@@ -61,6 +92,7 @@ uint8 readRegister(uint8 reg) {
     SPIM_1_WriteTxData(0xff);
     // First byte is the status byte
     statusByte = SPIM_1_ReadRxData();
+    printByte(statusByte);
     // Second byte is the contents of the register.
     temp = SPIM_1_ReadRxData();
     printByte(temp);
@@ -102,6 +134,17 @@ void adcToDac() {
         // Write DAC value
         VDAC8_1_SetValue(adcValue);
     }  
+}
+
+// Writes a square wave to the DAC
+void dacSquareWave() {
+    VDAC8_1_Wakeup();
+    while(1) {
+        VDAC8_1_SetValue(255);
+        CyDelay(1);
+        VDAC8_1_SetValue(0);
+        CyDelay(1);   
+    }
 }
 
 // Waits for and echoes one character from the PC

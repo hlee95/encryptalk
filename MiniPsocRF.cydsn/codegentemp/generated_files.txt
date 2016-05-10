@@ -61,6 +61,10 @@
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\DAC_Output_aliases.h" value="NONE;DAC_Output" />
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\DAC_Output.c" value="ARM_C_FILE;DAC_Output" />
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\DAC_Output.h" value="NONE;DAC_Output" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\tx_int.c" value="ARM_C_FILE;tx_int" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\tx_int.h" value="NONE;tx_int" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\rx_int.c" value="ARM_C_FILE;rx_int" />
+  <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\rx_int.h" value="NONE;rx_int" />
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\UART_1_IntClock.c" value="ARM_C_FILE;UART_1_IntClock" />
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\UART_1_IntClock.h" value="NONE;UART_1_IntClock" />
   <file name="C:\Users\Hanna Lee\Documents\PSoC Creator\final_project\MiniPsocRF.cydsn\codegentemp\ADC_DelSig_1_AMux.c" value="ARM_C_FILE;ADC_DelSig_1_AMux" />

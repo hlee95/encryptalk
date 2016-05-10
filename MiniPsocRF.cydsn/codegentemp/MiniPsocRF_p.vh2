@@ -1,5 +1,5 @@
 -- Project:   MiniPsocRF
--- Generated: 05/04/2016 20:45:57
+-- Generated: 05/05/2016 19:27:23
 -- PSoC Creator  3.3 CP2
 
 ENTITY MiniPsocRF IS
@@ -48,6 +48,8 @@ ARCHITECTURE __DEFAULT__ OF MiniPsocRF IS
     SIGNAL Net_48 : bit;
     SIGNAL Net_62 : bit;
     SIGNAL Net_82 : bit;
+    SIGNAL Net_91 : bit;
+    SIGNAL Net_92 : bit;
     SIGNAL Pin_1(0)__PA : bit;
     SIGNAL Rx_1(0)__PA : bit;
     SIGNAL SCLK(0)__PA : bit;
@@ -596,12 +598,12 @@ BEGIN
             dclk_0 => \ADC_DelSig_1:Net_93_local\,
             dclk_glb_1 => \SPIM_1:Net_276\,
             dclk_1 => \SPIM_1:Net_276_local\,
-            dclk_glb_2 => \UART_1:Net_9\,
-            dclk_2 => \UART_1:Net_9_local\,
             aclk_glb_0 => \ADC_DelSig_1:Net_488\,
             aclk_0 => \ADC_DelSig_1:Net_488_local\,
             clk_a_dig_glb_0 => \ADC_DelSig_1:Net_488_adig\,
             clk_a_dig_0 => \ADC_DelSig_1:Net_488_adig_local\,
+            dclk_glb_2 => \UART_1:Net_9\,
+            dclk_2 => \UART_1:Net_9_local\,
             aclk_glb_ff_0 => \ClockBlock.aclk_glb_ff_0__sig\);
 
     Rx_1:logicalport
@@ -1723,7 +1725,8 @@ BEGIN
             status_3 => \UART_1:BUART:tx_fifo_notfull\,
             status_2 => \UART_1:BUART:tx_status_2\,
             status_1 => \UART_1:BUART:tx_fifo_empty\,
-            status_0 => \UART_1:BUART:tx_status_0\);
+            status_0 => \UART_1:BUART:tx_status_0\,
+            interrupt => Net_91);
 
     \UART_1:BUART:sRX:RxShifter:u0\:datapathcell
         GENERIC MAP(
@@ -1803,7 +1806,8 @@ BEGIN
             status_3 => \UART_1:BUART:rx_status_3\,
             status_2 => open,
             status_1 => open,
-            status_0 => open);
+            status_0 => open,
+            interrupt => Net_92);
 
     \ADC_DelSig_1:DSM\:dsmodcell
         GENERIC MAP(
@@ -1961,6 +1965,20 @@ BEGIN
             f1_bus_stat_comb => \SPIM_1:BSPIM:rx_status_5\,
             f1_blk_stat_comb => \SPIM_1:BSPIM:rx_status_4\,
             busclk => ClockBlock_BUS_CLK);
+
+    tx_int:interrupt
+        GENERIC MAP(
+            int_type => "10")
+        PORT MAP(
+            interrupt => Net_91,
+            clock => ClockBlock_BUS_CLK);
+
+    rx_int:interrupt
+        GENERIC MAP(
+            int_type => "10")
+        PORT MAP(
+            interrupt => Net_92,
+            clock => ClockBlock_BUS_CLK);
 
     \UART_1:BUART:txn\:macrocell
         GENERIC MAP(

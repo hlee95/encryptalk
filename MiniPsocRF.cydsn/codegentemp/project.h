@@ -40,6 +40,8 @@
 #include "ADC_Input.h"
 #include "DAC_Output_aliases.h"
 #include "DAC_Output.h"
+#include "tx_int.h"
+#include "rx_int.h"
 #include "UART_1_IntClock.h"
 #include "ADC_DelSig_1_AMux.h"
 #include "ADC_DelSig_1_Ext_CP_Clk.h"

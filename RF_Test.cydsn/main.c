@@ -41,6 +41,7 @@ void sendSquareWave();
 void echoR31JP();
 
 // Interrupt received for new Rx data on UART
+// Won't work unless the line rx_int_StartEx(RX_INT) is uncommented in setup()
 CY_ISR(RX_INT)
 {
     LCD_Char_1_PutChar(UART_1_ReadRxData());     // RX ISR
@@ -58,7 +59,7 @@ int main()
     {
         /* Sandbox Testing -- PSOC -> R31JP */
         // sendSquareWave();
-        echoR31JP();
+        // echoR31JP();
         
         
         /* NRF TESTING */

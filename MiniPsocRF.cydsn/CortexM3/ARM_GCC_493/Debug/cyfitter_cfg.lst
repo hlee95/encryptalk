@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
   30:.\Generated_Source\PSoC5/cyfitter_cfg.c ****     #define CYPACKED_ATTR __attribute__ ((packed))
   31:.\Generated_Source\PSoC5/cyfitter_cfg.c ****     #define CYALIGNED __attribute__ ((aligned))
   32:.\Generated_Source\PSoC5/cyfitter_cfg.c ****     #define CY_CFG_UNUSED __attribute__ ((unused))
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 2
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 2
 
 
   33:.\Generated_Source\PSoC5/cyfitter_cfg.c ****     #ifndef CY_CFG_SECTION
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
   87:.\Generated_Source\PSoC5/cyfitter_cfg.c **** #define CYCLOCKSTART_PLL_ERROR   3u
   88:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 
   89:.\Generated_Source\PSoC5/cyfitter_cfg.c **** #ifdef CY_NEED_CYCLOCKSTARTUPERROR
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 3
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 3
 
 
   90:.\Generated_Source\PSoC5/cyfitter_cfg.c **** /*******************************************************************************
@@ -178,10 +178,10 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  124:.\Generated_Source\PSoC5/cyfitter_cfg.c **** }
  125:.\Generated_Source\PSoC5/cyfitter_cfg.c **** #endif
  126:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 4
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 4
 
 
- 127:.\Generated_Source\PSoC5/cyfitter_cfg.c **** #define CY_CFG_BASE_ADDR_COUNT 21u
+ 127:.\Generated_Source\PSoC5/cyfitter_cfg.c **** #define CY_CFG_BASE_ADDR_COUNT 30u
  128:.\Generated_Source\PSoC5/cyfitter_cfg.c **** CYPACKED typedef struct
  129:.\Generated_Source\PSoC5/cyfitter_cfg.c **** {
  130:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	uint8 offset;
@@ -189,25 +189,25 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  132:.\Generated_Source\PSoC5/cyfitter_cfg.c **** } CYPACKED_ATTR cy_cfg_addrvalue_t;
  133:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 
  134:.\Generated_Source\PSoC5/cyfitter_cfg.c **** #define cy_cfg_addr_table ((const uint32 CYFAR *)0x48000000u)
- 135:.\Generated_Source\PSoC5/cyfitter_cfg.c **** #define cy_cfg_data_table ((const cy_cfg_addrvalue_t CYFAR *)0x48000054u)
+ 135:.\Generated_Source\PSoC5/cyfitter_cfg.c **** #define cy_cfg_data_table ((const cy_cfg_addrvalue_t CYFAR *)0x48000078u)
  136:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 
- 137:.\Generated_Source\PSoC5/cyfitter_cfg.c **** /* UDB_0_3_1_CONFIG Address: CYDEV_UCFG_B0_P5_U1_BASE Size (bytes): 128 */
- 138:.\Generated_Source\PSoC5/cyfitter_cfg.c **** #define BS_UDB_0_3_1_CONFIG_VAL ((const uint8 CYFAR *)0x4800046Cu)
+ 137:.\Generated_Source\PSoC5/cyfitter_cfg.c **** /* UDB_0_2_1_CONFIG Address: CYDEV_UCFG_B0_P4_U0_BASE Size (bytes): 128 */
+ 138:.\Generated_Source\PSoC5/cyfitter_cfg.c **** #define BS_UDB_0_2_1_CONFIG_VAL ((const uint8 CYFAR *)0x4800049Cu)
  139:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 
  140:.\Generated_Source\PSoC5/cyfitter_cfg.c **** /* UDB_0_0_0_CONFIG Address: CYDEV_UCFG_B1_P5_U0_BASE Size (bytes): 128 */
- 141:.\Generated_Source\PSoC5/cyfitter_cfg.c **** #define BS_UDB_0_0_0_CONFIG_VAL ((const uint8 CYFAR *)0x480004ECu)
+ 141:.\Generated_Source\PSoC5/cyfitter_cfg.c **** #define BS_UDB_0_0_0_CONFIG_VAL ((const uint8 CYFAR *)0x4800051Cu)
  142:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 
  143:.\Generated_Source\PSoC5/cyfitter_cfg.c **** /* IOPINS0_0 Address: CYREG_PRT0_DM0 Size (bytes): 8 */
- 144:.\Generated_Source\PSoC5/cyfitter_cfg.c **** #define BS_IOPINS0_0_VAL ((const uint8 CYFAR *)0x4800056Cu)
+ 144:.\Generated_Source\PSoC5/cyfitter_cfg.c **** #define BS_IOPINS0_0_VAL ((const uint8 CYFAR *)0x4800059Cu)
  145:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 
  146:.\Generated_Source\PSoC5/cyfitter_cfg.c **** /* IOPINS0_1 Address: CYREG_PRT1_DR Size (bytes): 10 */
- 147:.\Generated_Source\PSoC5/cyfitter_cfg.c **** #define BS_IOPINS0_1_VAL ((const uint8 CYFAR *)0x48000574u)
+ 147:.\Generated_Source\PSoC5/cyfitter_cfg.c **** #define BS_IOPINS0_1_VAL ((const uint8 CYFAR *)0x480005A4u)
  148:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 
  149:.\Generated_Source\PSoC5/cyfitter_cfg.c **** /* IOPINS0_2 Address: CYREG_PRT2_DM0 Size (bytes): 8 */
- 150:.\Generated_Source\PSoC5/cyfitter_cfg.c **** #define BS_IOPINS0_2_VAL ((const uint8 CYFAR *)0x48000580u)
+ 150:.\Generated_Source\PSoC5/cyfitter_cfg.c **** #define BS_IOPINS0_2_VAL ((const uint8 CYFAR *)0x480005B0u)
  151:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 
  152:.\Generated_Source\PSoC5/cyfitter_cfg.c **** /* CYDEV_CLKDIST_ACFG0_CFG0 Address: CYREG_CLKDIST_ACFG0_CFG0 Size (bytes): 4 */
- 153:.\Generated_Source\PSoC5/cyfitter_cfg.c **** #define BS_CYDEV_CLKDIST_ACFG0_CFG0_VAL ((const uint8 CYFAR *)0x48000588u)
+ 153:.\Generated_Source\PSoC5/cyfitter_cfg.c **** #define BS_CYDEV_CLKDIST_ACFG0_CFG0_VAL ((const uint8 CYFAR *)0x480005B8u)
  154:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 
  155:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 
  156:.\Generated_Source\PSoC5/cyfitter_cfg.c **** /*******************************************************************************
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
   54              		.cfi_offset 4, -16
   55              		.cfi_offset 5, -12
   56              		.cfi_offset 6, -8
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 5
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 5
 
 
   57              		.cfi_offset 7, -4
@@ -298,13 +298,13 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
   97              		.loc 1 175 0 discriminator 2
   98 002a 0137     		adds	r7, r7, #1
   99              	.LVL10:
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 6
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 6
 
 
  100              	.L4:
  175:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	{
  101              		.loc 1 175 0 is_stmt 0 discriminator 1
- 102 002c 142F     		cmp	r7, #20
+ 102 002c 1D2F     		cmp	r7, #29
  103 002e EBD9     		bls	.L7
  185:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 		}
  186:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	}
@@ -357,8 +357,8 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  214:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG8((void CYFAR *)(CYREG_CLKDIST_DCFG0_CFG0 + 0x2u), 0x50u);
  215:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG16((void CYFAR *)(CYREG_CLKDIST_DCFG1_CFG0), 0x000Bu);
  216:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG8((void CYFAR *)(CYREG_CLKDIST_DCFG1_CFG0 + 0x2u), 0x18u);
- 217:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG16((void CYFAR *)(CYREG_CLKDIST_DCFG2_CFG0), 0x0033u);
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 7
+ 217:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG16((void CYFAR *)(CYREG_CLKDIST_DCFG2_CFG0), 0x0138u);
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 7
 
 
  218:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG8((void CYFAR *)(CYREG_CLKDIST_DCFG2_CFG0 + 0x2u), 0x18u);
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  272:.\Generated_Source\PSoC5/cyfitter_cfg.c **** *
  273:.\Generated_Source\PSoC5/cyfitter_cfg.c **** * Parameters:
  274:.\Generated_Source\PSoC5/cyfitter_cfg.c **** *  void
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 8
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 8
 
 
  275:.\Generated_Source\PSoC5/cyfitter_cfg.c **** *
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  162 0034 CF010049 		.word	1224737231
  163 0038 6E580040 		.word	1073764462
  164 003c 0C510040 		.word	1073762572
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 9
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 9
 
 
  165              		.cfi_endproc
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  215              	.LFE1:
  216              		.size	CYCONFIGCPY, .-CYCONFIGCPY
  217              		.section	.text.ClockSetup,"ax",%progbits
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 10
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 10
 
 
  218              		.align	2
@@ -561,7 +561,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  213:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG8((void CYFAR *)(CYREG_CLKDIST_DCFG0_CFG0 + 0x2u), 0x50u);
  234              		.loc 1 213 0
  235 0002 0024     		movs	r4, #0
- 236 0004 314B     		ldr	r3, .L22
+ 236 0004 324B     		ldr	r3, .L22
  237 0006 1C80     		strh	r4, [r3]	@ movhi
  214:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG16((void CYFAR *)(CYREG_CLKDIST_DCFG1_CFG0), 0x000Bu);
  238              		.loc 1 214 0
@@ -573,177 +573,177 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  243 000e 0B22     		movs	r2, #11
  244 0010 0233     		adds	r3, r3, #2
  245 0012 1A80     		strh	r2, [r3]	@ movhi
- 216:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG16((void CYFAR *)(CYREG_CLKDIST_DCFG2_CFG0), 0x0033u);
+ 216:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG16((void CYFAR *)(CYREG_CLKDIST_DCFG2_CFG0), 0x0138u);
  246              		.loc 1 216 0
  247 0014 1823     		movs	r3, #24
- 248 0016 2E4A     		ldr	r2, .L22+4
+ 248 0016 2F4A     		ldr	r2, .L22+4
  249 0018 1370     		strb	r3, [r2]
  217:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG8((void CYFAR *)(CYREG_CLKDIST_DCFG2_CFG0 + 0x2u), 0x18u);
  250              		.loc 1 217 0
- 251 001a 3321     		movs	r1, #51
- 252 001c 0232     		adds	r2, r2, #2
- 253 001e 1180     		strh	r1, [r2]	@ movhi
+ 251 001a 4FF49C71 		mov	r1, #312
+ 252 001e 0232     		adds	r2, r2, #2
+ 253 0020 1180     		strh	r1, [r2]	@ movhi
  218:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 
  254              		.loc 1 218 0
- 255 0020 0232     		adds	r2, r2, #2
- 256 0022 1370     		strb	r3, [r2]
+ 255 0022 0232     		adds	r2, r2, #2
+ 256 0024 1370     		strb	r3, [r2]
  221:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 
  257              		.loc 1 221 0
- 258 0024 2B48     		ldr	r0, .L22+8
- 259 0026 2C49     		ldr	r1, .L22+12
- 260 0028 0422     		movs	r2, #4
- 261 002a FFF7FEFF 		bl	CYCONFIGCPY
+ 258 0026 2C48     		ldr	r0, .L22+8
+ 259 0028 2C49     		ldr	r1, .L22+12
+ 260 002a 0422     		movs	r2, #4
+ 261 002c FFF7FEFF 		bl	CYCONFIGCPY
  262              	.LVL19:
  224:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG8((void CYFAR *)(CYREG_CLKDIST_CR), 0x08u);
  263              		.loc 1 224 0
- 264 002e 0222     		movs	r2, #2
- 265 0030 2A4B     		ldr	r3, .L22+16
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 11
+ 264 0030 0222     		movs	r2, #2
+ 265 0032 2B4B     		ldr	r3, .L22+16
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 11
 
 
- 266 0032 1A70     		strb	r2, [r3]
+ 266 0034 1A70     		strb	r2, [r3]
  225:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 
  267              		.loc 1 225 0
- 268 0034 0822     		movs	r2, #8
- 269 0036 4FF04023 		mov	r3, #1073758208
- 270 003a 1A70     		strb	r2, [r3]
+ 268 0036 0822     		movs	r2, #8
+ 269 0038 4FF04023 		mov	r3, #1073758208
+ 270 003c 1A70     		strb	r2, [r3]
  228:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG8((void CYFAR *)(CYREG_IMO_TR1), (CY_GET_XTND_REG8((void CYFAR *)CYREG_FLSHID_CUST_
  271              		.loc 1 228 0
- 272 003c 0321     		movs	r1, #3
- 273 003e 03F50073 		add	r3, r3, #512
- 274 0042 1970     		strb	r1, [r3]
+ 272 003e 0321     		movs	r1, #3
+ 273 0040 03F50073 		add	r3, r3, #512
+ 274 0044 1970     		strb	r1, [r3]
  229:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 
  275              		.loc 1 229 0
- 276 0044 264B     		ldr	r3, .L22+20
- 277 0046 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 278 0048 DBB2     		uxtb	r3, r3
- 279 004a 2649     		ldr	r1, .L22+24
- 280 004c 0B70     		strb	r3, [r1]
+ 276 0046 274B     		ldr	r3, .L22+20
+ 277 0048 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 278 004a DBB2     		uxtb	r3, r3
+ 279 004c 2649     		ldr	r1, .L22+24
+ 280 004e 0B70     		strb	r3, [r1]
  232:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG16((void CYFAR *)(CYREG_FASTCLK_PLL_CFG0), 0x1251u);
  281              		.loc 1 232 0
- 282 004e 264B     		ldr	r3, .L22+28
- 283 0050 1A80     		strh	r2, [r3]	@ movhi
+ 282 0050 264B     		ldr	r3, .L22+28
+ 283 0052 1A80     		strh	r2, [r3]	@ movhi
  233:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	/* Wait up to 250us for the PLL to lock */
  284              		.loc 1 233 0
- 285 0052 41F25122 		movw	r2, #4689
- 286 0056 023B     		subs	r3, r3, #2
- 287 0058 1A80     		strh	r2, [r3]	@ movhi
+ 285 0054 41F25122 		movw	r2, #4689
+ 286 0058 023B     		subs	r3, r3, #2
+ 287 005a 1A80     		strh	r2, [r3]	@ movhi
  288              	.LVL20:
  236:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	{ 
  289              		.loc 1 236 0
- 290 005a 1925     		movs	r5, #25
- 291 005c 0CE0     		b	.L17
+ 290 005c 1925     		movs	r5, #25
+ 291 005e 0CE0     		b	.L17
  292              	.LVL21:
  293              	.L19:
  238:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 		CyDelayCycles(10u * 48u); /* Delay 10us based on 48MHz clock */
  294              		.loc 1 238 0 discriminator 4
- 295 005e 234B     		ldr	r3, .L22+32
- 296 0060 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 297 0062 03F00103 		and	r3, r3, #1
- 298 0066 43EA4404 		orr	r4, r3, r4, lsl #1
+ 295 0060 234B     		ldr	r3, .L22+32
+ 296 0062 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 297 0064 03F00103 		and	r3, r3, #1
+ 298 0068 43EA4404 		orr	r4, r3, r4, lsl #1
  299              	.LVL22:
- 300 006a 04F00304 		and	r4, r4, #3
+ 300 006c 04F00304 		and	r4, r4, #3
  301              	.LVL23:
  239:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	}
  302              		.loc 1 239 0 discriminator 4
- 303 006e 4FF4F070 		mov	r0, #480
- 304 0072 FFF7FEFF 		bl	CyDelayCycles
+ 303 0070 4FF4F070 		mov	r0, #480
+ 304 0074 FFF7FEFF 		bl	CyDelayCycles
  305              	.LVL24:
  236:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	{ 
  306              		.loc 1 236 0 discriminator 4
- 307 0076 013D     		subs	r5, r5, #1
+ 307 0078 013D     		subs	r5, r5, #1
  308              	.LVL25:
  309              	.L17:
  236:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	{ 
  310              		.loc 1 236 0 is_stmt 0 discriminator 1
- 311 0078 0DB1     		cbz	r5, .L18
+ 311 007a 0DB1     		cbz	r5, .L18
  236:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	{ 
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 12
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 12
 
 
  312              		.loc 1 236 0 discriminator 3
- 313 007a 032C     		cmp	r4, #3
- 314 007c EFD1     		bne	.L19
+ 313 007c 032C     		cmp	r4, #3
+ 314 007e EFD1     		bne	.L19
  315              	.L18:
  242:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	{
  316              		.loc 1 242 0 is_stmt 1
- 317 007e 15B9     		cbnz	r5, .L20
+ 317 0080 15B9     		cbnz	r5, .L20
  244:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	}
  318              		.loc 1 244 0
- 319 0080 0320     		movs	r0, #3
- 320 0082 FFF7FEFF 		bl	CyClockStartupError
+ 319 0082 0320     		movs	r0, #3
+ 320 0084 FFF7FEFF 		bl	CyClockStartupError
  321              	.LVL26:
  322              	.L20:
  248:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG8((void CYFAR *)(CYREG_CLKDIST_MSTR0), 0x07u);
  323              		.loc 1 248 0
- 324 0086 1A4B     		ldr	r3, .L22+36
- 325 0088 4FF48072 		mov	r2, #256
- 326 008c 1A80     		strh	r2, [r3]	@ movhi
+ 324 0088 1A4B     		ldr	r3, .L22+36
+ 325 008a 4FF48072 		mov	r2, #256
+ 326 008e 1A80     		strh	r2, [r3]	@ movhi
  249:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG8((void CYFAR *)(CYREG_CLKDIST_BCFG0), 0x00u);
  327              		.loc 1 249 0
- 328 008e 0722     		movs	r2, #7
- 329 0090 1A70     		strb	r2, [r3]
+ 328 0090 0722     		movs	r2, #7
+ 329 0092 1A70     		strb	r2, [r3]
  250:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG8((void CYFAR *)(CYREG_CLKDIST_BCFG2), 0x48u);
  330              		.loc 1 250 0
- 331 0092 0022     		movs	r2, #0
- 332 0094 1749     		ldr	r1, .L22+40
- 333 0096 0A70     		strb	r2, [r1]
+ 331 0094 0022     		movs	r2, #0
+ 332 0096 1849     		ldr	r1, .L22+40
+ 333 0098 0A70     		strb	r2, [r1]
  251:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG8((void CYFAR *)(CYREG_CLKDIST_MSTR0), 0x00u);
  334              		.loc 1 251 0
- 335 0098 4820     		movs	r0, #72
- 336 009a 0231     		adds	r1, r1, #2
- 337 009c 0870     		strb	r0, [r1]
+ 335 009a 4820     		movs	r0, #72
+ 336 009c 0231     		adds	r1, r1, #2
+ 337 009e 0870     		strb	r0, [r1]
  252:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG8((void CYFAR *)(CYREG_CLKDIST_LD), 0x02u);
  338              		.loc 1 252 0
- 339 009e 1A70     		strb	r2, [r3]
+ 339 00a0 1A70     		strb	r2, [r3]
  253:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG8((void CYFAR *)(CYREG_CLKDIST_DLY1), 0x04u);
  340              		.loc 1 253 0
- 341 00a0 0222     		movs	r2, #2
- 342 00a2 033B     		subs	r3, r3, #3
- 343 00a4 1A70     		strb	r2, [r3]
+ 341 00a2 0222     		movs	r2, #2
+ 342 00a4 033B     		subs	r3, r3, #3
+ 343 00a6 1A70     		strb	r2, [r3]
  254:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 
  344              		.loc 1 254 0
- 345 00a6 0422     		movs	r2, #4
- 346 00a8 0A33     		adds	r3, r3, #10
- 347 00aa 1A70     		strb	r2, [r3]
+ 345 00a8 0422     		movs	r2, #4
+ 346 00aa 0A33     		adds	r3, r3, #10
+ 347 00ac 1A70     		strb	r2, [r3]
  256:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG8((void CYFAR *)(CYREG_PM_ACT_CFG1), ((CY_GET_XTND_REG8((void CYFAR *)CYREG_PM_ACT_
  348              		.loc 1 256 0
- 349 00ac 124A     		ldr	r2, .L22+44
- 350 00ae 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
- 351 00b0 43F00703 		orr	r3, r3, #7
- 352 00b4 1370     		strb	r3, [r2]
+ 349 00ae 134A     		ldr	r2, .L22+44
+ 350 00b0 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 351 00b2 43F00703 		orr	r3, r3, #7
+ 352 00b6 1370     		strb	r3, [r2]
  257:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	CY_SET_XTND_REG8((void CYFAR *)(CYREG_PM_ACT_CFG0), ((CY_GET_XTND_REG8((void CYFAR *)CYREG_PM_ACT_
  353              		.loc 1 257 0
- 354 00b6 013A     		subs	r2, r2, #1
- 355 00b8 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
- 356 00ba 43F00103 		orr	r3, r3, #1
- 357 00be 1370     		strb	r3, [r2]
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 13
+ 354 00b8 013A     		subs	r2, r2, #1
+ 355 00ba 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 356 00bc 43F00103 		orr	r3, r3, #1
+ 357 00c0 1370     		strb	r3, [r2]
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 13
 
 
  258:.\Generated_Source\PSoC5/cyfitter_cfg.c **** }
  358              		.loc 1 258 0
- 359 00c0 013A     		subs	r2, r2, #1
- 360 00c2 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
- 361 00c4 43F08003 		orr	r3, r3, #128
- 362 00c8 1370     		strb	r3, [r2]
- 363 00ca 38BD     		pop	{r3, r4, r5, pc}
+ 359 00c2 013A     		subs	r2, r2, #1
+ 360 00c4 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 361 00c6 43F08003 		orr	r3, r3, #128
+ 362 00ca 1370     		strb	r3, [r2]
+ 363 00cc 38BD     		pop	{r3, r4, r5, pc}
  364              	.LVL27:
  365              	.L23:
- 366              		.align	2
+ 366 00ce 00BF     		.align	2
  367              	.L22:
- 368 00cc 80400040 		.word	1073758336
- 369 00d0 86400040 		.word	1073758342
- 370 00d4 00410040 		.word	1073758464
- 371 00d8 88050048 		.word	1207960968
- 372 00dc 00430040 		.word	1073758976
- 373 00e0 08010049 		.word	1224737032
- 374 00e4 A1460040 		.word	1073759905
- 375 00e8 22420040 		.word	1073758754
- 376 00ec 25420040 		.word	1073758757
- 377 00f0 04400040 		.word	1073758212
- 378 00f4 06400040 		.word	1073758214
- 379 00f8 A2430040 		.word	1073759138
+ 368 00d0 80400040 		.word	1073758336
+ 369 00d4 86400040 		.word	1073758342
+ 370 00d8 00410040 		.word	1073758464
+ 371 00dc B8050048 		.word	1207961016
+ 372 00e0 00430040 		.word	1073758976
+ 373 00e4 08010049 		.word	1224737032
+ 374 00e8 A1460040 		.word	1073759905
+ 375 00ec 22420040 		.word	1073758754
+ 376 00f0 25420040 		.word	1073758757
+ 377 00f4 04400040 		.word	1073758212
+ 378 00f8 06400040 		.word	1073758214
+ 379 00fc A2430040 		.word	1073759138
  380              		.cfi_endproc
  381              	.LFE5:
  382              		.size	ClockSetup, .-ClockSetup
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  310:.\Generated_Source\PSoC5/cyfitter_cfg.c **** void SetAnalogRoutingPumps(uint8 enabled)
  311:.\Generated_Source\PSoC5/cyfitter_cfg.c **** {
  391              		.loc 1 311 0
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 14
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 14
 
 
  392              		.cfi_startproc
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  326:.\Generated_Source\PSoC5/cyfitter_cfg.c ****    incompatible with other versions of PSoC Creator. */
  327:.\Generated_Source\PSoC5/cyfitter_cfg.c **** uint8 CYXDATA * const CYCODE ADC_DelSig_1_AMux__addrTable[2] = {
  328:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	(uint8 CYXDATA *)CYREG_DSM0_SW3, 
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 15
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 15
 
 
  329:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	(uint8 CYXDATA *)CY_AMUX_UNUSED, 
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  458              		.size	ADC_DelSig_1_AMux_Set, .-ADC_DelSig_1_AMux_Set
  459              		.section	.text.ADC_DelSig_1_AMux_Unset,"ax",%progbits
  460              		.align	2
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 16
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 16
 
 
  461              		.global	ADC_DelSig_1_AMux_Unset
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  493              		.size	ADC_DelSig_1_AMux_Unset, .-ADC_DelSig_1_AMux_Unset
  494              		.section	.text.cyfitter_cfg,"ax",%progbits
  495              		.align	2
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 17
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 17
 
 
  496              		.global	cyfitter_cfg
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  519 0006 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
  520 0008 43F00403 		orr	r3, r3, #4
  521 000c 1370     		strb	r3, [r2]
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 18
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 18
 
 
  522              	.LVL36:
@@ -1043,8 +1043,8 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  427:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 			{(void CYFAR *)(CYREG_PRT3_DR), 64u},
  428:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 			{(void CYFAR *)(CYREG_PRT12_DR), 16u},
  429:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 			{(void CYFAR *)(CYREG_PRT15_DR), 16u},
- 430:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 			{(void CYFAR *)(CYDEV_UCFG_B0_P0_U0_BASE), 2688u},
- 431:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 			{(void CYFAR *)(CYDEV_UCFG_B0_P5_ROUTE_BASE), 1280u},
+ 430:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 			{(void CYFAR *)(CYDEV_UCFG_B0_P0_U0_BASE), 2048u},
+ 431:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 			{(void CYFAR *)(CYDEV_UCFG_B0_P4_U1_BASE), 1920u},
  432:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 			{(void CYFAR *)(CYDEV_UCFG_B1_P2_U0_BASE), 1536u},
  433:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 			{(void CYFAR *)(CYDEV_UCFG_B1_P5_U1_BASE), 384u},
  434:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 			{(void CYFAR *)(CYDEV_UCFG_DSI0_BASE), 2560u},
@@ -1054,7 +1054,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  438:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 
  439:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 		static const cfg_memcpy_t CYCODE cfg_memcpy_list [] = {
  440:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 			/* dest, src, size */
- 441:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 			{(void CYFAR *)(CYDEV_UCFG_B0_P5_U1_BASE), BS_UDB_0_3_1_CONFIG_VAL, 128u},
+ 441:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 			{(void CYFAR *)(CYDEV_UCFG_B0_P4_U0_BASE), BS_UDB_0_2_1_CONFIG_VAL, 128u},
  442:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 			{(void CYFAR *)(CYDEV_UCFG_B1_P5_U0_BASE), BS_UDB_0_0_0_CONFIG_VAL, 128u},
  443:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 		};
  444:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  534 0018 5200     		lsls	r2, r2, #1
  535 001a 0A44     		add	r2, r2, r1
  536 001c D068     		ldr	r0, [r2, #12]	@ unaligned
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 19
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 19
 
 
  537 001e 118A     		ldrh	r1, [r2, #16]
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  578              	.LVL47:
  579 0050 E4B2     		uxtb	r4, r4
  580              	.LVL48:
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 20
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 20
 
 
  581              	.L40:
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  479:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	/* Perform second pass device configuration. These items must be configured in specific order afte
  480:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	CYCONFIGCPY((void CYFAR *)(CYREG_PRT0_DM0), (const void CYFAR *)(BS_IOPINS0_0_VAL), 8u);
  617              		.loc 1 480 0
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 21
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 21
 
 
  618 0092 1948     		ldr	r0, .L43+24
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  496:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 
  497:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	/* Configure alternate active mode */
  498:.\Generated_Source\PSoC5/cyfitter_cfg.c **** 	CYCONFIGCPY((void CYFAR *)CYDEV_PM_STBY_BASE, (const void CYFAR *)CYDEV_PM_ACT_BASE, 14u);
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 22
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 22
 
 
  657              		.loc 1 498 0
@@ -1273,16 +1273,16 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  666              	.L43:
  667 00e0 E8460040 		.word	1073759976
  668 00e4 00000000 		.word	.LANCHOR0
- 669 00e8 54000048 		.word	1207959636
+ 669 00e8 78000048 		.word	1207959672
  670 00ec 83580040 		.word	1073764483
  671 00f0 03500140 		.word	1073827843
  672 00f4 A0430040 		.word	1073759136
  673 00f8 02510040 		.word	1073762562
- 674 00fc 6C050048 		.word	1207960940
+ 674 00fc 9C050048 		.word	1207960988
  675 0100 10510040 		.word	1073762576
- 676 0104 74050048 		.word	1207960948
+ 676 0104 A4050048 		.word	1207960996
  677 0108 22510040 		.word	1073762594
- 678 010c 80050048 		.word	1207960960
+ 678 010c B0050048 		.word	1207961008
  679 0110 22430040 		.word	1073759010
  680 0114 00480040 		.word	1073760256
  681 0118 04000840 		.word	1074266116
@@ -1316,12 +1316,12 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  709 0018 F0510040 		.word	1073762800
  710 001c 1000     		.short	16
  711 001e 00000140 		.4byte	1073807360
- 712 0022 800A     		.short	2688
- 713 0024 000B0140 		.word	1073810176
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 23
+ 712 0022 0008     		.short	2048
+ 713 0024 80080140 		.word	1073809536
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 23
 
 
- 714 0028 0005     		.short	1280
+ 714 0028 8007     		.short	1920
  715 002a 00140140 		.4byte	1073812480
  716 002e 0006     		.short	1536
  717 0030 801A0140 		.word	1073814144
@@ -1335,11 +1335,11 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  725              		.type	cfg_memcpy_list.4900, %object
  726              		.size	cfg_memcpy_list.4900, 20
  727              	cfg_memcpy_list.4900:
- 728 0048 800A0140 		.word	1073810048
- 729 004c 6C040048 		.word	1207960684
+ 728 0048 00080140 		.word	1073809408
+ 729 004c 9C040048 		.word	1207960732
  730 0050 8000     		.short	128
  731 0052 001A0140 		.4byte	1073814016
- 732 0056 EC040048 		.4byte	1207960812
+ 732 0056 1C050048 		.4byte	1207960860
  733 005a 8000     		.short	128
  734              		.text
  735              	.Letext0:
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  768 0040 06       		.byte	0x6
  769 0041 93000000 		.4byte	.LASF1
  770 0045 04       		.uleb128 0x4
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 24
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 24
 
 
  771 0046 01       		.byte	0x1
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  825 00ac 04       		.byte	0x4
  826 00ad F8010000 		.4byte	.LASF15
  827 00b1 04       		.uleb128 0x4
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 25
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 25
 
 
  828 00b2 08       		.byte	0x8
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  882 0126 01       		.uleb128 0x1
  883 0127 50       		.byte	0x50
  884 0128 00       		.byte	0
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 26
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 26
 
 
  885 0129 0A       		.uleb128 0xa
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  939 019d A1010000 		.4byte	0x1a1
  940 01a1 10       		.uleb128 0x10
  941 01a2 9E000000 		.4byte	0x9e
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 27
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 27
 
 
  942 01a6 0F       		.uleb128 0xf
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  996 0219 51       		.byte	0x51
  997 021a 01       		.uleb128 0x1
  998 021b 30       		.byte	0x30
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 28
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 28
 
 
  999 021c 15       		.uleb128 0x15
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  1053 027d 01       		.uleb128 0x1
  1054 027e 50       		.byte	0x50
  1055 027f 03       		.uleb128 0x3
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 29
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 29
 
 
  1056 0280 F3       		.byte	0xf3
@@ -1695,7 +1695,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  1067 0291 01       		.byte	0x1
  1068 0292 CE       		.byte	0xce
  1069 0293 00000000 		.4byte	.LFB5
- 1070 0297 FC000000 		.4byte	.LFE5-.LFB5
+ 1070 0297 00010000 		.4byte	.LFE5-.LFB5
  1071 029b 01       		.uleb128 0x1
  1072 029c 9C       		.byte	0x9c
  1073 029d 09030000 		.4byte	0x309
@@ -1712,7 +1712,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  1084 02b7 86000000 		.4byte	0x86
  1085 02bb 51010000 		.4byte	.LLST11
  1086 02bf 18       		.uleb128 0x18
- 1087 02c0 2E000000 		.4byte	.LVL19
+ 1087 02c0 30000000 		.4byte	.LVL19
  1088 02c4 25020000 		.4byte	0x225
  1089 02c8 E4020000 		.4byte	0x2e4
  1090 02cc 15       		.uleb128 0x15
@@ -1725,7 +1725,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  1097 02d3 51       		.byte	0x51
  1098 02d4 05       		.uleb128 0x5
  1099 02d5 0C       		.byte	0xc
- 1100 02d6 88050048 		.4byte	0x48000588
+ 1100 02d6 B8050048 		.4byte	0x480005b8
  1101 02da 15       		.uleb128 0x15
  1102 02db 01       		.uleb128 0x1
  1103 02dc 50       		.byte	0x50
@@ -1734,11 +1734,11 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  1106 02df 00410040 		.4byte	0x40004100
  1107 02e3 00       		.byte	0
  1108 02e4 18       		.uleb128 0x18
- 1109 02e5 76000000 		.4byte	.LVL24
+ 1109 02e5 78000000 		.4byte	.LVL24
  1110 02e9 6C060000 		.4byte	0x66c
  1111 02ed F9020000 		.4byte	0x2f9
  1112 02f1 15       		.uleb128 0x15
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 30
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 30
 
 
  1113 02f2 01       		.uleb128 0x1
@@ -1748,7 +1748,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  1117 02f6 E001     		.2byte	0x1e0
  1118 02f8 00       		.byte	0
  1119 02f9 14       		.uleb128 0x14
- 1120 02fa 86000000 		.4byte	.LVL26
+ 1120 02fa 88000000 		.4byte	.LVL26
  1121 02fe 06010000 		.4byte	0x106
  1122 0302 15       		.uleb128 0x15
  1123 0303 01       		.uleb128 0x1
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  1167 035e 7B010000 		.4byte	.LLST12
  1168 0362 00       		.byte	0
  1169 0363 19       		.uleb128 0x19
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 31
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 31
 
 
  1170 0364 86010000 		.4byte	.LASF42
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  1224 03e0 A301     		.2byte	0x1a3
  1225 03e2 0E040000 		.4byte	0x40e
  1226 03e6 1F       		.uleb128 0x1f
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 32
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 32
 
 
  1227 03e7 F3010000 		.4byte	.LASF33
@@ -1918,7 +1918,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  1281 045f 48000000 		.4byte	cfg_memcpy_list.4900
  1282 0463 10       		.uleb128 0x10
  1283 0464 41040000 		.4byte	0x441
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 33
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 33
 
 
  1284 0468 23       		.uleb128 0x23
@@ -1978,7 +1978,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  1338 04f3 01       		.byte	0x1
  1339 04f4 CC01     		.2byte	0x1cc
  1340 04f6 92000000 		.4byte	0x92
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 34
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 34
 
 
  1341 04fa 87020000 		.4byte	.LLST19
@@ -2016,7 +2016,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  1373 052d 51       		.byte	0x51
  1374 052e 05       		.uleb128 0x5
  1375 052f 0C       		.byte	0xc
- 1376 0530 54000048 		.4byte	0x48000054
+ 1376 0530 78000048 		.4byte	0x48000078
  1377 0534 15       		.uleb128 0x15
  1378 0535 01       		.uleb128 0x1
  1379 0536 50       		.byte	0x50
@@ -2038,12 +2038,12 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  1395 054f 15       		.uleb128 0x15
  1396 0550 01       		.uleb128 0x1
  1397 0551 51       		.byte	0x51
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 35
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 35
 
 
  1398 0552 05       		.uleb128 0x5
  1399 0553 0C       		.byte	0xc
- 1400 0554 6C050048 		.4byte	0x4800056c
+ 1400 0554 9C050048 		.4byte	0x4800059c
  1401 0558 15       		.uleb128 0x15
  1402 0559 01       		.uleb128 0x1
  1403 055a 50       		.byte	0x50
@@ -2066,7 +2066,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  1420 0577 51       		.byte	0x51
  1421 0578 05       		.uleb128 0x5
  1422 0579 0C       		.byte	0xc
- 1423 057a 74050048 		.4byte	0x48000574
+ 1423 057a A4050048 		.4byte	0x480005a4
  1424 057e 15       		.uleb128 0x15
  1425 057f 01       		.uleb128 0x1
  1426 0580 50       		.byte	0x50
@@ -2088,7 +2088,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  1442 059c 51       		.byte	0x51
  1443 059d 05       		.uleb128 0x5
  1444 059e 0C       		.byte	0xc
- 1445 059f 80050048 		.4byte	0x48000580
+ 1445 059f B0050048 		.4byte	0x480005b0
  1446 05a3 15       		.uleb128 0x15
  1447 05a4 01       		.uleb128 0x1
  1448 05a5 50       		.byte	0x50
@@ -2098,7 +2098,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  1452 05ac 00       		.byte	0
  1453 05ad 24       		.uleb128 0x24
  1454 05ae C4000000 		.4byte	.LVL54
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 36
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 36
 
 
  1455 05b2 8C020000 		.4byte	0x28c
@@ -2158,7 +2158,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  1509 061c 54020000 		.4byte	.LASF54
  1510 0620 01       		.byte	0x1
  1511 0621 4E01     		.2byte	0x14e
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 37
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 37
 
 
  1512 0623 2D060000 		.4byte	0x62d
@@ -2218,7 +2218,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  1566 0010 17       		.uleb128 0x17
  1567 0011 00       		.byte	0
  1568 0012 00       		.byte	0
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 38
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 38
 
 
  1569 0013 02       		.uleb128 0x2
@@ -2278,7 +2278,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  1623 0049 00       		.byte	0
  1624 004a 07       		.uleb128 0x7
  1625 004b 35       		.uleb128 0x35
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 39
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 39
 
 
  1626 004c 00       		.byte	0
@@ -2338,7 +2338,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  1680 0083 00       		.byte	0
  1681 0084 00       		.byte	0
  1682 0085 0B       		.uleb128 0xb
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 40
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 40
 
 
  1683 0086 05       		.uleb128 0x5
@@ -2398,7 +2398,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  1737 00bc 0F       		.uleb128 0xf
  1738 00bd 00       		.byte	0
  1739 00be 0B       		.uleb128 0xb
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 41
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 41
 
 
  1740 00bf 0B       		.uleb128 0xb
@@ -2458,7 +2458,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  1794 00f6 08       		.uleb128 0x8
  1795 00f7 3A       		.uleb128 0x3a
  1796 00f8 0B       		.uleb128 0xb
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 42
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 42
 
 
  1797 00f9 3B       		.uleb128 0x3b
@@ -2518,7 +2518,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  1851 0136 13       		.uleb128 0x13
  1852 0137 00       		.byte	0
  1853 0138 00       		.byte	0
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 43
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 43
 
 
  1854 0139 19       		.uleb128 0x19
@@ -2578,7 +2578,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  1908 0170 00       		.byte	0
  1909 0171 1C       		.uleb128 0x1c
  1910 0172 05       		.uleb128 0x5
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 44
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 44
 
 
  1911 0173 00       		.byte	0
@@ -2638,7 +2638,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  1965 01a9 00       		.byte	0
  1966 01aa 03       		.uleb128 0x3
  1967 01ab 08       		.uleb128 0x8
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 45
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 45
 
 
  1968 01ac 3A       		.uleb128 0x3a
@@ -2698,7 +2698,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  2022 01e4 00       		.byte	0
  2023 01e5 03       		.uleb128 0x3
  2024 01e6 0E       		.uleb128 0xe
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 46
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 46
 
 
  2025 01e7 3A       		.uleb128 0x3a
@@ -2758,7 +2758,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  2079 021d 00       		.byte	0
  2080 021e 00       		.byte	0
  2081              		.section	.debug_loc,"",%progbits
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 47
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 47
 
 
  2082              	.Ldebug_loc0:
@@ -2818,7 +2818,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  2136 008c 50       		.byte	0x50
  2137 008d 09000000 		.4byte	.LVL16-1
  2138 0091 0C000000 		.4byte	.LFE0
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 48
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 48
 
 
  2139 0095 0400     		.2byte	0x4
@@ -2878,7 +2878,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  2193 0111 00000000 		.4byte	.LVL17
  2194 0115 05000000 		.4byte	.LVL18-1
  2195 0119 0100     		.2byte	0x1
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 49
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 49
 
 
  2196 011b 52       		.byte	0x52
@@ -2892,29 +2892,29 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  2204 012a 00000000 		.4byte	0
  2205 012e 00000000 		.4byte	0
  2206              	.LLST10:
- 2207 0132 5A000000 		.4byte	.LVL20
- 2208 0136 5E000000 		.4byte	.LVL21
+ 2207 0132 5C000000 		.4byte	.LVL20
+ 2208 0136 60000000 		.4byte	.LVL21
  2209 013a 0200     		.2byte	0x2
  2210 013c 49       		.byte	0x49
  2211 013d 9F       		.byte	0x9f
- 2212 013e 5E000000 		.4byte	.LVL21
- 2213 0142 CC000000 		.4byte	.LVL27
+ 2212 013e 60000000 		.4byte	.LVL21
+ 2213 0142 CE000000 		.4byte	.LVL27
  2214 0146 0100     		.2byte	0x1
  2215 0148 55       		.byte	0x55
  2216 0149 00000000 		.4byte	0
  2217 014d 00000000 		.4byte	0
  2218              	.LLST11:
- 2219 0151 5A000000 		.4byte	.LVL20
- 2220 0155 5E000000 		.4byte	.LVL21
+ 2219 0151 5C000000 		.4byte	.LVL20
+ 2220 0155 60000000 		.4byte	.LVL21
  2221 0159 0200     		.2byte	0x2
  2222 015b 30       		.byte	0x30
  2223 015c 9F       		.byte	0x9f
- 2224 015d 5E000000 		.4byte	.LVL21
- 2225 0161 6A000000 		.4byte	.LVL22
+ 2224 015d 60000000 		.4byte	.LVL21
+ 2225 0161 6C000000 		.4byte	.LVL22
  2226 0165 0100     		.2byte	0x1
  2227 0167 54       		.byte	0x54
- 2228 0168 6E000000 		.4byte	.LVL23
- 2229 016c CC000000 		.4byte	.LVL27
+ 2228 0168 70000000 		.4byte	.LVL23
+ 2229 016c CE000000 		.4byte	.LVL27
  2230 0170 0100     		.2byte	0x1
  2231 0172 54       		.byte	0x54
  2232 0173 00000000 		.4byte	0
@@ -2938,7 +2938,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  2250 01a0 0C000000 		.4byte	.LVL35
  2251 01a4 0100     		.2byte	0x1
  2252 01a6 50       		.byte	0x50
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 50
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 50
 
 
  2253 01a7 0C000000 		.4byte	.LVL35
@@ -2998,7 +2998,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  2307 0225 22       		.byte	0x22
  2308 0226 9F       		.byte	0x9f
  2309 0227 00000000 		.4byte	0
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 51
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 51
 
 
  2310 022b 00000000 		.4byte	0
@@ -3058,7 +3058,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  2364 02a3 00       		.sleb128 0
  2365 02a4 22       		.byte	0x22
  2366 02a5 31       		.byte	0x31
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 52
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 52
 
 
  2367 02a6 24       		.byte	0x24
@@ -3098,7 +3098,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  2401 0030 00000000 		.4byte	.LFB1
  2402 0034 08000000 		.4byte	.LFE1-.LFB1
  2403 0038 00000000 		.4byte	.LFB5
- 2404 003c FC000000 		.4byte	.LFE5-.LFB5
+ 2404 003c 00010000 		.4byte	.LFE5-.LFB5
  2405 0040 00000000 		.4byte	.LFB7
  2406 0044 1C000000 		.4byte	.LFE7-.LFB7
  2407 0048 00000000 		.4byte	.LFB8
@@ -3118,14 +3118,14 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  2421 0010 00000000 		.4byte	.LFB6
  2422 0014 40000000 		.4byte	.LFE6
  2423 0018 00000000 		.4byte	.LFB0
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 53
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 53
 
 
  2424 001c 0C000000 		.4byte	.LFE0
  2425 0020 00000000 		.4byte	.LFB1
  2426 0024 08000000 		.4byte	.LFE1
  2427 0028 00000000 		.4byte	.LFB5
- 2428 002c FC000000 		.4byte	.LFE5
+ 2428 002c 00010000 		.4byte	.LFE5
  2429 0030 00000000 		.4byte	.LFB7
  2430 0034 1C000000 		.4byte	.LFE7
  2431 0038 00000000 		.4byte	.LFB8
@@ -3178,7 +3178,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  2457      6C6500
  2458              	.LASF40:
  2459 005e 4144435F 		.ascii	"ADC_DelSig_1_AMux_Set\000"
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 54
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 54
 
 
  2459      44656C53 
@@ -3238,7 +3238,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  2485 00f3 75696E74 		.ascii	"uint32\000"
  2485      333200
  2486              	.LASF38:
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 55
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 55
 
 
  2487 00fa 72656756 		.ascii	"regValue\000"
@@ -3298,7 +3298,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  2509      5F414D75 
  2509      785F5F61 
  2510              	.LASF9:
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 56
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 56
 
 
  2511 01bb 73697A65 		.ascii	"sizetype\000"
@@ -3358,7 +3358,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  2537      64647276 
  2537      616C7565 
  2537      5F7400
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 57
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 57
 
 
  2538              	.LASF54:
@@ -3418,7 +3418,7 @@ ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 1
  2561      6E61204C 
  2561      65655C44 
  2562 0379 6C5F7072 		.ascii	"l_project\\MiniPsocRF.cydsn\000"
-ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\ccCsFC3X.s 			page 58
+ARM GAS  C:\Users\HANNAL~1\AppData\Local\Temp\cc9IIui4.s 			page 58
 
 
  2562      6F6A6563 
