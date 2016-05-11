@@ -1,17 +1,18 @@
 -- Project:   MiniPsocRF
--- Generated: 05/05/2016 19:27:23
+-- Generated: 05/10/2016 16:42:56
 -- PSoC Creator  3.3 CP2
 
 ENTITY MiniPsocRF IS
     PORT(
         Rx_1(0)_PAD : IN std_ulogic;
         Tx_1(0)_PAD : OUT std_ulogic;
-        Pin_1(0)_PAD : OUT std_ulogic;
+        LED(0)_PAD : OUT std_ulogic;
         MISO(0)_PAD : IN std_ulogic;
         MOSI(0)_PAD : OUT std_ulogic;
         SCLK(0)_PAD : OUT std_ulogic;
         CSN(0)_PAD : OUT std_ulogic;
-        CE(0)_PAD : OUT std_ulogic);
+        CE(0)_PAD : OUT std_ulogic;
+        Button(0)_PAD : IN std_ulogic);
     ATTRIBUTE voltage_VDDABUF OF __DEFAULT__ : ENTITY IS 5e0;
     ATTRIBUTE voltage_VDDA OF __DEFAULT__ : ENTITY IS 5e0;
     ATTRIBUTE voltage_VUSB OF __DEFAULT__ : ENTITY IS 5e0;
@@ -24,6 +25,7 @@ END MiniPsocRF;
 
 ARCHITECTURE __DEFAULT__ OF MiniPsocRF IS
     SIGNAL ADC_Input(0)__PA : bit;
+    SIGNAL Button(0)__PA : bit;
     SIGNAL CE(0)__PA : bit;
     SIGNAL CSN(0)__PA : bit;
     SIGNAL ClockBlock_100k : bit;
@@ -39,6 +41,7 @@ ARCHITECTURE __DEFAULT__ OF MiniPsocRF IS
     SIGNAL ClockBlock_XTAL : bit;
     SIGNAL ClockBlock_XTAL_32KHZ : bit;
     SIGNAL DAC_Output(0)__PA : bit;
+    SIGNAL LED(0)__PA : bit;
     SIGNAL MISO(0)__PA : bit;
     SIGNAL MOSI(0)__PA : bit;
     SIGNAL Net_15 : bit;
@@ -50,7 +53,6 @@ ARCHITECTURE __DEFAULT__ OF MiniPsocRF IS
     SIGNAL Net_82 : bit;
     SIGNAL Net_91 : bit;
     SIGNAL Net_92 : bit;
-    SIGNAL Pin_1(0)__PA : bit;
     SIGNAL Rx_1(0)__PA : bit;
     SIGNAL SCLK(0)__PA : bit;
     SIGNAL Tx_1(0)__PA : bit;
@@ -158,8 +160,8 @@ ARCHITECTURE __DEFAULT__ OF MiniPsocRF IS
     ATTRIBUTE Location OF Rx_1(0) : LABEL IS "P1[6]";
     ATTRIBUTE lib_model OF Tx_1(0) : LABEL IS "iocell2";
     ATTRIBUTE Location OF Tx_1(0) : LABEL IS "P1[4]";
-    ATTRIBUTE lib_model OF Pin_1(0) : LABEL IS "iocell3";
-    ATTRIBUTE Location OF Pin_1(0) : LABEL IS "P2[1]";
+    ATTRIBUTE lib_model OF LED(0) : LABEL IS "iocell3";
+    ATTRIBUTE Location OF LED(0) : LABEL IS "P2[1]";
     ATTRIBUTE lib_model OF MISO(0) : LABEL IS "iocell4";
     ATTRIBUTE Location OF MISO(0) : LABEL IS "P2[4]";
     ATTRIBUTE lib_model OF MOSI(0) : LABEL IS "iocell5";
@@ -174,6 +176,8 @@ ARCHITECTURE __DEFAULT__ OF MiniPsocRF IS
     ATTRIBUTE Location OF ADC_Input(0) : LABEL IS "P0[7]";
     ATTRIBUTE lib_model OF DAC_Output(0) : LABEL IS "iocell10";
     ATTRIBUTE Location OF DAC_Output(0) : LABEL IS "P0[6]";
+    ATTRIBUTE lib_model OF Button(0) : LABEL IS "iocell11";
+    ATTRIBUTE Location OF Button(0) : LABEL IS "P3[7]";
     ATTRIBUTE lib_model OF Net_15 : LABEL IS "macrocell1";
     ATTRIBUTE lib_model OF \UART_1:BUART:counter_load_not\ : LABEL IS "macrocell2";
     ATTRIBUTE lib_model OF \UART_1:BUART:tx_status_0\ : LABEL IS "macrocell3";
@@ -790,7 +794,7 @@ BEGIN
             out_clock_en => '1',
             out_reset => '0');
 
-    Pin_1:logicalport
+    LED:logicalport
         GENERIC MAP(
             drive_mode => "110",
             ibuf_enabled => "1",
@@ -861,18 +865,18 @@ BEGIN
             out_clock_en => open,
             out_reset => open);
 
-    Pin_1(0):iocell
+    LED(0):iocell
         GENERIC MAP(
             in_sync_mode => 0,
             out_sync_mode => 0,
             oe_sync_mode => 0,
-            logicalport => "Pin_1",
+            logicalport => "LED",
             logicalport_pin_id => 0,
             io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
         PORT MAP(
-            pa_out => Pin_1(0)__PA,
+            pa_out => LED(0)__PA,
             oe => open,
-            pad_in => Pin_1(0)_PAD,
+            pad_in => LED(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
             in_reset => '0',
@@ -1506,6 +1510,96 @@ BEGIN
         PORT MAP(
             pa_out => DAC_Output(0)__PA,
             oe => open,
+            in_clock => open,
+            in_clock_en => '1',
+            in_reset => '0',
+            out_clock => open,
+            out_clock_en => '1',
+            out_reset => '0');
+
+    Button:logicalport
+        GENERIC MAP(
+            drive_mode => "001",
+            ibuf_enabled => "1",
+            id => "45cef156-78da-4b55-8e1a-2fd278096e4f",
+            init_dr_st => "0",
+            input_buffer_sel => "00",
+            input_clk_en => 0,
+            input_sync => "0",
+            input_sync_mode => "0",
+            intr_mode => "00",
+            invert_in_clock => 0,
+            invert_in_clock_en => 0,
+            invert_in_reset => 0,
+            invert_out_clock => 0,
+            invert_out_clock_en => 0,
+            invert_out_reset => 0,
+            io_voltage => "",
+            layout_mode => "CONTIGUOUS",
+            oe_conn => "0",
+            oe_reset => 0,
+            oe_sync => "0",
+            output_clk_en => 0,
+            output_clock_mode => "0",
+            output_conn => "0",
+            output_mode => "0",
+            output_reset => 0,
+            output_sync => "0",
+            ovt_hyst_trim => "0",
+            ovt_needed => "0",
+            ovt_slew_control => "00",
+            pa_in_clock => -1,
+            pa_in_clock_en => -1,
+            pa_in_reset => -1,
+            pa_out_clock => -1,
+            pa_out_clock_en => -1,
+            pa_out_reset => -1,
+            pin_aliases => "",
+            pin_mode => "I",
+            por_state => 4,
+            port_alias_group => "",
+            port_alias_required => 0,
+            sio_group_cnt => 0,
+            sio_hifreq => "00000000",
+            sio_hyst => "1",
+            sio_ibuf => "00000000",
+            sio_info => "00",
+            sio_obuf => "00000000",
+            sio_refsel => "00000000",
+            sio_vohsel => "00000000",
+            sio_vtrip => "00000000",
+            slew_rate => "0",
+            spanning => 0,
+            sw_only => 0,
+            use_annotation => "0",
+            vtrip => "00",
+            width => 1,
+            in_clk_inv => 0,
+            in_clken_inv => 0,
+            in_clken_mode => 1,
+            in_rst_inv => 0,
+            out_clk_inv => 0,
+            out_clken_inv => 0,
+            out_clken_mode => 1,
+            out_rst_inv => 0)
+        PORT MAP(
+            in_clock_en => open,
+            in_reset => open,
+            out_clock_en => open,
+            out_reset => open);
+
+    Button(0):iocell
+        GENERIC MAP(
+            in_sync_mode => 0,
+            out_sync_mode => 0,
+            oe_sync_mode => 0,
+            logicalport => "Button",
+            logicalport_pin_id => 0,
+            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
+        PORT MAP(
+            pa_out => Button(0)__PA,
+            oe => open,
+            pad_in => Button(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
             in_reset => '0',

@@ -12,8 +12,6 @@ Archive member included because of file (symbol)
                               .\CortexM3\ARM_GCC_493\Debug\main.o (UART_1_Start)
 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1_IntClock.o)
                               .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o) (UART_1_IntClock_Start)
-.\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Pin_1.o)
-                              .\CortexM3\ARM_GCC_493\Debug\main.o (Pin_1_Write)
 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
                               .\CortexM3\ARM_GCC_493\Debug\main.o (ADC_DelSig_1_Start)
 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_INT.o)
@@ -26,6 +24,8 @@ Archive member included because of file (symbol)
                               .\CortexM3\ARM_GCC_493\Debug\main.o (SPIM_1_ReadTxStatus)
 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CSN.o)
                               .\CortexM3\ARM_GCC_493\Debug\main.o (CSN_Write)
+.\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CE.o)
+                              .\CortexM3\ARM_GCC_493\Debug\main.o (CE_Write)
 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
                               .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o) (ADC_DelSig_1_AMux_Select)
 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
@@ -34,6 +34,10 @@ Archive member included because of file (symbol)
                               .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o) (ADC_DelSig_1_theACLK_SetModeRegister)
 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1_IntClock.o)
                               .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o) (SPIM_1_IntClock_Start)
+.\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Button.o)
+                              .\CortexM3\ARM_GCC_493\Debug\main.o (Button_Read)
+.\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(LED.o)
+                              .\CortexM3\ARM_GCC_493\Debug\main.o (LED_Write)
 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyFlash.o)
                               .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyPm.o) (CyFlash_SetWaitCycles)
 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CySpc.o)
@@ -93,7 +97,9 @@ printbuf            0x8               .\CortexM3\ARM_GCC_493\Debug\main.o
 ADC_DelSig_1_Offset
                     0x4               .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
 errno               0x4               c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-reent.o)
+throwaway           0x1               .\CortexM3\ARM_GCC_493\Debug\main.o
 psocByte            0x1               .\CortexM3\ARM_GCC_493\Debug\main.o
+rfByte              0x1               .\CortexM3\ARM_GCC_493\Debug\main.o
 SPIM_1_swStatusRx   0x1               .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
 statusByte          0x1               .\CortexM3\ARM_GCC_493\Debug\main.o
 dieTemperature      0x2               .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyFlash.o)
@@ -113,15 +119,23 @@ Discarded input sections
  .text          0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\main.o
  .data          0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\main.o
  .bss           0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\main.o
+ .text.nrfSendTest
+                0x00000000        0x4 .\CortexM3\ARM_GCC_493\Debug\main.o
+ .text.buttonTest
+                0x00000000       0x30 .\CortexM3\ARM_GCC_493\Debug\main.o
  .text.adcToDac
                 0x00000000       0x24 .\CortexM3\ARM_GCC_493\Debug\main.o
  .text.dacSquareWave
                 0x00000000       0x20 .\CortexM3\ARM_GCC_493\Debug\main.o
  .text.echoUART
                 0x00000000       0x28 .\CortexM3\ARM_GCC_493\Debug\main.o
+ .text.ce       0x00000000        0x8 .\CortexM3\ARM_GCC_493\Debug\main.o
+ .text.nrfSendByte
+                0x00000000       0x2c .\CortexM3\ARM_GCC_493\Debug\main.o
  .text.blink    0x00000000       0x28 .\CortexM3\ARM_GCC_493\Debug\main.o
  .text.blinkFast
                 0x00000000       0x24 .\CortexM3\ARM_GCC_493\Debug\main.o
+ .rodata        0x00000000        0x2 .\CortexM3\ARM_GCC_493\Debug\main.o
  .text          0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
  .data          0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
  .bss           0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
@@ -334,6 +348,10 @@ Discarded input sections
                 0x00000000        0x4 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
  .text.UART_1_ReadRxData
                 0x00000000        0xc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
+ .text.UART_1_ReadRxStatus
+                0x00000000       0x10 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
+ .text.UART_1_GetChar
+                0x00000000       0x2c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
  .text.UART_1_GetByte
                 0x00000000       0x14 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
  .text.UART_1_GetRxBufferSize
@@ -379,15 +397,6 @@ Discarded input sections
                 0x00000000       0xdc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1_IntClock.o)
  .text.UART_1_IntClock_SetSourceRegister
                 0x00000000       0x5c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1_IntClock.o)
- .text          0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Pin_1.o)
- .data          0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Pin_1.o)
- .bss           0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Pin_1.o)
- .text.Pin_1_SetDriveMode
-                0x00000000       0x18 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Pin_1.o)
- .text.Pin_1_Read
-                0x00000000       0x10 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Pin_1.o)
- .text.Pin_1_ReadDataReg
-                0x00000000       0x10 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Pin_1.o)
  .text          0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
  .text.ADC_DelSig_1_Stop
                 0x00000000       0xe4 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
@@ -482,6 +491,16 @@ Discarded input sections
                 0x00000000        0xc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CSN.o)
  .text.CSN_ReadDataReg
                 0x00000000        0xc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CSN.o)
+ .text          0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CE.o)
+ .data          0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CE.o)
+ .bss           0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CE.o)
+ .text.CE_Write
+                0x00000000       0x18 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CE.o)
+ .text.CE_SetDriveMode
+                0x00000000       0x18 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CE.o)
+ .text.CE_Read  0x00000000       0x10 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CE.o)
+ .text.CE_ReadDataReg
+                0x00000000       0x10 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CE.o)
  .text          0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
  .bss           0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
  .text.ADC_DelSig_1_AMux_FastSelect
@@ -547,6 +566,26 @@ Discarded input sections
                 0x00000000       0xdc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1_IntClock.o)
  .text.SPIM_1_IntClock_SetSourceRegister
                 0x00000000       0x5c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1_IntClock.o)
+ .text          0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Button.o)
+ .data          0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Button.o)
+ .bss           0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Button.o)
+ .text.Button_Write
+                0x00000000       0x18 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Button.o)
+ .text.Button_SetDriveMode
+                0x00000000       0x18 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Button.o)
+ .text.Button_Read
+                0x00000000        0xc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Button.o)
+ .text.Button_ReadDataReg
+                0x00000000        0xc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Button.o)
+ .text          0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(LED.o)
+ .data          0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(LED.o)
+ .bss           0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(LED.o)
+ .text.LED_SetDriveMode
+                0x00000000       0x18 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(LED.o)
+ .text.LED_Read
+                0x00000000       0x10 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(LED.o)
+ .text.LED_ReadDataReg
+                0x00000000       0x10 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(LED.o)
  .text          0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyFlash.o)
  .data          0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyFlash.o)
  .bss           0x00000000        0x4 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyFlash.o)
@@ -749,7 +788,7 @@ END GROUP
                 0x00000800                ee_size = (CY_APPL_LOADABLE && ! (CY_EE_IN_BTLDR))?(CY_EE_SIZE / CY_APPL_MAX):CY_EE_SIZE
                 0x00000000                PROVIDE (CY_ECC_OFFSET, ecc_offset)
 
-.text           0x00000000     0x1984
+.text           0x00000000     0x1948
  CREATE_OBJECT_SYMBOLS
                 0x00000000                PROVIDE (__cy_interrupt_vector, RomVectors)
  *(.romvectors)
@@ -766,56 +805,63 @@ END GROUP
                 0x00000001                ASSERT ((((appl_start + .) <= 0x10000) || 0x1), DMA Init must be within the first 64k of flash)
  *(.text .text.* .gnu.linkonce.t.*)
  .text          0x00000028       0x5c c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtbegin.o
- .text.setup    0x00000084       0x4c .\CortexM3\ARM_GCC_493\Debug\main.o
-                0x00000084                setup
- .text.print    0x000000d0       0x1c .\CortexM3\ARM_GCC_493\Debug\main.o
-                0x000000d0                print
+ .text.spiWrite
+                0x00000084       0x28 .\CortexM3\ARM_GCC_493\Debug\main.o
+                0x00000084                spiWrite
+ .text.spiRead  0x000000ac       0x10 .\CortexM3\ARM_GCC_493\Debug\main.o
+                0x000000ac                spiRead
+ .text.setup    0x000000bc       0x4c .\CortexM3\ARM_GCC_493\Debug\main.o
+                0x000000bc                setup
+ .text.print    0x00000108       0x1c .\CortexM3\ARM_GCC_493\Debug\main.o
+                0x00000108                print
  .text.printByte
-                0x000000ec       0x20 .\CortexM3\ARM_GCC_493\Debug\main.o
-                0x000000ec                printByte
- .text.csn      0x0000010c        0x8 .\CortexM3\ARM_GCC_493\Debug\main.o
-                0x0000010c                csn
+                0x00000124       0x20 .\CortexM3\ARM_GCC_493\Debug\main.o
+                0x00000124                printByte
+ .text.csn      0x00000144        0x8 .\CortexM3\ARM_GCC_493\Debug\main.o
+                0x00000144                csn
  .text.readRegister
-                0x00000114       0x44 .\CortexM3\ARM_GCC_493\Debug\main.o
-                0x00000114                readRegister
+                0x0000014c       0x38 .\CortexM3\ARM_GCC_493\Debug\main.o
+                0x0000014c                readRegister
  .text.writeRegister
-                0x00000158       0x40 .\CortexM3\ARM_GCC_493\Debug\main.o
-                0x00000158                writeRegister
- .text.nrfTest  0x00000198       0x70 .\CortexM3\ARM_GCC_493\Debug\main.o
-                0x00000198                nrfTest
- .text.main     0x00000208       0x10 .\CortexM3\ARM_GCC_493\Debug\main.o
-                0x00000208                main
+                0x00000184       0x28 .\CortexM3\ARM_GCC_493\Debug\main.o
+                0x00000184                writeRegister
+ .text.nrfRegisterTest
+                0x000001ac       0x48 .\CortexM3\ARM_GCC_493\Debug\main.o
+                0x000001ac                nrfRegisterTest
+ .text.main     0x000001f4       0x10 .\CortexM3\ARM_GCC_493\Debug\main.o
+                0x000001f4                main
  .text.IntDefaultHandler
-                0x00000218        0x4 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
-                0x00000218                IntDefaultHandler
- .text._sbrk    0x0000021c       0x30 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
-                0x0000021c                _sbrk
- .text.Start_c  0x0000024c       0x4c .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
-                0x0000024c                Start_c
+                0x00000204        0x4 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+                0x00000204                IntDefaultHandler
+ .text._sbrk    0x00000208       0x30 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+                0x00000208                _sbrk
+ .text.Start_c  0x00000238       0x4c .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+                0x00000238                Start_c
  .text.initialize_psoc
-                0x00000298       0x74 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
-                0x00000298                initialize_psoc
+                0x00000284       0x74 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+                0x00000284                initialize_psoc
  .text.CyClockStartupError
-                0x0000030c        0x4 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
+                0x000002f8        0x4 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
  .text.cfg_write_bytes32
-                0x00000310       0x34 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
+                0x000002fc       0x34 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
  .text.AnalogSetDefault
-                0x00000344       0x40 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
+                0x00000330       0x40 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
  .text.CYMEMZERO
-                0x00000384        0xc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
+                0x00000370        0xc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
  .text.CYCONFIGCPY
-                0x00000390        0x8 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
+                0x0000037c        0x8 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
  .text.ClockSetup
-                0x00000398      0x100 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
+                0x00000384      0x100 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
  .text.ADC_DelSig_1_AMux_Set
-                0x00000498       0x1c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
-                0x00000498                ADC_DelSig_1_AMux_Set
+                0x00000484       0x1c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
+                0x00000484                ADC_DelSig_1_AMux_Set
  .text.ADC_DelSig_1_AMux_Unset
-                0x000004b4       0x1c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
-                0x000004b4                ADC_DelSig_1_AMux_Unset
+                0x000004a0       0x1c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
+                0x000004a0                ADC_DelSig_1_AMux_Unset
  .text.cyfitter_cfg
-                0x000004d0      0x120 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
-                0x000004d0                cyfitter_cfg
+                0x000004bc      0x130 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
+                0x000004bc                cyfitter_cfg
+ *fill*         0x000005ec        0x4 
  .text          0x000005f0       0x20 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyBootAsmGnu.o)
                 0x000005f0                CyDelayCycles
                 0x00000600                CyEnterCriticalSection
@@ -843,203 +889,197 @@ END GROUP
  .text.UART_1_SetRxInterruptMode
                 0x000006f8        0xc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
                 0x000006f8                UART_1_SetRxInterruptMode
- .text.UART_1_ReadRxStatus
-                0x00000704       0x10 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
-                0x00000704                UART_1_ReadRxStatus
- .text.UART_1_GetChar
-                0x00000714       0x2c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
-                0x00000714                UART_1_GetChar
  .text.UART_1_ClearRxBuffer
-                0x00000740       0x24 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
-                0x00000740                UART_1_ClearRxBuffer
+                0x00000704       0x24 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
+                0x00000704                UART_1_ClearRxBuffer
  .text.UART_1_SetTxInterruptMode
-                0x00000764        0xc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
-                0x00000764                UART_1_SetTxInterruptMode
+                0x00000728        0xc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
+                0x00000728                UART_1_SetTxInterruptMode
  .text.UART_1_ReadTxStatus
-                0x00000770        0xc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
-                0x00000770                UART_1_ReadTxStatus
+                0x00000734        0xc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
+                0x00000734                UART_1_ReadTxStatus
  .text.UART_1_PutChar
-                0x0000077c       0x18 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
-                0x0000077c                UART_1_PutChar
+                0x00000740       0x18 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
+                0x00000740                UART_1_PutChar
  .text.UART_1_PutString
-                0x00000794       0x24 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
-                0x00000794                UART_1_PutString
+                0x00000758       0x24 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
+                0x00000758                UART_1_PutString
  .text.UART_1_ClearTxBuffer
-                0x000007b8       0x24 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
-                0x000007b8                UART_1_ClearTxBuffer
+                0x0000077c       0x24 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
+                0x0000077c                UART_1_ClearTxBuffer
  .text.UART_1_IntClock_Start
-                0x000007dc       0x1c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1_IntClock.o)
-                0x000007dc                UART_1_IntClock_Start
- .text.Pin_1_Write
-                0x000007f8       0x18 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Pin_1.o)
-                0x000007f8                Pin_1_Write
+                0x000007a0       0x1c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1_IntClock.o)
+                0x000007a0                UART_1_IntClock_Start
  .text.ADC_DelSig_1_GainCompensation
-                0x00000810       0xcc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
+                0x000007bc       0xcc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
  .text.ADC_DelSig_1_SetDSMRef0Reg
-                0x000008dc       0x4c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
+                0x00000888       0x4c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
  .text.ADC_DelSig_1_InitConfig
-                0x00000928       0xdc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
+                0x000008d4       0xdc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
  .text.ADC_DelSig_1_Init
-                0x00000a04       0xc4 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
-                0x00000a04                ADC_DelSig_1_Init
+                0x000009b0       0xc4 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
+                0x000009b0                ADC_DelSig_1_Init
  .text.ADC_DelSig_1_Enable
-                0x00000ac8       0xd8 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
-                0x00000ac8                ADC_DelSig_1_Enable
+                0x00000a74       0xd8 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
+                0x00000a74                ADC_DelSig_1_Enable
  .text.ADC_DelSig_1_Start
-                0x00000ba0       0x28 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
-                0x00000ba0                ADC_DelSig_1_Start
+                0x00000b4c       0x28 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
+                0x00000b4c                ADC_DelSig_1_Start
  .text.ADC_DelSig_1_StartConvert
-                0x00000bc8       0x10 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
-                0x00000bc8                ADC_DelSig_1_StartConvert
+                0x00000b74       0x10 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
+                0x00000b74                ADC_DelSig_1_StartConvert
  .text.ADC_DelSig_1_ISR1
-                0x00000bd8        0x4 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_INT.o)
-                0x00000bd8                ADC_DelSig_1_ISR1
+                0x00000b84        0x4 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_INT.o)
+                0x00000b84                ADC_DelSig_1_ISR1
  .text.VDAC8_1_Enable
-                0x00000bdc       0x1c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
-                0x00000bdc                VDAC8_1_Enable
+                0x00000b88       0x1c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
+                0x00000b88                VDAC8_1_Enable
  .text.VDAC8_1_Stop
-                0x00000bf8       0x1c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
-                0x00000bf8                VDAC8_1_Stop
+                0x00000ba4       0x1c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
+                0x00000ba4                VDAC8_1_Stop
  .text.VDAC8_1_SetSpeed
-                0x00000c14       0x1c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
-                0x00000c14                VDAC8_1_SetSpeed
+                0x00000bc0       0x1c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
+                0x00000bc0                VDAC8_1_SetSpeed
  .text.VDAC8_1_SetValue
-                0x00000c30        0xc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
-                0x00000c30                VDAC8_1_SetValue
+                0x00000bdc        0xc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
+                0x00000bdc                VDAC8_1_SetValue
  .text.VDAC8_1_DacTrim
-                0x00000c3c       0x24 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
-                0x00000c3c                VDAC8_1_DacTrim
+                0x00000be8       0x24 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
+                0x00000be8                VDAC8_1_DacTrim
  .text.VDAC8_1_SetRange
-                0x00000c60       0x20 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
-                0x00000c60                VDAC8_1_SetRange
+                0x00000c0c       0x20 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
+                0x00000c0c                VDAC8_1_SetRange
  .text.VDAC8_1_Init
-                0x00000c80       0x20 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
-                0x00000c80                VDAC8_1_Init
+                0x00000c2c       0x20 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
+                0x00000c2c                VDAC8_1_Init
  .text.VDAC8_1_Start
-                0x00000ca0       0x24 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
-                0x00000ca0                VDAC8_1_Start
+                0x00000c4c       0x24 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
+                0x00000c4c                VDAC8_1_Start
  .text.VDAC8_1_SaveConfig
-                0x00000cc4       0x20 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1_PM.o)
-                0x00000cc4                VDAC8_1_SaveConfig
+                0x00000c70       0x20 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1_PM.o)
+                0x00000c70                VDAC8_1_SaveConfig
  .text.VDAC8_1_Sleep
-                0x00000ce4       0x2c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1_PM.o)
-                0x00000ce4                VDAC8_1_Sleep
+                0x00000c90       0x2c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1_PM.o)
+                0x00000c90                VDAC8_1_Sleep
  .text.SPIM_1_Enable
-                0x00000d10       0x34 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
-                0x00000d10                SPIM_1_Enable
+                0x00000cbc       0x34 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
+                0x00000cbc                SPIM_1_Enable
  .text.SPIM_1_ReadTxStatus
-                0x00000d44        0xc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
-                0x00000d44                SPIM_1_ReadTxStatus
+                0x00000cf0        0xc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
+                0x00000cf0                SPIM_1_ReadTxStatus
  .text.SPIM_1_ReadRxStatus
-                0x00000d50        0xc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
-                0x00000d50                SPIM_1_ReadRxStatus
+                0x00000cfc        0xc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
+                0x00000cfc                SPIM_1_ReadRxStatus
  .text.SPIM_1_WriteTxData
-                0x00000d5c       0x18 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
-                0x00000d5c                SPIM_1_WriteTxData
+                0x00000d08       0x18 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
+                0x00000d08                SPIM_1_WriteTxData
  .text.SPIM_1_ReadRxData
-                0x00000d74        0xc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
-                0x00000d74                SPIM_1_ReadRxData
+                0x00000d20        0xc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
+                0x00000d20                SPIM_1_ReadRxData
  .text.SPIM_1_GetRxBufferSize
-                0x00000d80       0x18 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
-                0x00000d80                SPIM_1_GetRxBufferSize
+                0x00000d2c       0x18 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
+                0x00000d2c                SPIM_1_GetRxBufferSize
  .text.SPIM_1_ClearRxBuffer
-                0x00000d98       0x1c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
-                0x00000d98                SPIM_1_ClearRxBuffer
+                0x00000d44       0x1c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
+                0x00000d44                SPIM_1_ClearRxBuffer
  .text.SPIM_1_ClearTxBuffer
-                0x00000db4       0x24 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
-                0x00000db4                SPIM_1_ClearTxBuffer
+                0x00000d60       0x24 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
+                0x00000d60                SPIM_1_ClearTxBuffer
  .text.SPIM_1_ClearFIFO
-                0x00000dd8       0x3c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
-                0x00000dd8                SPIM_1_ClearFIFO
+                0x00000d84       0x3c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
+                0x00000d84                SPIM_1_ClearFIFO
  .text.SPIM_1_Init
-                0x00000e14       0x28 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
-                0x00000e14                SPIM_1_Init
+                0x00000dc0       0x28 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
+                0x00000dc0                SPIM_1_Init
  .text.SPIM_1_Start
-                0x00000e3c       0x1c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
-                0x00000e3c                SPIM_1_Start
+                0x00000de8       0x1c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
+                0x00000de8                SPIM_1_Start
  .text.CSN_Write
-                0x00000e58       0x18 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CSN.o)
-                0x00000e58                CSN_Write
+                0x00000e04       0x18 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CSN.o)
+                0x00000e04                CSN_Write
  .text.ADC_DelSig_1_AMux_Start
-                0x00000e70       0x20 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
-                0x00000e70                ADC_DelSig_1_AMux_Start
+                0x00000e1c       0x20 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
+                0x00000e1c                ADC_DelSig_1_AMux_Start
  .text.ADC_DelSig_1_AMux_Select
-                0x00000e90       0x18 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
-                0x00000e90                ADC_DelSig_1_AMux_Select
+                0x00000e3c       0x18 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
+                0x00000e3c                ADC_DelSig_1_AMux_Select
  .text.ADC_DelSig_1_Ext_CP_Clk_GetDividerRegister
-                0x00000ea8        0xc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
-                0x00000ea8                ADC_DelSig_1_Ext_CP_Clk_GetDividerRegister
+                0x00000e54        0xc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
+                0x00000e54                ADC_DelSig_1_Ext_CP_Clk_GetDividerRegister
  .text.ADC_DelSig_1_Ext_CP_Clk_SetModeRegister
-                0x00000eb4       0x14 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
-                0x00000eb4                ADC_DelSig_1_Ext_CP_Clk_SetModeRegister
+                0x00000e60       0x14 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
+                0x00000e60                ADC_DelSig_1_Ext_CP_Clk_SetModeRegister
  .text.ADC_DelSig_1_Ext_CP_Clk_GetSourceRegister
-                0x00000ec8       0x10 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
-                0x00000ec8                ADC_DelSig_1_Ext_CP_Clk_GetSourceRegister
+                0x00000e74       0x10 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
+                0x00000e74                ADC_DelSig_1_Ext_CP_Clk_GetSourceRegister
  .text.ADC_DelSig_1_Ext_CP_Clk_SetDividerRegister
-                0x00000ed8       0xd8 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
-                0x00000ed8                ADC_DelSig_1_Ext_CP_Clk_SetDividerRegister
+                0x00000e84       0xd8 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
+                0x00000e84                ADC_DelSig_1_Ext_CP_Clk_SetDividerRegister
  .text.ADC_DelSig_1_theACLK_GetDividerRegister
-                0x00000fb0        0xc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
-                0x00000fb0                ADC_DelSig_1_theACLK_GetDividerRegister
+                0x00000f5c        0xc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
+                0x00000f5c                ADC_DelSig_1_theACLK_GetDividerRegister
  .text.ADC_DelSig_1_theACLK_SetModeRegister
-                0x00000fbc       0x14 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
-                0x00000fbc                ADC_DelSig_1_theACLK_SetModeRegister
+                0x00000f68       0x14 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
+                0x00000f68                ADC_DelSig_1_theACLK_SetModeRegister
  .text.ADC_DelSig_1_theACLK_GetSourceRegister
-                0x00000fd0       0x10 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
-                0x00000fd0                ADC_DelSig_1_theACLK_GetSourceRegister
+                0x00000f7c       0x10 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
+                0x00000f7c                ADC_DelSig_1_theACLK_GetSourceRegister
  .text.ADC_DelSig_1_theACLK_SetDividerRegister
-                0x00000fe0       0xd8 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
-                0x00000fe0                ADC_DelSig_1_theACLK_SetDividerRegister
+                0x00000f8c       0xd8 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
+                0x00000f8c                ADC_DelSig_1_theACLK_SetDividerRegister
  .text.SPIM_1_IntClock_Start
-                0x000010b8       0x1c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1_IntClock.o)
-                0x000010b8                SPIM_1_IntClock_Start
- .text.__errno  0x000010d4        0xc c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-errno.o)
-                0x000010d4                __errno
+                0x00001064       0x1c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1_IntClock.o)
+                0x00001064                SPIM_1_IntClock_Start
+ .text.LED_Write
+                0x00001080       0x18 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(LED.o)
+                0x00001080                LED_Write
+ .text.__errno  0x00001098        0xc c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-errno.o)
+                0x00001098                __errno
  .text.__libc_init_array
-                0x000010e0       0x4c c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-init.o)
-                0x000010e0                __libc_init_array
- .text.memcpy   0x0000112c       0x16 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memcpy.o)
-                0x0000112c                memcpy
- .text.memset   0x00001142       0x10 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memset.o)
-                0x00001142                memset
- *fill*         0x00001152        0x2 
+                0x000010a4       0x4c c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-init.o)
+                0x000010a4                __libc_init_array
+ .text.memcpy   0x000010f0       0x16 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memcpy.o)
+                0x000010f0                memcpy
+ .text.memset   0x00001106       0x10 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memset.o)
+                0x00001106                memset
+ *fill*         0x00001116        0x2 
  .text.snprintf
-                0x00001154       0x64 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-snprintf.o)
-                0x00001154                sniprintf
-                0x00001154                snprintf
+                0x00001118       0x64 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-snprintf.o)
+                0x00001118                sniprintf
+                0x00001118                snprintf
  .text.__ssputs_r
-                0x000011b8       0xb2 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-svfprintf.o)
-                0x000011b8                __ssputs_r
- *fill*         0x0000126a        0x2 
+                0x0000117c       0xb2 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-svfprintf.o)
+                0x0000117c                __ssputs_r
+ *fill*         0x0000122e        0x2 
  .text._svfprintf_r
-                0x0000126c      0x1e4 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-svfprintf.o)
-                0x0000126c                _svfiprintf_r
-                0x0000126c                _svfprintf_r
+                0x00001230      0x1e4 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-svfprintf.o)
+                0x00001230                _svfiprintf_r
+                0x00001230                _svfprintf_r
  .text._printf_common
-                0x00001450       0xea c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
-                0x00001450                _printf_common
- *fill*         0x0000153a        0x2 
+                0x00001414       0xea c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
+                0x00001414                _printf_common
+ *fill*         0x000014fe        0x2 
  .text._printf_i
-                0x0000153c      0x240 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
-                0x0000153c                _printf_i
- .text.memchr   0x0000177c       0x1c c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memchr.o)
-                0x0000177c                memchr
- .text.memmove  0x00001798       0x36 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memmove.o)
-                0x00001798                memmove
- *fill*         0x000017ce        0x2 
- .text._free_r  0x000017d0       0x88 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-freer.o)
-                0x000017d0                _free_r
+                0x00001500      0x240 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
+                0x00001500                _printf_i
+ .text.memchr   0x00001740       0x1c c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memchr.o)
+                0x00001740                memchr
+ .text.memmove  0x0000175c       0x36 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memmove.o)
+                0x0000175c                memmove
+ *fill*         0x00001792        0x2 
+ .text._free_r  0x00001794       0x88 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-freer.o)
+                0x00001794                _free_r
  .text._malloc_r
-                0x00001858       0xac c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-mallocr.o)
-                0x00001858                _malloc_r
+                0x0000181c       0xac c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-mallocr.o)
+                0x0000181c                _malloc_r
  .text._realloc_r
-                0x00001904       0x4c c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-reallocr.o)
-                0x00001904                _realloc_r
- .text._sbrk_r  0x00001950       0x20 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-sbrkr.o)
-                0x00001950                _sbrk_r
+                0x000018c8       0x4c c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-reallocr.o)
+                0x000018c8                _realloc_r
+ .text._sbrk_r  0x00001914       0x20 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-sbrkr.o)
+                0x00001914                _sbrk_r
  .text._malloc_usable_size_r
-                0x00001970       0x14 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-msizer.o)
-                0x00001970                _malloc_usable_size_r
+                0x00001934       0x14 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-msizer.o)
+                0x00001934                _malloc_usable_size_r
  *(.plt)
  *(.gnu.warning)
  *(.glue_7t)
@@ -1052,90 +1092,89 @@ END GROUP
  *(.ARM.extab* .gnu.linkonce.armextab.*)
  *(.gcc_except_table)
 
-.v4_bx          0x00001984        0x0
+.v4_bx          0x00001948        0x0
  .v4_bx         0x00000000        0x0 linker stubs
 
-.iplt           0x00001984        0x0
+.iplt           0x00001948        0x0
  .iplt          0x00000000        0x0 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtbegin.o
 
 .eh_frame_hdr
  *(.eh_frame_hdr)
 
-.eh_frame       0x00001984        0x4
+.eh_frame       0x00001948        0x4
  *(.eh_frame)
- .eh_frame      0x00001984        0x0 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtbegin.o
- .eh_frame      0x00001984        0x4 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtend.o
-                0x00001988                PROVIDE (__exidx_start, .)
+ .eh_frame      0x00001948        0x0 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtbegin.o
+ .eh_frame      0x00001948        0x4 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtend.o
+                0x0000194c                PROVIDE (__exidx_start, .)
 
 .ARM.exidx
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x00001988                __exidx_end = .
+                0x0000194c                __exidx_end = .
 
-.rodata         0x00001988      0x108
+.rodata         0x0000194c       0xfc
  *(.rodata .rodata.* .gnu.linkonce.r.*)
  .rodata.str1.4
-                0x00001988       0x3c .\CortexM3\ARM_GCC_493\Debug\main.o
-                                 0x40 (size before relaxing)
- .rodata        0x000019c4       0x5c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
-                0x000019c4                ADC_DelSig_1_AMux__addrTable
-                0x000019cc                ADC_DelSig_1_AMux__maskTable
+                0x0000194c       0x34 .\CortexM3\ARM_GCC_493\Debug\main.o
+                                 0x38 (size before relaxing)
+ .rodata        0x00001980       0x5c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
+                0x00001980                ADC_DelSig_1_AMux__addrTable
+                0x00001988                ADC_DelSig_1_AMux__maskTable
  .rodata.str1.1
-                0x00001a20        0x2 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-impure.o)
+                0x000019dc        0x2 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-impure.o)
  .rodata.str1.1
-                0x00001a22       0x11 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-svfprintf.o)
+                0x000019de       0x11 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-svfprintf.o)
  .rodata.str1.1
-                0x00001a33       0x22 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
-                0x00001a58                . = ALIGN (0x4)
- *fill*         0x00001a55        0x3 
+                0x000019ef       0x22 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
+                0x00001a14                . = ALIGN (0x4)
+ *fill*         0x00001a11        0x3 
  *(.init)
- .init          0x00001a58        0x4 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crti.o
-                0x00001a58                _init
- .init          0x00001a5c        0x8 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtn.o
-                0x00001a64                . = ALIGN (0x4)
-                0x00001a64                __preinit_array_start = .
+ .init          0x00001a14        0x4 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crti.o
+                0x00001a14                _init
+ .init          0x00001a18        0x8 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtn.o
+                0x00001a20                . = ALIGN (0x4)
+                0x00001a20                __preinit_array_start = .
  *(.preinit_array)
-                0x00001a64                __preinit_array_end = .
-                0x00001a64                . = ALIGN (0x4)
-                0x00001a64                __init_array_start = .
+                0x00001a20                __preinit_array_end = .
+                0x00001a20                . = ALIGN (0x4)
+                0x00001a20                __init_array_start = .
  *(SORT(.init_array.*))
  *(.init_array)
- .init_array    0x00001a64        0x4 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtbegin.o
- .init_array    0x00001a68        0x4 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
-                0x00001a6c                __init_array_end = .
-                0x00001a6c                . = ALIGN (0x4)
+ .init_array    0x00001a20        0x4 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtbegin.o
+ .init_array    0x00001a24        0x4 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+                0x00001a28                __init_array_end = .
+                0x00001a28                . = ALIGN (0x4)
  *(.fini)
- .fini          0x00001a6c        0x4 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crti.o
-                0x00001a6c                _fini
- .fini          0x00001a70        0x8 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtn.o
-                0x00001a78                . = ALIGN (0x4)
-                0x00001a78                __fini_array_start = .
+ .fini          0x00001a28        0x4 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crti.o
+                0x00001a28                _fini
+ .fini          0x00001a2c        0x8 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtn.o
+                0x00001a34                . = ALIGN (0x4)
+                0x00001a34                __fini_array_start = .
  *(.fini_array)
- .fini_array    0x00001a78        0x4 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtbegin.o
+ .fini_array    0x00001a34        0x4 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtbegin.o
  *(SORT(.fini_array.*))
-                0x00001a7c                __fini_array_end = .
-                0x00001a7c                . = ALIGN (0x4)
+                0x00001a38                __fini_array_end = .
+                0x00001a38                . = ALIGN (0x4)
  *crtbegin.o(.ctors)
  *(EXCLUDE_FILE(*crtend.o) .ctors)
  *(SORT(.ctors.*))
  *crtend.o(.ctors)
-                0x00001a7c                . = ALIGN (0x4)
+                0x00001a38                . = ALIGN (0x4)
  *crtbegin.o(.dtors)
  *(EXCLUDE_FILE(*crtend.o) .dtors)
  *(SORT(.dtors.*))
  *crtend.o(.dtors)
-                0x00001a7c                . = ALIGN (0x4)
-                0x00001a7c                __cy_regions = .
-                0x00001a7c        0x4 LONG 0x1a90 __cy_region_init_ram
-                0x00001a80        0x4 LONG 0x1fff8108 __cy_region_start_data
-                0x00001a84        0x4 LONG 0x80 __cy_region_init_size_ram
-                0x00001a88        0x4 LONG 0x58 __cy_region_zero_size_ram
-                0x00001a8c                __cy_regions_end = .
-                0x00001a90                . = ALIGN (0x8)
- *fill*         0x00001a8c        0x4 
-                0x00001a90                _etext = .
+                0x00001a38                . = ALIGN (0x4)
+                0x00001a38                __cy_regions = .
+                0x00001a38        0x4 LONG 0x1a48 __cy_region_init_ram
+                0x00001a3c        0x4 LONG 0x1fff8108 __cy_region_start_data
+                0x00001a40        0x4 LONG 0x80 __cy_region_init_size_ram
+                0x00001a44        0x4 LONG 0x58 __cy_region_zero_size_ram
+                0x00001a48                __cy_regions_end = .
+                0x00001a48                . = ALIGN (0x8)
+                0x00001a48                _etext = .
 
 .cy_checksum_exclude
-                0x00001a90        0x0
+                0x00001a48        0x0
  *(.cy_checksum_exclude)
 
 .ramvectors     0x1fff8000      0x100
@@ -1150,7 +1189,7 @@ END GROUP
  .noinit        0x1fff8104        0x1 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyLib.o)
                 0x1fff8104                CyResetStatus
 
-.data           0x1fff8108       0x80 load address 0x00001a90
+.data           0x1fff8108       0x80 load address 0x00001a48
                 0x1fff8108                __cy_region_start_data = .
  *(.jcr)
  .jcr           0x1fff8108        0x0 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtbegin.o
@@ -1178,10 +1217,10 @@ END GROUP
  *(.ram)
                 0x1fff8188                _edata = .
 
-.igot.plt       0x1fff8188        0x0 load address 0x00001b10
+.igot.plt       0x1fff8188        0x0 load address 0x00001ac8
  .igot.plt      0x00000000        0x0 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtbegin.o
 
-.bss            0x1fff8188       0x58 load address 0x00001b10
+.bss            0x1fff8188       0x58 load address 0x00001ac8
                 0x1fff8188                PROVIDE (__bss_start__, .)
  *(.shbss)
  *(.bss .bss.* .gnu.linkonce.b.*)
@@ -1208,29 +1247,30 @@ END GROUP
                 0x1fff81c0        0x4 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-mallocr.o)
                 0x1fff81c0                __malloc_free_list
  *(COMMON)
- COMMON         0x1fff81c4        0xb .\CortexM3\ARM_GCC_493\Debug\main.o
+ COMMON         0x1fff81c4        0xd .\CortexM3\ARM_GCC_493\Debug\main.o
                 0x1fff81c4                printbuf
-                0x1fff81cc                psocByte
-                0x1fff81cd                statusByte
-                0x1fff81ce                adcValue
- *fill*         0x1fff81cf        0x1 
- COMMON         0x1fff81d0        0x8 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
-                0x1fff81d0                ADC_DelSig_1_CountsPerVolt
-                0x1fff81d4                ADC_DelSig_1_Offset
- COMMON         0x1fff81d8        0x4 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-reent.o)
-                0x1fff81d8                errno
+                0x1fff81cc                throwaway
+                0x1fff81cd                psocByte
+                0x1fff81ce                rfByte
+                0x1fff81cf                statusByte
+                0x1fff81d0                adcValue
+ *fill*         0x1fff81d1        0x3 
+ COMMON         0x1fff81d4        0x8 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
+                0x1fff81d4                ADC_DelSig_1_CountsPerVolt
+                0x1fff81d8                ADC_DelSig_1_Offset
+ COMMON         0x1fff81dc        0x4 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-reent.o)
+                0x1fff81dc                errno
                 0x1fff81e0                . = ALIGN (0x8)
- *fill*         0x1fff81dc        0x4 
  *(.ram.b)
                 0x1fff81e0                _end = .
                 0x1fff81e0                __end = .
                 0x1fff81e0                PROVIDE (end, .)
                 0x1fff81e0                PROVIDE (__bss_end__, .)
-                0x00001a90                __cy_region_init_ram = LOADADDR (.data)
+                0x00001a48                __cy_region_init_ram = LOADADDR (.data)
                 0x00000080                __cy_region_init_size_ram = (_edata - ADDR (.data))
                 0x00000058                __cy_region_zero_size_ram = (_end - _edata)
 
-.heap           0x1fff81e0       0x80 load address 0x00001b10
+.heap           0x1fff81e0       0x80 load address 0x00001ac8
                 0x1fff81e0                . = _end
                 0x1fff8260                . = (. + 0x80)
  *fill*         0x1fff81e0       0x80 
@@ -1250,9 +1290,9 @@ END GROUP
 .cyloadablemeta
  *(.cyloadablemeta)
 
-.cyconfigecc    0x80000000      0x5bc
+.cyconfigecc    0x80000000      0x5c4
  *(.cyconfigecc)
- .cyconfigecc   0x80000000      0x5bc .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
+ .cyconfigecc   0x80000000      0x5c4 .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
                 0x80000000                cy_meta_configecc
 
 .cycustnvl      0x90000000        0x4
@@ -1281,7 +1321,7 @@ END GROUP
  .cymeta        0x90500000        0xc .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
                 0x90500000                cy_metadata
 
-.rel.dyn        0x00001b10        0x0 load address 0x9050000c
+.rel.dyn        0x00001ac8        0x0 load address 0x9050000c
  .rel.iplt      0x00000000        0x0 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtbegin.o
 
 .stab
@@ -1302,261 +1342,281 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000      0xb78
+.debug_aranges  0x00000000      0xc18
  *(.debug_aranges)
  .debug_aranges
-                0x00000000       0x80 .\CortexM3\ARM_GCC_493\Debug\main.o
+                0x00000000       0xb0 .\CortexM3\ARM_GCC_493\Debug\main.o
  .debug_aranges
-                0x00000080       0x18 .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
+                0x000000b0       0x18 .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
  .debug_aranges
-                0x00000098       0x48 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+                0x000000c8       0x48 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
  .debug_aranges
-                0x000000e0       0x68 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
+                0x00000110       0x68 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
  .debug_aranges
-                0x00000148       0x20 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyBootAsmGnu.o)
+                0x00000178       0x20 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyBootAsmGnu.o)
  .debug_aranges
-                0x00000168      0x298 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyLib.o)
+                0x00000198      0x298 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyLib.o)
  .debug_aranges
-                0x00000400       0x98 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyPm.o)
+                0x00000430       0x98 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyPm.o)
  .debug_aranges
-                0x00000498       0xf0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
+                0x000004c8       0xf0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
  .debug_aranges
-                0x00000588       0x70 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1_IntClock.o)
+                0x000005b8       0x70 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1_IntClock.o)
  .debug_aranges
-                0x000005f8       0x38 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Pin_1.o)
+                0x00000628       0xe8 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
  .debug_aranges
-                0x00000630       0xe8 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
+                0x00000710       0x38 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_INT.o)
  .debug_aranges
-                0x00000718       0x38 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_INT.o)
+                0x00000748       0x58 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
  .debug_aranges
-                0x00000750       0x58 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
+                0x000007a0       0x38 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1_PM.o)
  .debug_aranges
-                0x000007a8       0x38 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1_PM.o)
+                0x000007d8       0xd8 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
  .debug_aranges
-                0x000007e0       0xd8 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
+                0x000008b0       0x38 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CSN.o)
  .debug_aranges
-                0x000008b8       0x38 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CSN.o)
+                0x000008e8       0x38 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CE.o)
  .debug_aranges
-                0x000008f0       0x30 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
+                0x00000920       0x30 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
  .debug_aranges
-                0x00000920       0x70 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
+                0x00000950       0x70 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
  .debug_aranges
-                0x00000990       0x80 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
+                0x000009c0       0x80 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
  .debug_aranges
-                0x00000a10       0x70 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1_IntClock.o)
+                0x00000a40       0x70 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1_IntClock.o)
  .debug_aranges
-                0x00000a80       0x80 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyFlash.o)
+                0x00000ab0       0x38 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Button.o)
  .debug_aranges
-                0x00000b00       0x78 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CySpc.o)
+                0x00000ae8       0x38 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(LED.o)
+ .debug_aranges
+                0x00000b20       0x80 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyFlash.o)
+ .debug_aranges
+                0x00000ba0       0x78 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CySpc.o)
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x64b4
+.debug_info     0x00000000     0x68db
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x00000000      0x8b9 .\CortexM3\ARM_GCC_493\Debug\main.o
- .debug_info    0x000008b9      0x13d .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
- .debug_info    0x000009f6      0x3a5 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
- .debug_info    0x00000d9b      0x67a .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
- .debug_info    0x00001415       0x99 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyBootAsmGnu.o)
- .debug_info    0x000014ae     0x1371 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyLib.o)
- .debug_info    0x0000281f      0xa58 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyPm.o)
- .debug_info    0x00003277      0x603 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
- .debug_info    0x0000387a      0x283 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1_IntClock.o)
- .debug_info    0x00003afd      0x11f .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Pin_1.o)
- .debug_info    0x00003c1c      0xa78 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
- .debug_info    0x00004694       0xcc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_INT.o)
- .debug_info    0x00004760      0x1df .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
- .debug_info    0x0000493f      0x171 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1_PM.o)
- .debug_info    0x00004ab0      0x4b2 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
- .debug_info    0x00004f62      0x121 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CSN.o)
- .debug_info    0x00005083      0x16d .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
- .debug_info    0x000051f0      0x283 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
- .debug_info    0x00005473      0x2c4 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
- .debug_info    0x00005737      0x283 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1_IntClock.o)
- .debug_info    0x000059ba      0x60a .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyFlash.o)
- .debug_info    0x00005fc4      0x4f0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CySpc.o)
+ .debug_info    0x00000000      0xa7b .\CortexM3\ARM_GCC_493\Debug\main.o
+ .debug_info    0x00000a7b      0x13d .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
+ .debug_info    0x00000bb8      0x3a5 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+ .debug_info    0x00000f5d      0x69f .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
+ .debug_info    0x000015fc       0x99 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyBootAsmGnu.o)
+ .debug_info    0x00001695     0x1371 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyLib.o)
+ .debug_info    0x00002a06      0xa58 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyPm.o)
+ .debug_info    0x0000345e      0x603 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
+ .debug_info    0x00003a61      0x283 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1_IntClock.o)
+ .debug_info    0x00003ce4      0xa78 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
+ .debug_info    0x0000475c       0xcc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_INT.o)
+ .debug_info    0x00004828      0x1df .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
+ .debug_info    0x00004a07      0x171 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1_PM.o)
+ .debug_info    0x00004b78      0x4b2 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
+ .debug_info    0x0000502a      0x121 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CSN.o)
+ .debug_info    0x0000514b      0x11f .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CE.o)
+ .debug_info    0x0000526a      0x16d .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
+ .debug_info    0x000053d7      0x283 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
+ .debug_info    0x0000565a      0x2c4 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
+ .debug_info    0x0000591e      0x283 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1_IntClock.o)
+ .debug_info    0x00005ba1      0x121 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Button.o)
+ .debug_info    0x00005cc2      0x11f .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(LED.o)
+ .debug_info    0x00005de1      0x60a .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyFlash.o)
+ .debug_info    0x000063eb      0x4f0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CySpc.o)
 
-.debug_abbrev   0x00000000     0x1cb5
+.debug_abbrev   0x00000000     0x1e36
  *(.debug_abbrev)
- .debug_abbrev  0x00000000      0x1e7 .\CortexM3\ARM_GCC_493\Debug\main.o
- .debug_abbrev  0x000001e7       0x77 .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
- .debug_abbrev  0x0000025e      0x20f .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
- .debug_abbrev  0x0000046d      0x21f .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
- .debug_abbrev  0x0000068c       0x14 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyBootAsmGnu.o)
- .debug_abbrev  0x000006a0      0x296 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyLib.o)
- .debug_abbrev  0x00000936      0x1ed .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyPm.o)
- .debug_abbrev  0x00000b23      0x1a2 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
- .debug_abbrev  0x00000cc5      0x139 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1_IntClock.o)
- .debug_abbrev  0x00000dfe       0x90 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Pin_1.o)
- .debug_abbrev  0x00000e8e      0x21f .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
- .debug_abbrev  0x000010ad       0x42 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_INT.o)
- .debug_abbrev  0x000010ef       0xf7 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
- .debug_abbrev  0x000011e6       0xdc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1_PM.o)
- .debug_abbrev  0x000012c2      0x173 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
- .debug_abbrev  0x00001435       0x90 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CSN.o)
- .debug_abbrev  0x000014c5       0xcb .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
- .debug_abbrev  0x00001590      0x139 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
- .debug_abbrev  0x000016c9      0x121 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
- .debug_abbrev  0x000017ea      0x139 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1_IntClock.o)
- .debug_abbrev  0x00001923      0x1d1 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyFlash.o)
- .debug_abbrev  0x00001af4      0x1c1 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CySpc.o)
+ .debug_abbrev  0x00000000      0x248 .\CortexM3\ARM_GCC_493\Debug\main.o
+ .debug_abbrev  0x00000248       0x77 .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
+ .debug_abbrev  0x000002bf      0x20f .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+ .debug_abbrev  0x000004ce      0x21f .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
+ .debug_abbrev  0x000006ed       0x14 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyBootAsmGnu.o)
+ .debug_abbrev  0x00000701      0x296 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyLib.o)
+ .debug_abbrev  0x00000997      0x1ed .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyPm.o)
+ .debug_abbrev  0x00000b84      0x1a2 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
+ .debug_abbrev  0x00000d26      0x139 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1_IntClock.o)
+ .debug_abbrev  0x00000e5f      0x21f .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
+ .debug_abbrev  0x0000107e       0x42 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_INT.o)
+ .debug_abbrev  0x000010c0       0xf7 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
+ .debug_abbrev  0x000011b7       0xdc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1_PM.o)
+ .debug_abbrev  0x00001293      0x173 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
+ .debug_abbrev  0x00001406       0x90 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CSN.o)
+ .debug_abbrev  0x00001496       0x90 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CE.o)
+ .debug_abbrev  0x00001526       0xcb .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
+ .debug_abbrev  0x000015f1      0x139 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
+ .debug_abbrev  0x0000172a      0x121 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
+ .debug_abbrev  0x0000184b      0x139 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1_IntClock.o)
+ .debug_abbrev  0x00001984       0x90 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Button.o)
+ .debug_abbrev  0x00001a14       0x90 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(LED.o)
+ .debug_abbrev  0x00001aa4      0x1d1 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyFlash.o)
+ .debug_abbrev  0x00001c75      0x1c1 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CySpc.o)
 
-.debug_line     0x00000000     0x2b7c
+.debug_line     0x00000000     0x2d22
  *(.debug_line)
- .debug_line    0x00000000      0x393 .\CortexM3\ARM_GCC_493\Debug\main.o
- .debug_line    0x00000393       0x53 .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
- .debug_line    0x000003e6      0x249 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
- .debug_line    0x0000062f      0x22f .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
- .debug_line    0x0000085e       0x68 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyBootAsmGnu.o)
- .debug_line    0x000008c6      0x806 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyLib.o)
- .debug_line    0x000010cc      0x366 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyPm.o)
- .debug_line    0x00001432      0x2c2 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
- .debug_line    0x000016f4      0x197 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1_IntClock.o)
- .debug_line    0x0000188b       0x94 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Pin_1.o)
- .debug_line    0x0000191f      0x38c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
- .debug_line    0x00001cab       0x8b .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_INT.o)
- .debug_line    0x00001d36       0xe6 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
- .debug_line    0x00001e1c       0xaf .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1_PM.o)
- .debug_line    0x00001ecb      0x249 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
- .debug_line    0x00002114       0x92 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CSN.o)
- .debug_line    0x000021a6       0xb7 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
- .debug_line    0x0000225d      0x19f .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
- .debug_line    0x000023fc      0x1bf .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
- .debug_line    0x000025bb      0x197 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1_IntClock.o)
- .debug_line    0x00002752      0x1ec .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyFlash.o)
- .debug_line    0x0000293e      0x23e .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CySpc.o)
+ .debug_line    0x00000000      0x414 .\CortexM3\ARM_GCC_493\Debug\main.o
+ .debug_line    0x00000414       0x53 .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
+ .debug_line    0x00000467      0x249 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+ .debug_line    0x000006b0      0x230 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
+ .debug_line    0x000008e0       0x68 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyBootAsmGnu.o)
+ .debug_line    0x00000948      0x806 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyLib.o)
+ .debug_line    0x0000114e      0x366 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyPm.o)
+ .debug_line    0x000014b4      0x2c2 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
+ .debug_line    0x00001776      0x197 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1_IntClock.o)
+ .debug_line    0x0000190d      0x38c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
+ .debug_line    0x00001c99       0x8b .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_INT.o)
+ .debug_line    0x00001d24       0xe6 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
+ .debug_line    0x00001e0a       0xaf .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1_PM.o)
+ .debug_line    0x00001eb9      0x249 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
+ .debug_line    0x00002102       0x92 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CSN.o)
+ .debug_line    0x00002194       0x91 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CE.o)
+ .debug_line    0x00002225       0xb7 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
+ .debug_line    0x000022dc      0x19f .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
+ .debug_line    0x0000247b      0x1bf .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
+ .debug_line    0x0000263a      0x197 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1_IntClock.o)
+ .debug_line    0x000027d1       0x95 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Button.o)
+ .debug_line    0x00002866       0x92 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(LED.o)
+ .debug_line    0x000028f8      0x1ec .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyFlash.o)
+ .debug_line    0x00002ae4      0x23e .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CySpc.o)
 
-.debug_frame    0x00000000     0x1f90
+.debug_frame    0x00000000     0x20cc
  *(.debug_frame)
- .debug_frame   0x00000000      0x180 .\CortexM3\ARM_GCC_493\Debug\main.o
- .debug_frame   0x00000180       0xac .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
- .debug_frame   0x0000022c      0x104 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
- .debug_frame   0x00000330      0x728 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyLib.o)
- .debug_frame   0x00000a58      0x1f8 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyPm.o)
- .debug_frame   0x00000c50      0x250 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
- .debug_frame   0x00000ea0       0xe0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1_IntClock.o)
- .debug_frame   0x00000f80       0x50 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Pin_1.o)
- .debug_frame   0x00000fd0      0x284 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
- .debug_frame   0x00001254       0x50 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_INT.o)
- .debug_frame   0x000012a4       0xb4 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
- .debug_frame   0x00001358       0x68 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1_PM.o)
- .debug_frame   0x000013c0      0x1e8 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
- .debug_frame   0x000015a8       0x50 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CSN.o)
- .debug_frame   0x000015f8       0x64 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
- .debug_frame   0x0000165c       0xe0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
- .debug_frame   0x0000173c      0x100 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
- .debug_frame   0x0000183c       0xe0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1_IntClock.o)
- .debug_frame   0x0000191c      0x174 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyFlash.o)
- .debug_frame   0x00001a90      0x160 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CySpc.o)
- .debug_frame   0x00001bf0       0x20 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-errno.o)
- .debug_frame   0x00001c10       0x28 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-exit.o)
- .debug_frame   0x00001c38       0x2c c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-init.o)
- .debug_frame   0x00001c64       0x28 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memcpy.o)
- .debug_frame   0x00001c8c       0x20 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memset.o)
- .debug_frame   0x00001cac       0x74 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-snprintf.o)
- .debug_frame   0x00001d20       0x8c c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-svfprintf.o)
- .debug_frame   0x00001dac       0x58 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
- .debug_frame   0x00001e04       0x28 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memchr.o)
- .debug_frame   0x00001e2c       0x28 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memmove.o)
- .debug_frame   0x00001e54       0x2c c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-freer.o)
- .debug_frame   0x00001e80       0x2c c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-mallocr.o)
- .debug_frame   0x00001eac       0x3c c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-reallocr.o)
- .debug_frame   0x00001ee8       0x2c c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-sbrkr.o)
- .debug_frame   0x00001f14       0x20 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-msizer.o)
- .debug_frame   0x00001f34       0x5c c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-reent.o)
+ .debug_frame   0x00000000      0x21c .\CortexM3\ARM_GCC_493\Debug\main.o
+ .debug_frame   0x0000021c       0xac .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+ .debug_frame   0x000002c8      0x104 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
+ .debug_frame   0x000003cc      0x728 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyLib.o)
+ .debug_frame   0x00000af4      0x1f8 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyPm.o)
+ .debug_frame   0x00000cec      0x250 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
+ .debug_frame   0x00000f3c       0xe0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1_IntClock.o)
+ .debug_frame   0x0000101c      0x284 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
+ .debug_frame   0x000012a0       0x50 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_INT.o)
+ .debug_frame   0x000012f0       0xb4 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
+ .debug_frame   0x000013a4       0x68 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1_PM.o)
+ .debug_frame   0x0000140c      0x1e8 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
+ .debug_frame   0x000015f4       0x50 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CSN.o)
+ .debug_frame   0x00001644       0x50 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CE.o)
+ .debug_frame   0x00001694       0x64 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
+ .debug_frame   0x000016f8       0xe0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
+ .debug_frame   0x000017d8      0x100 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
+ .debug_frame   0x000018d8       0xe0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1_IntClock.o)
+ .debug_frame   0x000019b8       0x50 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Button.o)
+ .debug_frame   0x00001a08       0x50 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(LED.o)
+ .debug_frame   0x00001a58      0x174 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyFlash.o)
+ .debug_frame   0x00001bcc      0x160 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CySpc.o)
+ .debug_frame   0x00001d2c       0x20 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-errno.o)
+ .debug_frame   0x00001d4c       0x28 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-exit.o)
+ .debug_frame   0x00001d74       0x2c c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-init.o)
+ .debug_frame   0x00001da0       0x28 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memcpy.o)
+ .debug_frame   0x00001dc8       0x20 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memset.o)
+ .debug_frame   0x00001de8       0x74 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-snprintf.o)
+ .debug_frame   0x00001e5c       0x8c c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-svfprintf.o)
+ .debug_frame   0x00001ee8       0x58 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
+ .debug_frame   0x00001f40       0x28 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memchr.o)
+ .debug_frame   0x00001f68       0x28 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memmove.o)
+ .debug_frame   0x00001f90       0x2c c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-freer.o)
+ .debug_frame   0x00001fbc       0x2c c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-mallocr.o)
+ .debug_frame   0x00001fe8       0x3c c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-reallocr.o)
+ .debug_frame   0x00002024       0x2c c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-sbrkr.o)
+ .debug_frame   0x00002050       0x20 c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-msizer.o)
+ .debug_frame   0x00002070       0x5c c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-reent.o)
 
-.debug_str      0x00000000     0x2722
+.debug_str      0x00000000     0x281f
  *(.debug_str)
- .debug_str     0x00000000      0x432 .\CortexM3\ARM_GCC_493\Debug\main.o
-                                0x483 (size before relaxing)
- .debug_str     0x00000432       0x77 .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
+ .debug_str     0x00000000      0x49c .\CortexM3\ARM_GCC_493\Debug\main.o
+                                0x4f4 (size before relaxing)
+ .debug_str     0x0000049c       0x77 .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
                                 0x1f3 (size before relaxing)
- .debug_str     0x000004a9      0x15e .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+ .debug_str     0x00000513      0x15e .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
                                 0x307 (size before relaxing)
- .debug_str     0x00000607      0x1fc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
+ .debug_str     0x00000671      0x1fc .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
                                 0x3b1 (size before relaxing)
- .debug_str     0x00000803      0x836 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyLib.o)
+ .debug_str     0x0000086d      0x836 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyLib.o)
                                 0xa2c (size before relaxing)
- .debug_str     0x00001039      0x35b .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyPm.o)
+ .debug_str     0x000010a3      0x35b .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyPm.o)
                                 0x724 (size before relaxing)
- .debug_str     0x00001394      0x218 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
+ .debug_str     0x000013fe      0x218 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
                                 0x4b0 (size before relaxing)
- .debug_str     0x000015ac      0x199 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1_IntClock.o)
+ .debug_str     0x00001616      0x199 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1_IntClock.o)
                                 0x357 (size before relaxing)
- .debug_str     0x00001745       0x5c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Pin_1.o)
-                                0x1eb (size before relaxing)
- .debug_str     0x000017a1      0x476 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
+ .debug_str     0x000017af      0x476 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
                                 0x744 (size before relaxing)
- .debug_str     0x00001c17       0x74 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_INT.o)
+ .debug_str     0x00001c25       0x74 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_INT.o)
                                 0x1ea (size before relaxing)
- .debug_str     0x00001c8b       0x9a .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
+ .debug_str     0x00001c99       0x9a .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
                                 0x23c (size before relaxing)
- .debug_str     0x00001d25       0x8a .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1_PM.o)
+ .debug_str     0x00001d33       0x8a .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1_PM.o)
                                 0x24c (size before relaxing)
- .debug_str     0x00001daf      0x1cf .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
+ .debug_str     0x00001dbd      0x1cf .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
                                 0x445 (size before relaxing)
- .debug_str     0x00001f7e       0x49 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CSN.o)
+ .debug_str     0x00001f8c       0x54 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CSN.o)
                                 0x1e1 (size before relaxing)
- .debug_str     0x00001fc7       0x85 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
+ .debug_str     0x00001fe0       0x45 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CE.o)
+                                0x1dc (size before relaxing)
+ .debug_str     0x00002025       0x85 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
                                 0x247 (size before relaxing)
- .debug_str     0x0000204c      0x186 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
+ .debug_str     0x000020aa      0x186 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
                                 0x3b7 (size before relaxing)
- .debug_str     0x000021d2      0x1bd .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
+ .debug_str     0x00002230      0x1bd .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
                                 0x3e8 (size before relaxing)
- .debug_str     0x0000238f      0x14e .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1_IntClock.o)
+ .debug_str     0x000023ed      0x14e .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1_IntClock.o)
                                 0x357 (size before relaxing)
- .debug_str     0x000024dd      0x197 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyFlash.o)
+ .debug_str     0x0000253b       0x56 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Button.o)
+                                0x1f0 (size before relaxing)
+ .debug_str     0x00002591       0x49 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(LED.o)
+                                0x1e1 (size before relaxing)
+ .debug_str     0x000025da      0x197 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyFlash.o)
                                 0x39e (size before relaxing)
- .debug_str     0x00002674       0xae .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CySpc.o)
+ .debug_str     0x00002771       0xae .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CySpc.o)
                                 0x327 (size before relaxing)
 
-.debug_loc      0x00000000     0x2a57
+.debug_loc      0x00000000     0x2b92
  *(.debug_loc)
- .debug_loc     0x00000000       0xd9 .\CortexM3\ARM_GCC_493\Debug\main.o
- .debug_loc     0x000000d9      0x144 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
- .debug_loc     0x0000021d      0x2cb .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
- .debug_loc     0x000004e8      0xa11 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyLib.o)
- .debug_loc     0x00000ef9      0x1e4 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyPm.o)
- .debug_loc     0x000010dd      0x258 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
- .debug_loc     0x00001335      0x128 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1_IntClock.o)
- .debug_loc     0x0000145d       0x42 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Pin_1.o)
- .debug_loc     0x0000149f      0x692 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
- .debug_loc     0x00001b31       0x79 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
- .debug_loc     0x00001baa       0xfe .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
- .debug_loc     0x00001ca8       0x55 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CSN.o)
- .debug_loc     0x00001cfd       0x6c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
- .debug_loc     0x00001d69      0x12c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
- .debug_loc     0x00001e95      0x14d .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
- .debug_loc     0x00001fe2      0x128 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1_IntClock.o)
- .debug_loc     0x0000210a      0x300 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyFlash.o)
- .debug_loc     0x0000240a      0x64d .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CySpc.o)
+ .debug_loc     0x00000000      0x17d .\CortexM3\ARM_GCC_493\Debug\main.o
+ .debug_loc     0x0000017d      0x144 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+ .debug_loc     0x000002c1      0x2cb .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
+ .debug_loc     0x0000058c      0xa11 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyLib.o)
+ .debug_loc     0x00000f9d      0x1e4 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyPm.o)
+ .debug_loc     0x00001181      0x258 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
+ .debug_loc     0x000013d9      0x128 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1_IntClock.o)
+ .debug_loc     0x00001501      0x692 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
+ .debug_loc     0x00001b93       0x79 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
+ .debug_loc     0x00001c0c       0xfe .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
+ .debug_loc     0x00001d0a       0x55 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CSN.o)
+ .debug_loc     0x00001d5f       0x42 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CE.o)
+ .debug_loc     0x00001da1       0x6c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
+ .debug_loc     0x00001e0d      0x12c .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
+ .debug_loc     0x00001f39      0x14d .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
+ .debug_loc     0x00002086      0x128 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1_IntClock.o)
+ .debug_loc     0x000021ae       0x55 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Button.o)
+ .debug_loc     0x00002203       0x42 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(LED.o)
+ .debug_loc     0x00002245      0x300 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyFlash.o)
+ .debug_loc     0x00002545      0x64d .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CySpc.o)
 
 .debug_macinfo
  *(.debug_macinfo)
 
-.debug_ranges   0x00000000      0xa00
+.debug_ranges   0x00000000      0xa80
  *(.debug_ranges)
- .debug_ranges  0x00000000       0x70 .\CortexM3\ARM_GCC_493\Debug\main.o
- .debug_ranges  0x00000070       0x38 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
- .debug_ranges  0x000000a8       0x58 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
- .debug_ranges  0x00000100      0x288 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyLib.o)
- .debug_ranges  0x00000388       0x88 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyPm.o)
- .debug_ranges  0x00000410       0xe0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
- .debug_ranges  0x000004f0       0x60 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1_IntClock.o)
- .debug_ranges  0x00000550       0x28 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Pin_1.o)
- .debug_ranges  0x00000578       0xd8 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
- .debug_ranges  0x00000650       0x28 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_INT.o)
- .debug_ranges  0x00000678       0x48 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
- .debug_ranges  0x000006c0       0x28 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1_PM.o)
- .debug_ranges  0x000006e8       0xc8 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
- .debug_ranges  0x000007b0       0x28 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CSN.o)
- .debug_ranges  0x000007d8       0x20 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
- .debug_ranges  0x000007f8       0x60 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
- .debug_ranges  0x00000858       0x70 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
- .debug_ranges  0x000008c8       0x60 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1_IntClock.o)
- .debug_ranges  0x00000928       0x70 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyFlash.o)
- .debug_ranges  0x00000998       0x68 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CySpc.o)
+ .debug_ranges  0x00000000       0xa0 .\CortexM3\ARM_GCC_493\Debug\main.o
+ .debug_ranges  0x000000a0       0x38 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+ .debug_ranges  0x000000d8       0x58 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyfitter_cfg.o)
+ .debug_ranges  0x00000130      0x288 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyLib.o)
+ .debug_ranges  0x000003b8       0x88 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyPm.o)
+ .debug_ranges  0x00000440       0xe0 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
+ .debug_ranges  0x00000520       0x60 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1_IntClock.o)
+ .debug_ranges  0x00000580       0xd8 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
+ .debug_ranges  0x00000658       0x28 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_INT.o)
+ .debug_ranges  0x00000680       0x48 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
+ .debug_ranges  0x000006c8       0x28 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1_PM.o)
+ .debug_ranges  0x000006f0       0xc8 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
+ .debug_ranges  0x000007b8       0x28 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CSN.o)
+ .debug_ranges  0x000007e0       0x28 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CE.o)
+ .debug_ranges  0x00000808       0x20 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
+ .debug_ranges  0x00000828       0x60 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
+ .debug_ranges  0x00000888       0x70 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
+ .debug_ranges  0x000008f8       0x60 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1_IntClock.o)
+ .debug_ranges  0x00000958       0x28 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Button.o)
+ .debug_ranges  0x00000980       0x28 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(LED.o)
+ .debug_ranges  0x000009a8       0x70 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyFlash.o)
+ .debug_ranges  0x00000a18       0x68 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CySpc.o)
 
 .comment        0x00000000       0x70
  .comment       0x00000000       0x70 .\CortexM3\ARM_GCC_493\Debug\main.o
@@ -1568,17 +1628,19 @@ END GROUP
  .comment       0x00000000       0x71 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(cyPm.o)
  .comment       0x00000000       0x71 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1.o)
  .comment       0x00000000       0x71 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1_IntClock.o)
- .comment       0x00000000       0x71 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Pin_1.o)
  .comment       0x00000000       0x71 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
  .comment       0x00000000       0x71 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_INT.o)
  .comment       0x00000000       0x71 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
  .comment       0x00000000       0x71 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1_PM.o)
  .comment       0x00000000       0x71 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
  .comment       0x00000000       0x71 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CSN.o)
+ .comment       0x00000000       0x71 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CE.o)
  .comment       0x00000000       0x71 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
  .comment       0x00000000       0x71 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_Ext_CP_Clk.o)
  .comment       0x00000000       0x71 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_theACLK.o)
  .comment       0x00000000       0x71 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1_IntClock.o)
+ .comment       0x00000000       0x71 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Button.o)
+ .comment       0x00000000       0x71 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(LED.o)
  .comment       0x00000000       0x71 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyFlash.o)
  .comment       0x00000000       0x71 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CySpc.o)
 
@@ -1625,19 +1687,19 @@ END GROUP
  .ARM.attributes
                 0x000001eb       0x33 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(UART_1_IntClock.o)
  .ARM.attributes
-                0x0000021e       0x33 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Pin_1.o)
+                0x0000021e       0x33 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
  .ARM.attributes
-                0x00000251       0x33 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1.o)
+                0x00000251       0x33 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_INT.o)
  .ARM.attributes
-                0x00000284       0x33 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_INT.o)
+                0x00000284       0x33 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
  .ARM.attributes
-                0x000002b7       0x33 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1.o)
+                0x000002b7       0x33 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1_PM.o)
  .ARM.attributes
-                0x000002ea       0x33 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(VDAC8_1_PM.o)
+                0x000002ea       0x33 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
  .ARM.attributes
-                0x0000031d       0x33 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1.o)
+                0x0000031d       0x33 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CSN.o)
  .ARM.attributes
-                0x00000350       0x33 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CSN.o)
+                0x00000350       0x33 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CE.o)
  .ARM.attributes
                 0x00000383       0x33 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(ADC_DelSig_1_AMux.o)
  .ARM.attributes
@@ -1647,57 +1709,61 @@ END GROUP
  .ARM.attributes
                 0x0000041c       0x33 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(SPIM_1_IntClock.o)
  .ARM.attributes
-                0x0000044f       0x33 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyFlash.o)
+                0x0000044f       0x33 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(Button.o)
  .ARM.attributes
-                0x00000482       0x33 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CySpc.o)
+                0x00000482       0x33 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(LED.o)
  .ARM.attributes
-                0x000004b5       0x1d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m\libgcc.a(_arm_addsubdf3.o)
+                0x000004b5       0x33 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CyFlash.o)
  .ARM.attributes
-                0x000004d2       0x1d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m\libgcc.a(_arm_cmpdf2.o)
+                0x000004e8       0x33 .\CortexM3\ARM_GCC_493\Debug\MiniPsocRF.a(CySpc.o)
  .ARM.attributes
-                0x000004ef       0x1d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m\libgcc.a(_arm_addsubsf3.o)
+                0x0000051b       0x1d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m\libgcc.a(_arm_addsubdf3.o)
  .ARM.attributes
-                0x0000050c       0x1d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m\libgcc.a(_arm_muldivsf3.o)
+                0x00000538       0x1d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m\libgcc.a(_arm_cmpdf2.o)
  .ARM.attributes
-                0x00000529       0x1d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m\libgcc.a(_arm_fixunssfsi.o)
+                0x00000555       0x1d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m\libgcc.a(_arm_addsubsf3.o)
  .ARM.attributes
-                0x00000546       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-errno.o)
+                0x00000572       0x1d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m\libgcc.a(_arm_muldivsf3.o)
  .ARM.attributes
-                0x00000573       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-exit.o)
+                0x0000058f       0x1d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m\libgcc.a(_arm_fixunssfsi.o)
  .ARM.attributes
-                0x000005a0       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-impure.o)
+                0x000005ac       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-errno.o)
  .ARM.attributes
-                0x000005cd       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-init.o)
+                0x000005d9       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-exit.o)
  .ARM.attributes
-                0x000005fa       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memcpy.o)
+                0x00000606       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-impure.o)
  .ARM.attributes
-                0x00000627       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memset.o)
+                0x00000633       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-init.o)
  .ARM.attributes
-                0x00000654       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-snprintf.o)
+                0x00000660       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memcpy.o)
  .ARM.attributes
-                0x00000681       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-svfprintf.o)
+                0x0000068d       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memset.o)
  .ARM.attributes
-                0x000006ae       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
+                0x000006ba       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-snprintf.o)
  .ARM.attributes
-                0x000006db       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memchr.o)
+                0x000006e7       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-svfprintf.o)
  .ARM.attributes
-                0x00000708       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memmove.o)
+                0x00000714       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
  .ARM.attributes
-                0x00000735       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-freer.o)
+                0x00000741       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memchr.o)
  .ARM.attributes
-                0x00000762       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-mallocr.o)
+                0x0000076e       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memmove.o)
  .ARM.attributes
-                0x0000078f       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-reallocr.o)
+                0x0000079b       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-freer.o)
  .ARM.attributes
-                0x000007bc       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-sbrkr.o)
+                0x000007c8       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-mallocr.o)
  .ARM.attributes
-                0x000007e9       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-msizer.o)
+                0x000007f5       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-reallocr.o)
  .ARM.attributes
-                0x00000816       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-reent.o)
+                0x00000822       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-sbrkr.o)
  .ARM.attributes
-                0x00000843       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtend.o
+                0x0000084f       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-msizer.o)
  .ARM.attributes
-                0x00000870       0x1d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtn.o
+                0x0000087c       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-reent.o)
+ .ARM.attributes
+                0x000008a9       0x2d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtend.o
+ .ARM.attributes
+                0x000008d6       0x1d c:/program files (x86)/cypress/psoc creator/3.3/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtn.o
 
 /DISCARD/
  *(.note.GNU-stack)

@@ -14,10 +14,15 @@
 #include <stdio.h>
 #include <nrf.h>
 
+// Declare constants
+const uint8 rxMode = 11; // decimal 11 = binary 00001011
+const uint8 txMode = 10; // decimal 10 = binary 00001010
+
 // Declare global variables
 uint8 psocByte;
 uint8 rfByte;
 uint8 statusByte;
+uint8 throwaway;
 char printbuf[8];
 
 // Declare functions
@@ -25,11 +30,14 @@ void setup();
 
 uint8 readRegister(uint8 reg);
 void writeRegister(uint8 reg, uint8 data);
-uint8 nrfEcho(uint8 byte);
-void nrfReceive(uint8 byte);
-uint8 nrfSend(uint8 byte);
+void nrfRegisterTest();
+void nrfReceiveTest(); // listens for transmissions and prints to UART
+uint8 nrfReadByte(); // configures NRF to RX mode and reads a byte out of FIFO queue
 void ce(uint8 byte);
 void csn(uint8 byte);
+
+void spiWrite(uint8 byte);
+uint8 spiRead();
 
 void blink();
 void stop();
@@ -57,38 +65,20 @@ int main()
     
     for(;;)
     {
-        /* Sandbox Testing -- PSOC -> R31JP */
+        /* R31JP Interaction Testing */
+        
+        // Send a square wave to the R31JP over UART
         // sendSquareWave();
+        // Receive and echo bytes back to the R31JP
         // echoR31JP();
-        
-        
+       
         /* NRF TESTING */
-        // Receive byte from the PC
-        // Wait for Rx FIFO to be not empty
-        while(~UART_1_ReadRxStatus() & UART_1_RX_STS_FIFO_NOTEMPTY);
-        psocByte = UART_1_GetChar();
-
-        // Send byte to NRF24L01 and echo it back
-        // rfByte = nrfEcho(psocByte);
         
-        //print("Reading config register.");
-        //readRegister(CONFIG);
-        //uint8 testReg = RX_PW_P0;
-        //print("Writing psocByte to test register.");
-        //writeRegister(testReg, psocByte);
-        //print("Reading test register.");
-        //readRegister(testReg);
+        // nrfReceiveTest();
         
-        // Display rfByte on LCD
-        //LCD_Char_1_ClearDisplay();
-        //LCD_Char_1_PutChar(rfByte);
-        // Echo original byte back to PC
-        print("echoing");
-        UART_1_PutChar(rfByte);
-        // Wait for transmission to complete
-        while(~UART_1_ReadTxStatus() & UART_1_TX_STS_COMPLETE);
-        print("\r\n");
-        print("end of loop");
+        // Test reading and writing to registers in NRF24L01
+        nrfRegisterTest();
+        
     }
 }
 
@@ -122,29 +112,76 @@ void setup() {
     print("Initializing");
 }
 
-uint8 nrfEcho(uint8 byte) {
-        // Tell NRF to receive from its RxBuffer.
-        nrfReceive(byte);
-        
-        // Tell NRF24L01 to send a byte
-        return nrfSend(byte);
+// Wait for transmission from the other NRF24L01, and then
+// echo that information to the screen
+void nrfReceiveTest() {
+    // Read status register to see if RX FIFO is not empty
+    uint8 statusByte;
+    uint8 clearRXDR = 0b10111111;
+    uint8 receivedByte;
+    while(1) {
+        statusByte = readRegister(STATUS); 
+        print("status byte: ");
+        printByte(statusByte);
+        // If there's stuff in the RX FIFO, read it
+        if (statusByte & (1 << RX_DR)) {
+            // Clear the RX_DR interrupt
+            writeRegister(STATUS, statusByte & clearRXDR);
+            // Get the received byte and print it
+            receivedByte = nrfReadByte();
+            print("received byte");
+            printByte(receivedByte);
+        }
+    }
+}
 
+uint8 nrfReadByte() {
+    uint8 receivedByte;
+    writeRegister(CONFIG, rxMode); // Enter RX mode
+    ce(1); // Enter RX mode
+    csn(0); // Write csn low to signal a new command
+    SPIM_1_WriteByte(R_RX_PAYLOAD); // Tell NRF24L01 that we want to read RX payload
+    while (SPIM_1_GetRxBufferSize() < 1); // Wait for NRF24L01 to respond
+    receivedByte = SPIM_1_ReadByte(); // Read the byte
+    csn(1); // Signal the end of the command (QUESTION, here or before reading byte?)
+    ce(0); // Go back to an idle state, like standby-1 mode
+    return receivedByte;
+}
+
+void nrfRegisterTest() {
+    uint8 nrfByte;
+    // Wait for Rx FIFO to be not empty
+    while(~UART_1_ReadRxStatus() & UART_1_RX_STS_FIFO_NOTEMPTY);
+    psocByte = UART_1_GetChar();
+    
+    // Read CONFIG register
+    print("Reading...");
+    nrfByte = readRegister(CONFIG);
+    printByte(nrfByte);
+    // Write to the CONFIG register
+    //print("Writing...");
+    writeRegister(CONFIG, 0x09);
+    // Read CONFIG register again
+    print("Reading again...");
+    nrfByte = readRegister(CONFIG);
+    printByte(nrfByte);
+    print("Echo...");
+    UART_1_PutChar(psocByte);
+    print("");
+    
 }
 
 uint8 readRegister(uint8 reg) {
     // Set CSN high to let NRF know we are starting a new command
     csn(0);
     // Write command to read given register from NRF24L01
-    SPIM_1_WriteTxData(R_REGISTER | (REGISTER_MASK & reg));
-    // Wait for NRF24L01 to respond 
-    while (SPIM_1_GetRxBufferSize() < 1);
-    SPIM_1_WriteTxData(0xff);
-    // First byte is the status byte
-    statusByte = SPIM_1_ReadRxData();
-    printByte(statusByte);
-    // Second byte is the contents of the register.
-    rfByte = SPIM_1_ReadRxData();
-    printByte(rfByte);
+    spiWrite(R_REGISTER | (REGISTER_MASK & reg));
+    
+    // Write anything to signal to NRF24L01 to start sending the contents
+    SPIM_1_WriteByte(0xff);
+    while((SPIM_1_ReadTxStatus() & SPIM_1_STS_SPI_DONE) != 1);
+    
+    rfByte = spiRead();
     
     // Must set CSN high again so that when we call another command
     // the NRF sees a high->low transition
@@ -157,59 +194,29 @@ void writeRegister(uint8 reg, uint8 data) {
     csn(0);
     
     // Write command to read a register
-    SPIM_1_WriteTxData(W_REGISTER | (REGISTER_MASK & reg));
-    // Wait for SPI master to finish sending
-    while((SPIM_1_ReadTxStatus() & SPIM_1_STS_SPI_DONE) != 1);
-    // Write the data to that register
-    SPIM_1_WriteTxData(data);
-    // Wait for SPI master to finish sending
-    while((SPIM_1_ReadTxStatus() & SPIM_1_STS_SPI_DONE) != 1)
+    spiWrite(W_REGISTER | (REGISTER_MASK & reg));
     
-    // Flush buffer because writing a command makes NRF24L01 return status register
-    // and we don't want that sitting in the Rx buffer the next time we try to read something.
-    SPIM_1_ClearRxBuffer();
+    // Write the data to that register
+    spiWrite(data);
     
     // Set chip select high again so the next time we pull it low it triggers a command
     csn(1);
 }
 
-// Writes the commands to have NRF24L01 receive the byte in RX FIFO
-void nrfReceive(uint8 byte) {
-    UART_1_PutString("nrfReceive\n");
-    csn(1);
-    csn(0);
-    SPIM_1_WriteByte(R_RX_PAYLOAD);
-    UART_1_PutString("sending R_RX_PAYLOAD command\n");
-    while((SPIM_1_ReadTxStatus() & 1) != 1);
-    UART_1_PutString("finished sending\n");
+// Transmits something from SPI Master to the slave,
+// then waits for transission to complete
+// and throws away the automatically returned status byte
+void spiWrite(uint8 byte) {
     SPIM_1_WriteByte(byte);
-    UART_1_PutString("sending R_RX_PAYLOAD data\n");
-    while((SPIM_1_ReadTxStatus() & 1) != 1);
-    UART_1_PutString("finished sending\n");
+    while((SPIM_1_ReadTxStatus() & SPIM_1_STS_SPI_DONE) != 1);
+    while (SPIM_1_GetRxBufferSize() < 1);
+    throwaway = SPIM_1_ReadByte();
 }
 
-// Writes commands to make NRF24L01 send a byte
-uint8 nrfSend(uint8 byte) {
-    UART_1_PutString("nrfSend");
-    csn(1);
-    csn(0);
-    // Send SPI command telling NRF24L01 to write to TxBuffer
-    SPIM_1_WriteByte(W_TX_PAYLOAD);
-    UART_1_PutString("sending W_TX_PAYLOAD command\n");
-    while((SPIM_1_ReadTxStatus() & 1) != 1);
-    UART_1_PutString("finished sending\n");
-    SPIM_1_WriteByte(byte);
-    UART_1_PutString("sending W_TX_PAYLOAD data\n");
-    while((SPIM_1_ReadTxStatus() & 1) != 1);
-    UART_1_PutString("finished sending\n");
-    // Wait until SPI Master RxFIFO is not empty
-    UART_1_PutString("waiting for SPI Master Rx FIFO not empty\n");
-    while((SPIM_1_ReadRxStatus() & (1 << 5)) != 1) {
-        UART_1_PutChar(SPIM_1_ReadRxStatus());
-    };
-    UART_1_PutString("reading byte\n");
+// Waits for RX buffer to be nonempty, then reads one byte and returns it
+uint8 spiRead() {
+    while (SPIM_1_GetRxBufferSize() < 1);
     return SPIM_1_ReadByte();
-    UART_1_PutString("done reading\n");
 }
 
 /**************************/

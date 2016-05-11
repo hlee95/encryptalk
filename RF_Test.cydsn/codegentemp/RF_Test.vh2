@@ -2,7 +2,7 @@
 --	Conversion of RF_Test.v to vh2:
 --
 --	Cypress Semiconductor - WARP Version 6.3 IR 41
---	Thu May 05 14:11:25 2016
+--	Tue May 10 20:28:32 2016
 --
 
 USE cypress.cypress.all;
