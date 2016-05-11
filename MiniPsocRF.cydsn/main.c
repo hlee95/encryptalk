@@ -12,10 +12,14 @@
 #include <project.h>
 #include <nrf.h>
 #include <stdio.h>
+#include <stdbool.h>
+#include <time.h>
 
 // Declare functions
 void nrfInit();
+void nrfPowerDown();
 void nrfRegisterTest();
+bool nrfWaitForSend();
 uint8 readRegister(uint8 reg);
 void writeRegister(uint8 reg, uint8 data);
 void writeRegisterLong(uint8 reg, uint8* data, int len);
@@ -53,6 +57,7 @@ const uint8 rxMode = 11; // decimal 11 = binary 00001011
 const uint8 txMode = 10; // decimal 10 = binary 00001010
 uint8 rxPipe[5] = {0xe1, 0xf0, 0xf0, 0xf0, 0xf0};
 uint8 txPipe[5] = {0xd2, 0xf0, 0xf0, 0xf0, 0xf0};
+const uint32 timeout = 500;
 
 // Begin main program
 int main()
@@ -86,7 +91,6 @@ int main()
 // Send a constant stream of bytes over NRF24L01
 void nrfSendTest() {
     while (Button_Read());
-    print("nrfSendTest!");
     ce(0); // Set CE low to stop listening?
     spiWrite(FLUSH_RX);
     spiWrite(FLUSH_TX);
@@ -95,12 +99,7 @@ void nrfSendTest() {
     int i;
     while(1) {
         for (i = 0; i < 6; i++) {
-            print("sending...");
             nrfSendByte(data[i]);
-            blinkFast();
-        }
-        while(1) {
-               
         }
     }
 
@@ -120,9 +119,9 @@ void nrfSendByte(uint8 byte) {
     spiWrite(byte);
     csn(1);
     
-    print("tx should NOT be empty!");
-    rfByte = readRegister(FIFO_STATUS) & (1 << TX_EMPTY);
-    printByte(rfByte);
+    // print("tx should NOT be empty!");
+    //rfByte = readRegister(FIFO_STATUS) & (1 << TX_EMPTY);
+    //printByte(rfByte);
     
     // statusByte = readRegister(STATUS);
     //uint8 maxRT = statusByte & (1 << MAX_RT);
@@ -139,9 +138,45 @@ void nrfSendByte(uint8 byte) {
     //print("max RT");
     //printByte(maxRT);
     
-    print("tx should be empty!");
-    rfByte = readRegister(FIFO_STATUS) & (1 << TX_EMPTY);
-    printByte(rfByte);
+    //print("tx should be empty!");
+    //rfByte = readRegister(FIFO_STATUS) & (1 << TX_EMPTY);
+    //printByte(rfByte);
+    
+    bool success = nrfWaitForSend();
+    spiWrite(FLUSH_TX);
+    //while (!success) {
+    //    LED_Write(1);
+    //    ce(1);
+    //    CyDelayUs(15);
+    //    ce(0);
+    //    success = nrfWaitForSend();
+    // }
+    //LED_Write(0);
+    nrfPowerDown();
+}
+
+void nrfPowerDown() {
+    writeRegister(CONFIG,readRegister(CONFIG) & ~(1 << PWR_UP));   
+}
+
+bool nrfWaitForSend() {
+    statusByte = readRegister(STATUS);
+    uint32 sentTime = clock();
+    while (!(statusByte & (1 << TX_DS)) & !(statusByte & (1 << MAX_RT)) & (clock() - sentTime < timeout)) {
+        LED_Write(1);   
+    };
+    LED_Write(0);
+    bool result = statusByte & (1 << TX_DS);
+    if (result) {
+        // If success, clear TX_DS bit
+        writeRegister(STATUS, (1 << TX_DS));   
+    }
+    else {
+        // If failure, clear MAX_RT bit
+        // Because if we don't do this, will not transmit again
+        writeRegister(STATUS, 1 << MAX_RT);
+    }
+    return result;
 }
 
 void nrfInit() {    

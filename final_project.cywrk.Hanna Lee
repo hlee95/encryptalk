@@ -508,24 +508,6 @@
 <VisibleNodeIds>
 <v>final_project</v>
 <v>final_project\MiniPsocRF</v>
-<v>final_project\MiniPsocRF\CortexM3</v>
-<v>final_project\MiniPsocRF\CortexM3\ARM_GCC_493</v>
-<v>final_project\MiniPsocRF\CortexM3\ARM_GCC_493\Debug</v>
-<v>final_project\MiniPsocRF\CortexM3\ARM_GCC_493\Debug\Listing Files</v>
-<v>final_project\MiniPsocRF\CortexM3\ARM_GCC_493\Debug\Listing Files\ADC_DelSig_1.lst</v>
-<v>final_project\MiniPsocRF\CortexM3\ARM_GCC_493\Debug\Listing Files\ADC_DelSig_1_AMux.lst</v>
-<v>final_project\MiniPsocRF\CortexM3\ARM_GCC_493\Debug\Listing Files\ADC_DelSig_1_Ext_CP_Clk.lst</v>
-<v>final_project\MiniPsocRF\CortexM3\ARM_GCC_493\Debug\Listing Files\ADC_DelSig_1_INT.lst</v>
-<v>final_project\MiniPsocRF\CortexM3\ARM_GCC_493\Debug\Listing Files\ADC_DelSig_1_IRQ.lst</v>
-<v>final_project\MiniPsocRF\CortexM3\ARM_GCC_493\Debug\Listing Files\ADC_DelSig_1_PM.lst</v>
-<v>final_project\MiniPsocRF\CortexM3\ARM_GCC_493\Debug\Listing Files\ADC_DelSig_1_theACLK.lst</v>
-<v>final_project\MiniPsocRF\CortexM3\ARM_GCC_493\Debug\Listing Files\ADC_Input.lst</v>
-<v>final_project\MiniPsocRF\CortexM3\ARM_GCC_493\Debug\Listing Files\Button.lst</v>
-<v>final_project\MiniPsocRF\CortexM3\ARM_GCC_493\Debug\Listing Files\CE.lst</v>
-<v>final_project\MiniPsocRF\CortexM3\ARM_GCC_493\Debug\Listing Files\Cm3Start.lst</v>
-<v>final_project\MiniPsocRF\CortexM3\ARM_GCC_493\Debug\Listing Files\CSN.lst</v>
-<v>final_project\MiniPsocRF\CortexM3\ARM_GCC_493\Debug\Listing Files\CyBootAsmGnu.lst</v>
-<v>final_project\MiniPsocRF\CortexM3\ARM_GCC_493\Debug\Listing Files\CyDmac.lst</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 </TreeStates>

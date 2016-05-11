@@ -148,6 +148,7 @@ void nrfReceiveTest() {
     uint8 statusByte;
     uint8 receivedByte;
     int count = 0;
+    Pin_1_Write(0);
     // Go to RX mode
     writeRegister(CONFIG, rxMode); // Enter RX mode
     spiWrite(FLUSH_RX);
@@ -156,19 +157,12 @@ void nrfReceiveTest() {
     CyDelayUs(130);
     while(1) {
         if (nrfDataAvailable()) {
+            Pin_1_Write(0);
             receivedByte = nrfReadByte();
-            print("received a byte!");
-            CyDelay(500);
-            printByte(receivedByte);
-            count ++;
-            if (count >= 6) {
-                print("done!");   
-            }
-            //ce(1); // nrfReadByte() sets CE low (unless I commented it out),
-                   // so we need to reset it to high
+            LCD_Char_1_PutChar(receivedByte);
         }
         else {
-            print("no data");   
+            Pin_1_Write(1);  
         }
     }
 }
