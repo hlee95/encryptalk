@@ -14,9 +14,11 @@
 #include <stdio.h>
 
 // Declare functions
+void nrfInit();
 void nrfRegisterTest();
 uint8 readRegister(uint8 reg);
 void writeRegister(uint8 reg, uint8 data);
+void writeRegisterLong(uint8 reg, uint8* data, int len);
 void nrfSendTest();
 void nrfSendByte(uint8 byte);
 
@@ -32,6 +34,7 @@ void echoUART();
 
 void setup();
 void blink();
+void blinkFast();
 void printByte(uint8 byte);
 void print(char* string);
 void csn(uint8 value);
@@ -48,6 +51,8 @@ char printbuf[8]; // buffer used to print things to the PC
 // Declare constants
 const uint8 rxMode = 11; // decimal 11 = binary 00001011
 const uint8 txMode = 10; // decimal 10 = binary 00001010
+uint8 rxPipe[5] = {0xe1, 0xf0, 0xf0, 0xf0, 0xf0};
+uint8 txPipe[5] = {0xd2, 0xf0, 0xf0, 0xf0, 0xf0};
 
 // Begin main program
 int main()
@@ -65,10 +70,11 @@ int main()
         // echoUART();
         
         // Test reading and writing to registers in NRF24L01
-        nrfRegisterTest();
+        // nrfRegisterTest();
         
         // Test sending values to the other NRF24L01
-        // nrfSendTest();
+        
+        nrfSendTest();
         
         // Ferry values from the ADC to the DAC to test the playback system
         // adcToDac();
@@ -79,22 +85,87 @@ int main()
 
 // Send a constant stream of bytes over NRF24L01
 void nrfSendTest() {
+    while (Button_Read());
+    print("nrfSendTest!");
+    ce(0); // Set CE low to stop listening?
+    spiWrite(FLUSH_RX);
+    spiWrite(FLUSH_TX);
+    blink();
     uint8 data[6] = {'a', 'b', 'c', 'd', 'e', 'f'};
     int i;
-    for (i = 0; i ++; i < 6) {
-        nrfSendByte(data[i]);
-    }  
+    while(1) {
+        for (i = 0; i < 6; i++) {
+            print("sending...");
+            nrfSendByte(data[i]);
+            blinkFast();
+        }
+        while(1) {
+               
+        }
+    }
+
 }
 
 // Transmit a byte
 void nrfSendByte(uint8 byte) {
-    // Write the byte to the TX payload.
-    csn(0); // Set csn low to indicate a new command
-    SPIM_1_WriteByte(W_TX_PAYLOAD); // Tell NRF24L01 that we are sending it TX payload
-    SPIM_1_WriteByte(byte); // Write the data byte
-    csn(1); // Set csn low to indicate end of command
-    writeRegister(CONFIG, txMode); // Set up CONFIG by writing PWR_UP high and PRIM_RX low
-    ce(1); // Write CE high to go into TX mode
+    // Set CE low when putting stuff in TX payload
+    ce(0);
+    // set NRF24L01 in TX mode
+    writeRegister(CONFIG, txMode);
+    CyDelayUs(150);
+    // send W_TX_PAYLOAD command
+    csn(0);
+    spiWrite(W_TX_PAYLOAD);
+    // send one data byte (must be only one to match RX payload length)
+    spiWrite(byte);
+    csn(1);
+    
+    print("tx should NOT be empty!");
+    rfByte = readRegister(FIFO_STATUS) & (1 << TX_EMPTY);
+    printByte(rfByte);
+    
+    // statusByte = readRegister(STATUS);
+    //uint8 maxRT = statusByte & (1 << MAX_RT);
+    //print("max RT");
+    //printByte(maxRT);
+    
+    // toggle CE high for 10us then CE low again
+    ce(1);
+    CyDelayUs(15);
+    ce(0);
+    
+    // statusByte = readRegister(STATUS);
+    //maxRT = statusByte & (1 << MAX_RT);
+    //print("max RT");
+    //printByte(maxRT);
+    
+    print("tx should be empty!");
+    rfByte = readRegister(FIFO_STATUS) & (1 << TX_EMPTY);
+    printByte(rfByte);
+}
+
+void nrfInit() {    
+    ce(0);
+    csn(1);
+    // Delay for 4.5 ms
+    CyDelay(5);
+    // Enable RX pipe 0 and 1
+    // writeRegister(EN_RXADDR, 0x03);
+    // Set up RX pipe 1
+    writeRegisterLong(RX_ADDR_P1, rxPipe, 5);
+    // Set static payload length to 1 byte
+    writeRegister(RX_PW_P1, 0x01);
+    // Set up TX pipe
+    writeRegisterLong(RX_ADDR_P0, txPipe, 5);
+    writeRegisterLong(TX_ADDR, txPipe, 5);
+    writeRegister(RX_PW_P0, 0x01);
+    // Disable Auto-Acknowledge
+    // writeRegister(EN_AA, 0x00);
+    // Disable retransmission
+    writeRegister(SETUP_RETR, 0x00);
+    // Clear buffers
+    spiWrite(FLUSH_RX);
+    spiWrite(FLUSH_TX);
 }
 
 // Turns on LED when button is pressed, turns LED off when button not pressed
@@ -170,6 +241,32 @@ void writeRegister(uint8 reg, uint8 data) {
     spiWrite(data);
     
     // Set chip select high again so the next time we pull it low it triggers a command
+    csn(1);
+    
+    // Echo it to serial
+    uint8 echo = readRegister(reg);
+    print("echoing write");
+    printByte(echo);
+}
+
+void writeRegisterLong(uint8 reg, uint8* data, int len) {
+    int i;
+    csn(0);
+    spiWrite(W_REGISTER | (REGISTER_MASK & reg));
+    for (i = 0; i < len; i ++) {
+        spiWrite(data[i]);
+    }
+    csn(1);
+    
+    // echo it back
+    csn(0);
+    spiWrite(R_REGISTER | (REGISTER_MASK & reg));
+    print("echoing long register:");
+    for (i = 0; i < len; i++) {
+        SPIM_1_WriteByte(0xff);
+        while((SPIM_1_ReadTxStatus() & SPIM_1_STS_SPI_DONE) != 1);
+        printByte(spiRead());
+    }
     csn(1);
 }
 
@@ -255,9 +352,15 @@ void setup() {
     VDAC8_1_Start();
     VDAC8_1_Sleep(); // Don't want DAC to do anything yet
     
+    nrfInit(); // set up NRF24L01
+    
     // Turn on LED
     LED_Write(1);
 }
+
+/***********/
+/* Helpers */
+/***********/
 
 // Prints a byte to the PC via UART
 void printByte(uint8 byte) {

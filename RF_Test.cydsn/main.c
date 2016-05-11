@@ -12,24 +12,31 @@
 
 #include <project.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <nrf.h>
 
 // Declare constants
 const uint8 rxMode = 11; // decimal 11 = binary 00001011
 const uint8 txMode = 10; // decimal 10 = binary 00001010
+uint8 txPipe[5] = {0xe1, 0xf0, 0xf0, 0xf0, 0xf0}; // LSByte first
+uint8 rxPipe[5] = {0xd2, 0xf0, 0xf0, 0xf0, 0xf0};
 
 // Declare global variables
 uint8 psocByte;
 uint8 rfByte;
 uint8 statusByte;
 uint8 throwaway;
+uint8 clearRXDR = 0b10111111;
 char printbuf[8];
 
 // Declare functions
 void setup();
 
+void nrfInit();
+bool nrfDataAvailable();
 uint8 readRegister(uint8 reg);
 void writeRegister(uint8 reg, uint8 data);
+void writeRegisterLong(uint8 reg, uint8* data, int len);
 void nrfRegisterTest();
 void nrfReceiveTest(); // listens for transmissions and prints to UART
 uint8 nrfReadByte(); // configures NRF to RX mode and reads a byte out of FIFO queue
@@ -74,10 +81,10 @@ int main()
        
         /* NRF TESTING */
         
-        // nrfReceiveTest();
+        nrfReceiveTest();
         
         // Test reading and writing to registers in NRF24L01
-        nrfRegisterTest();
+        // nrfRegisterTest();
         
     }
 }
@@ -102,9 +109,7 @@ void setup() {
     UART_1_SetRxInterruptMode(UART_1_RX_STS_FIFO_NOTEMPTY);
     UART_1_SetTxInterruptMode(UART_1_TX_STS_COMPLETE);
     
-    ce(0);
-    csn(1); // Default state should be high, then write low to indicate command
-    CyDelay(5); // Give RF time to set up
+    nrfInit();
     
     // Turn on the LED, write to the LCD
     Pin_1_Write(1);
@@ -112,39 +117,93 @@ void setup() {
     print("Initializing");
 }
 
+void nrfInit() {
+    ce(0);
+    csn(1);
+    CyDelay(5);
+    // Enable RX pipe 0 and 1
+    // writeRegister(EN_RXADDR, 0x03);
+    // Set up RX pipe 1
+    writeRegisterLong(RX_ADDR_P1, rxPipe, 5);
+    // Set static payload length to 1 byte
+    writeRegister(RX_PW_P1, 0x01);
+    // Set up TX pipe
+    writeRegisterLong(RX_ADDR_P0, txPipe, 5);
+    writeRegisterLong(TX_ADDR, txPipe, 5);
+    writeRegister(RX_PW_P0, 0x01);
+    // Disable Auto-Acknowledge
+    // writeRegister(EN_AA, 0x00);
+    // Disable retransmission
+    writeRegister(SETUP_RETR, 0x00);
+    // Flush buffers
+    spiWrite(FLUSH_RX);
+    spiWrite(FLUSH_TX);
+}
+
+
 // Wait for transmission from the other NRF24L01, and then
 // echo that information to the screen
 void nrfReceiveTest() {
     // Read status register to see if RX FIFO is not empty
     uint8 statusByte;
-    uint8 clearRXDR = 0b10111111;
     uint8 receivedByte;
+    int count = 0;
+    // Go to RX mode
+    writeRegister(CONFIG, rxMode); // Enter RX mode
+    spiWrite(FLUSH_RX);
+    spiWrite(FLUSH_TX);
+    ce(1); // Go!
+    CyDelayUs(130);
     while(1) {
-        statusByte = readRegister(STATUS); 
-        print("status byte: ");
-        printByte(statusByte);
-        // If there's stuff in the RX FIFO, read it
-        if (statusByte & (1 << RX_DR)) {
-            // Clear the RX_DR interrupt
-            writeRegister(STATUS, statusByte & clearRXDR);
-            // Get the received byte and print it
+        if (nrfDataAvailable()) {
             receivedByte = nrfReadByte();
-            print("received byte");
+            print("received a byte!");
+            CyDelay(500);
             printByte(receivedByte);
+            count ++;
+            if (count >= 6) {
+                print("done!");   
+            }
+            //ce(1); // nrfReadByte() sets CE low (unless I commented it out),
+                   // so we need to reset it to high
+        }
+        else {
+            print("no data");   
         }
     }
 }
 
+// Returns true if there's data, i.e. RX_DR was asserted in STATUS register
+bool nrfDataAvailable() {
+    statusByte = readRegister(STATUS);
+    bool result = statusByte & (1 << RX_DR);
+    if (result) {
+        // Clear the status byte
+        writeRegister(STATUS, (1 << RX_DR));
+        
+        // If TX_DS is asserted, clear that also
+        if (statusByte & (1 << TX_DS)) {
+            writeRegister(STATUS, (1 << TX_DS));   
+        }
+    }
+    return result;
+}
+
 uint8 nrfReadByte() {
     uint8 receivedByte;
-    writeRegister(CONFIG, rxMode); // Enter RX mode
-    ce(1); // Enter RX mode
+    uint8 cdByte;
+    // read CD register
+    cdByte = readRegister(CD);
+    print("cd");
+    printByte(cdByte);
+    // ce(0); // Set CE low to read packets
     csn(0); // Write csn low to signal a new command
-    SPIM_1_WriteByte(R_RX_PAYLOAD); // Tell NRF24L01 that we want to read RX payload
-    while (SPIM_1_GetRxBufferSize() < 1); // Wait for NRF24L01 to respond
-    receivedByte = SPIM_1_ReadByte(); // Read the byte
-    csn(1); // Signal the end of the command (QUESTION, here or before reading byte?)
-    ce(0); // Go back to an idle state, like standby-1 mode
+    spiWrite(R_RX_PAYLOAD); // Tell NRF24L01 that we want to read RX payload
+    SPIM_1_WriteByte(0xff);
+    while((SPIM_1_ReadTxStatus() & SPIM_1_STS_SPI_DONE) != 1);
+    receivedByte = spiRead(); // Read the byte
+    csn(1); // Signal the end of the command
+    
     return receivedByte;
 }
 
@@ -200,6 +259,29 @@ void writeRegister(uint8 reg, uint8 data) {
     spiWrite(data);
     
     // Set chip select high again so the next time we pull it low it triggers a command
+    csn(1);
+}
+
+void writeRegisterLong(uint8 reg, uint8* data, int len) {
+    int i;
+    csn(0);
+    spiWrite(W_REGISTER | (REGISTER_MASK & reg));
+    for (i = 0; i < len; i ++) {
+        spiWrite(data[i]);
+    }
+    csn(1);
+    
+    print("written long");
+    
+    // echo it back
+    csn(0);
+    spiWrite(R_REGISTER | (REGISTER_MASK & reg));
+    print("echoing long register:");
+    for (i = 0; i < len; i++) {
+        SPIM_1_WriteByte(0xff);
+        while((SPIM_1_ReadTxStatus() & SPIM_1_STS_SPI_DONE) != 1);
+        printByte(spiRead());
+    }
     csn(1);
 }
 
