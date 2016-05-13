@@ -1,0 +1,83 @@
+; This program sends a sine wave of varying frequency
+; to the DAC, which will send it to the speaker.
+; The goal is to show that I can write to the DAC and
+; have the more-or-less correct sound come out of the speaker.
+
+; I send a sine wave by reusing code I used in Lab 3 Exercise 5.
+
+.org 0000h
+ljmp start
+
+.org 000bh
+T0ISR:
+    lcall senddac       ; Read a byte from the sineamp table
+                        ; and send it to the DAC
+reti
+
+.org 0100h
+start:
+    mov tmod, #02h      ; Set timer 0 for auto-reload mode.
+    mov th0, #0d0h      ; Wait 180 counts to roll over.
+
+    mov r0, #80h        ; Increment = (30/20)*256. Low byte = .5 = 80h
+    mov r1, #02h        ; High byte of increment = 1 = 01h
+
+    mov r2, #00h        ; Initialize two-byte counter to 0000h. Low byte.
+    mov r3, #00h        ; High byte.
+
+    mov ie, #82h
+    setb tr0            ; Start timer 0
+
+    loop:               ; Loop and wait for timer interrupts
+        sjmp loop
+
+
+senddac:
+; Sends the appropriate byte to the DAC
+; and increments the table index pointer.
+    mov a, r3           ; Get the high byte of the count
+    lcall getamp
+    mov dptr, #0fe08h   ; Move the write location for DAC into dptr
+    movx @dptr, a       ; Write the byte to the DAC
+    lcall increment     ; Increment the index counter
+ret
+
+increment:
+; Increments the count by the increment in r1r0
+    mov a, r2
+    add a, r0           ; Add the two fractional bytes
+    mov r2, a
+
+    mov a, r3
+    addc a, r1          ; Add the high byte, with the carry
+    mov r3, a
+    clr c
+ret
+
+; This function gets the next value to write to the DAC
+getamp:
+    inc a
+    mov dptr, #sineamp  ; Get ready to read from the table
+    movc a, @a+dptr     ; Read the ath value in the table
+ret
+
+; This sineamp table was generated with a python script
+sineamp:
+    .db 080h, 081h, 083h, 084h, 086h, 087h, 089h, 08ah, 08ch, 08eh, 08fh, 091h, 092h, 094h, 095h, 097h
+    .db 098h, 099h, 09bh, 09ch, 09eh, 09fh, 0a0h, 0a2h, 0a3h, 0a4h, 0a6h, 0a7h, 0a8h, 0a9h, 0aah, 0ach
+    .db 0adh, 0aeh, 0afh, 0b0h, 0b1h, 0b2h, 0b3h, 0b4h, 0b5h, 0b6h, 0b6h, 0b7h, 0b8h, 0b9h, 0b9h, 0bah
+    .db 0bbh, 0bbh, 0bch, 0bch, 0bdh, 0bdh, 0beh, 0beh, 0beh, 0bfh, 0bfh, 0bfh, 0bfh, 0bfh, 0bfh, 0bfh
+    .db 0c0h, 0bfh, 0bfh, 0bfh, 0bfh, 0bfh, 0bfh, 0bfh, 0beh, 0beh, 0beh, 0bdh, 0bdh, 0bch, 0bch, 0bbh
+    .db 0bbh, 0bah, 0b9h, 0b9h, 0b8h, 0b7h, 0b6h, 0b6h, 0b5h, 0b4h, 0b3h, 0b2h, 0b1h, 0b0h, 0afh, 0aeh
+    .db 0adh, 0ach, 0aah, 0a9h, 0a8h, 0a7h, 0a6h, 0a4h, 0a3h, 0a2h, 0a0h, 09fh, 09eh, 09ch, 09bh, 099h
+    .db 098h, 097h, 095h, 094h, 092h, 091h, 08fh, 08eh, 08ch, 08ah, 089h, 087h, 086h, 084h, 083h, 081h
+    .db 080h, 07eh, 07ch, 07bh, 079h, 078h, 076h, 075h, 073h, 071h, 070h, 06eh, 06dh, 06bh, 06ah, 068h
+    .db 067h, 066h, 064h, 063h, 061h, 060h, 05fh, 05dh, 05ch, 05bh, 059h, 058h, 057h, 056h, 055h, 053h
+    .db 052h, 051h, 050h, 04fh, 04eh, 04dh, 04ch, 04bh, 04ah, 049h, 049h, 048h, 047h, 046h, 046h, 045h
+    .db 044h, 044h, 043h, 043h, 042h, 042h, 041h, 041h, 041h, 040h, 040h, 040h, 040h, 040h, 040h, 040h
+    .db 040h, 040h, 040h, 040h, 040h, 040h, 040h, 040h, 041h, 041h, 041h, 042h, 042h, 043h, 043h, 044h
+    .db 044h, 045h, 046h, 046h, 047h, 048h, 049h, 049h, 04ah, 04bh, 04ch, 04dh, 04eh, 04fh, 050h, 051h
+    .db 052h, 053h, 055h, 056h, 057h, 058h, 059h, 05bh, 05ch, 05dh, 05fh, 060h, 061h, 063h, 064h, 066h
+    .db 067h, 068h, 06ah, 06bh, 06dh, 06eh, 070h, 071h, 073h, 075h, 076h, 078h, 079h, 07bh, 07ch, 07eh
+
+end

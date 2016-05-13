@@ -1,3 +1,9 @@
+Appendix J, Final Project, Big PSOC main.c				          Hanna Lee
+
+Notes: This is the main program that makes the big PSOC act as an NRF receiver from the other PSOC, and ferry values over UART to the R31JP.
+
+CODE:
+
 /* ========================================
  *
  * Copyright YOUR COMPANY, THE YEAR
